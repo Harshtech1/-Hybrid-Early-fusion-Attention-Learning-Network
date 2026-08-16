@@ -1,0 +1,13 @@
+schema_version: 1
+artifact_type: metadata_reference_only
+cohort: BLCA
+gdc_uuid: bc9e3954-59d0-4f25-9022-42c97db7aea2
+filename: TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C9EB3970F.svs
+size_bytes: 2658499382
+md5: 824785fee9387dcf46a7058a0722739b
+patch_count: 8911
+patch_level: 1
+effective_mpp: 0.9108
+clam_commit: 26e0b6c4873e112f1ccd74cd834894c4ab7a2934
+hdf5_sha256: e22bc149a2b192bf917559fb69154143867e8e4e6eb3f28a7b5b5a87a07e0b51
+data_included: false

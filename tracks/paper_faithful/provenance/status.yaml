@@ -1,0 +1,16 @@
+schema_version: 1
+purpose: paper-faithful reproduction
+encoder:
+  architecture: ResNet50
+  pretraining: Kather100K
+  checkpoint: UNRESOLVED
+  status: BLOCKED
+target_mpp:
+  values_um_per_px:
+    - 0.5
+    - 1.0
+  status: UNRESOLVED
+patch_size: 256
+feature_dim: 2048
+status: BLOCKED_PENDING_AUTHOR
+blocking_reason: Exact author encoder checkpoint and physical-resolution preprocessing provenance are unresolved.

@@ -1,0 +1,42 @@
+schema_version: 1
+cohort: BLCA
+gdc_uuid: bc9e3954-59d0-4f25-9022-42c97db7aea2
+filename: TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C9EB3970F.svs
+path: /teamspace/studios/this_studio/healnet_pilot/blca/bc9e3954-59d0-4f25-9022-42c97db7aea2/TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C9EB3970F.svs
+md5: 824785fee9387dcf46a7058a0722739b
+size_bytes: 2658499382
+
+openslide:
+  mpp_x: 0.2277
+  mpp_y: 0.2277
+  levels: 4
+
+tested_level:
+  level: 1
+  downsample: 4.0
+  effective_mpp: 0.9108
+
+clam:
+  path: /teamspace/studios/this_studio/healnet_pilot/CLAM
+  commit: 26e0b6c4873e112f1ccd74cd834894c4ab7a2934
+  patch_size: 256
+  patch_level: 1
+  coordinates: 8911
+  exact_author_runtime_commit: false
+
+hdf5:
+  path: /teamspace/studios/this_studio/healnet_pilot/blca_preprocessed/patches/TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C9EB3970F.h5
+  sha256: e22bc149a2b192bf917559fb69154143867e8e4e6eb3f28a7b5b5a87a07e0b51
+  size_bytes: 572080
+
+qc:
+  duplicate_coordinates: 0
+  out_of_bounds: 0
+  status: engineering_pass
+
+safety:
+  official_repo_modified: false
+  preexisting_official_repo_changes_present: true
+  google_drive_touched: false
+  additional_data_downloaded: false
+  feature_extraction_performed: false

@@ -1,0 +1,70 @@
+# External source checkout (record its immutable SHA in provenance instead)
+/CLAM/
+
+# External pilot data and generated preprocessing artifacts
+/blca/
+/blca_preprocessed/
+
+# Whole-slide images and derived large data
+*.svs
+*.svs.*
+*.h5
+*.pt
+*.pth
+*.ckpt
+*.tif
+*.tiff
+*.ndpi
+*.mrxs
+
+# Archives and bundles
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.7z
+
+# Generated QC images/directories
+masks/
+stitches/
+
+# Credentials and local secrets
+rclone.conf
+healnet.conf
+**/rclone.conf
+**/healnet.conf
+*credential*.json
+*credentials*.json
+*service-account*.json
+*oauth*.json
+*client_secret*.json
+*token*.json
+*.pem
+*.key
+id_rsa
+id_ed25519
+.env
+.env.*
+
+# Python caches and test state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.coverage
+htmlcov/
+
+# Temporary/runtime logs and partial files
+*.log
+logs/
+*.tmp
+*.temp
+*.part
+*.swp
+*.swo
+.DS_Store
+
+# Keep Markdown, YAML provenance, source code, reports, checksums,
+# experiment configuration, and small CSV manifests tracked.

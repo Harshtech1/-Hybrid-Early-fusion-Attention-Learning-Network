@@ -1,0 +1,36 @@
+schema_version: 1
+purpose: released-code reproduction
+source:
+  repository: /teamspace/studios/this_studio/healnet
+  tag: v0.1.0
+  commit: beb8b000121e311a219ff5c1837cf05ff8c44c1b
+encoder:
+  architecture: torchvision ResNet50
+  weights: IMAGENET1K_V2
+patch_size: 256
+resize: 224
+normalization_mean:
+  - 0.485
+  - 0.456
+  - 0.406
+normalization_std:
+  - 0.229
+  - 0.224
+  - 0.225
+feature_dim: 2048
+tensor_dtype: float32
+saved_shape:
+  - patch_slots
+  - 2048
+loader_shape:
+  - 2048
+  - patch_slots
+runtime_gate:
+  cuda_available: false
+  gpu: unavailable
+  checkpoint_cached: false
+  expected_checkpoint: resnet50-11ad3fa6.pth
+status: READY_FOR_CONTROLLED_PILOT_PENDING_GPU
+disclaimer: >-
+  This reproduces the released camera-ready code behavior, not necessarily
+  the methodology claimed in the paper.
