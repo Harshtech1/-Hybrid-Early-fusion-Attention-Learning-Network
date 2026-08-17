@@ -1,5 +1,7 @@
 # Next real multiscale extraction step
 
+> Historical execution plan. The plan was completed successfully; current results and hashes are frozen in [../../reports/validated_pilot_baseline.md](../../reports/validated_pilot_baseline.md).
+
 This document defines the next GPU-enabled action. GPU, OpenSlide, code, and the official ImageNet1K V2 checkpoint are ready. Real extraction remains closed until the external WSI, coordinate HDF5, and Omic object pass the full gate.
 
 ## Fixed adapter contract
@@ -69,7 +71,7 @@ The pilot Omic loader now enforces this identity and grouping contract directly:
 
 This is a supervisor-aligned engineering approximation, not an exact native 0.5 MPP reproduction. The policy is now frozen as `APPROVED_2X_ENGINEERING_POLICY_V1`: read complete 512 x 512 footprints from level 0, convert explicitly to RGB, downsample to 256 x 256 with `PIL.Image.Resampling.LANCZOS`, and reject incomplete footprints. Lanczos itself supplies the PIL downsampling antialiasing; there is no separate PIL antialias flag.
 
-Tissue segmentation is fixed at level 3 (3.6432 MPP) using the pinned CLAM commit `26e0b6c4873e112f1ccd74cd834894c4ab7a2934` parameters (`sthresh=8`, `mthresh=7`, `close=4`, `use_otsu=false`, `a_t=100`, `a_h=16`, `max_n_holes=8`) and the exact pinned `four_pt` easy rule.
+Tissue segmentation is fixed at OpenSlide level 2 (3.6432 MPP) using the pinned CLAM commit `26e0b6c4873e112f1ccd74cd834894c4ab7a2934` parameters (`sthresh=8`, `mthresh=7`, `close=4`, `use_otsu=false`, `a_t=100`, `a_h=16`, `max_n_holes=8`) and the exact pinned `four_pt` easy rule.
 
 Coordinates use a level-0 global lattice anchored at `(0,0)`, step `(512,512)`, sorted row-major by `(y,x)`. This policy is labelled `custom_global_lattice_v1`; it is an explicit engineering choice and is **not** released-CLAM coordinate reproduction.
 

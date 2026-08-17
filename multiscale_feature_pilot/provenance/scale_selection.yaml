@@ -36,7 +36,7 @@ branches:
       resampling_interpolation: PIL.Image.Resampling.LANCZOS
       resampling_note: Lanczos supplies downsampling antialiasing; no separate PIL flag
       tissue_filtering_resolution:
-        level: 3
+        level: 2
         mpp: 3.6432
       tissue_parameters:
         clam_commit: 26e0b6c4873e112f1ccd74cd834894c4ab7a2934
@@ -62,10 +62,14 @@ branches:
       normalization_std: [0.229, 0.224, 0.225]
       feature_dtype: float32
       feature_dim: 2048
-      performed: false
-    coordinate_source: null
-    patch_count: null
-    extraction_status: NOT_STARTED_EXTERNAL_DATA_PENDING
+      performed: true
+    coordinate_source: /teamspace/studios/this_studio/healnet_pilot_data/blca/bc9e3954-59d0-4f25-9022-42c97db7aea2/blca_one_patient_multiscale_pilot/scale_2x_coordinates.pt
+    coordinate_source_sha256: 03dd61138d0d9cf968e2e01ac64e40a888b8d13ccb1408fa02fa3bd1b8d92493
+    patch_count: 35534
+    unique_coordinate_count: 35534
+    feature_artifact: /teamspace/studios/this_studio/healnet_pilot_data/blca/bc9e3954-59d0-4f25-9022-42c97db7aea2/blca_one_patient_multiscale_pilot/scale_2x_resnet50_imagenet1k_v2_features.pt
+    feature_sha256: e65f47f480cf81cc63d1198066b8f5ac28775e3877c64ff6a9a4f402ca46b774
+    extraction_status: COMPLETE
   branch_1p0:
     target_mpp: 1.0
     closest_native_level: 1
@@ -76,16 +80,18 @@ branches:
     exact_native_level_available: false
     native_level_accepted_as_approximate_paper_scale: true
     resampling_required_for_first_controlled_test: false
-    coordinate_source: /teamspace/studios/this_studio/healnet_pilot/blca_preprocessed/patches/TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C9EB3970F.h5
+    coordinate_source: /teamspace/studios/this_studio/healnet_pilot_data/blca/bc9e3954-59d0-4f25-9022-42c97db7aea2/TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C9EB3970F.h5
     coordinate_source_sha256: e22bc149a2b192bf917559fb69154143867e8e4e6eb3f28a7b5b5a87a07e0b51
     coordinate_patch_level: 1
     coordinate_patch_size: 256
     patch_count: 8911
     unique_coordinate_count: 8911
-    extraction_status: NOT_STARTED_GPU_GATE
+    feature_artifact: /teamspace/studios/this_studio/healnet_pilot_data/blca/bc9e3954-59d0-4f25-9022-42c97db7aea2/blca_one_patient_multiscale_pilot/scale_4x_resnet50_imagenet1k_v2_features.pt
+    feature_sha256: 67deb6ce5a797c59b9077bbe67197d3d30d565f295e2b458cb67c89e66cb3863
+    extraction_status: COMPLETE
 notes:
   - The existing HDF5 is valid only for level 1 and is not assigned to branch_0p5.
   - No exact 0.5 or 1.0 micrometre-per-pixel native level exists on this slide.
-  - The branch_0p5 policy is approved for one controlled engineering pilot and was not performed.
+  - The branch_0p5 policy was performed once for the controlled BLCA one-patient engineering pilot.
   - custom_global_lattice_v1 is an engineering choice, not released-CLAM coordinate reproduction.
   - The 0.4554 MPP branch must not be described as exact 0.5 MPP or exact paper reproduction.

@@ -1,6 +1,6 @@
 schema_version: 1
 purpose: pilot-side multiscale WSI feature adapter
-status: READY_FOR_GPU_MULTISCALE_EXTRACTION
+status: BLCA_ONE_PATIENT_PILOT_SUCCESS
 feature_contract:
   dtype: float32
   feature_dim: 2048
@@ -39,6 +39,8 @@ one_patient_healnet_interface:
   output_shape: [1, 4]
   direct_wsi_omic_concatenation: false
   synthetic_interface_status: VERIFIED
+  real_interface_status: VERIFIED
+  real_patch_count: 44445
 patient_omic_loader:
   match_columns: [_PATIENT, slide_id]
   feature_suffixes:
@@ -58,11 +60,15 @@ padding:
     In the released transposed layout, HEALNet attends over the 2048 axis;
     this mask describes padded patch slots on the max_patch_count axis.
 real_data_execution:
-  enabled: false
+  new_execution_enabled: false
+  completed: true
+  frozen_reference: true
   checkpoint_download: true
-  resnet_inference: false
+  resnet_inference: true
   clam_execution: false
   training: false
+  output_directory: /teamspace/studios/this_studio/healnet_pilot_data/blca/bc9e3954-59d0-4f25-9022-42c97db7aea2/blca_one_patient_multiscale_pilot
+  manifest_sha256: e761161b9a8f0fd0d0510c2f52ea8559164b8683800ad4d2b0dbcec131dfbb03
 approved_scale_2x_policy:
   status: APPROVED_2X_ENGINEERING_POLICY_V1
   source_level: 0
@@ -72,7 +78,7 @@ approved_scale_2x_policy:
   effective_mpp: 0.4554
   resampling: PIL.Image.Resampling.LANCZOS
   pil_antialias_flag: null
-  tissue_mask_level: 3
+  tissue_mask_level: 2
   tissue_mask_mpp: 3.6432
   tissue_parameters:
     clam_commit: 26e0b6c4873e112f1ccd74cd834894c4ab7a2934
