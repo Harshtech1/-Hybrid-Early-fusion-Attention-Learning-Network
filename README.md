@@ -1,94 +1,98 @@
-# HEALNet reproducibility pilot
+# Supervisor-aligned HEALNet pilot
 
-This repository documents a reproduction and engineering study of **HEALNet: Multimodal Fusion for Heterogeneous Biomedical Data** (NeurIPS 2024). It separates claims from the paper from behavior in the camera-ready code and preserves metadata for one checksum-verified BLCA WSI engineering pilot.
+This independent repository contains the code, tests, provenance, and documentation for a patient-matched WSI + multi-omic HEALNet survival pilot. Supervisor instructions are the implementation priority; paper and released-code behavior are kept as explicit provenance rather than silently substituted.
 
-This is an independent reproducibility project, not the official authors' repository. This repository does not redistribute TCGA WSI data, trained checkpoints, or authentication credentials.
+This repository does not redistribute TCGA WSI data, generated coordinate/feature files, model checkpoints, third-party source checkouts, or credentials.
 
-Start with:
+## Start here
 
-- [Complete project state and recovery guide](PROJECT_STATE.md)
-- [Tomorrow's 30-second restart checklist](TOMORROW_START.md)
-- [GitHub inclusion/exclusion plan](GITHUB_CONTENTS.md)
-- [Third-party data notice](THIRD_PARTY_DATA_NOTICE.md)
-- [Track comparison](reports/track_comparison.md)
+- [GPU-machine handoff and exact restart procedure](GPU_HANDOFF.md)
+- [Short restart checklist](TOMORROW_START.md)
+- [Supervisor-aligned architecture](SUPERVISOR_PIPELINE.md)
+- [Current project state](PROJECT_STATE.md)
+- [Multiscale adapter design](multiscale_feature_pilot/reports/adapter_design.md)
+- [Next real extraction plan](multiscale_feature_pilot/reports/next_real_multiscale_extraction.md)
+- [GitHub inclusion/exclusion boundary](GITHUB_CONTENTS.md)
 
-## Workspace layout
+## Fixed architecture
 
 ```text
-healnet_pilot/
-├── CLAM/                         # pinned external checkout; shared read-only input
-├── blca/                         # verified pilot WSI; do not commit
-├── blca_preprocessed/            # CLAM HDF5 and QC artifacts; shared read-only input
-├── shared/
-│   ├── provenance/
-│   │   ├── pilot_manifest.yaml
-│   │   └── known_issues.md
-│   └── qc/
-├── tracks/
-│   ├── paper_faithful/
-│   │   ├── config/
-│   │   ├── models/
-│   │   ├── features/
-│   │   ├── logs/
-│   │   └── provenance/
-│   └── released_code/
-│       ├── config/
-│       ├── models/
-│       ├── features/
-│       ├── logs/
-│       └── provenance/
-├── reports/
-├── PROJECT_STATE.md
-├── TOMORROW_START.md
-├── GITHUB_CONTENTS.md
-└── .gitignore
+same patient
+├── WSI 2x -> patches -> ImageNet1K V2 ResNet50 -> [N1,2048]
+├── WSI 4x -> patches -> ImageNet1K V2 ResNet50 -> [N2,2048]
+│
+│   torch.cat([scale_2x, scale_4x], dim=0)
+│   -> [N1+N2,2048] -> [1,2048,N1+N2]
+│
+├── RNA      -> separate HEALNet input
+├── Mutation -> separate HEALNet input
+└── CNV      -> separate HEALNet input
+                         ↓
+                      HEALNet
+                         ↓
+                       [1,4]
 ```
 
-The existing WSI, CLAM checkout, and CLAM outputs remain in their original locations. They were not moved or duplicated during workspace organization.
-
-## Experimental tracks
-
-### Paper-faithful
-
-- Intended encoder: Kather100K-pretrained ResNet50
-- Intended WSI resolution: approximately 0.5/1.0 micrometres per pixel
-- Status: `BLOCKED_PENDING_AUTHOR`
-- Reason: exact checkpoint and physical-resolution procedure are unresolved
-
-### Released-code
-
-- Encoder: torchvision ResNet50 `IMAGENET1K_V2`
-- Camera-ready transform: `256×256` OpenSlide region, RGB, tensor conversion, resize to `224×224`, ImageNet normalization
-- Status: `READY_FOR_CONTROLLED_PILOT_PENDING_GPU`
-- Label: released-code engineering reproduction, not paper-faithful
+WSI is never directly concatenated with Omic values. Only the two WSI feature bags are concatenated, along patch rows.
 
 ## Current status
 
-The pipeline is validated through one-slide CLAM coordinate generation and QC:
+| Component | Status |
+|---|---|
+| Patient identity rule | Verified |
+| BLCA WSI/Omic exact match | Verified for `TCGA-2F-A9KT` |
+| Two-scale tensor/provenance/padding adapter | Implemented |
+| Synthetic WSI + RNA + mutation + CNV HEALNet forward | Finite `[1,4]` |
+| Tests | 24 passed |
+| Real ResNet50 feature extraction | Not started |
+| Runtime gate | `BLOCKED_NO_GPU` on source machine |
+| HEALNet training | Not started |
+
+The code handoff is ready for a GPU machine, but it is not a completed push-button extraction pipeline. It includes the strict adapter, synthetic interface tests, readiness checker, and runbook. The real extraction runner and final 2x coordinate-generation details remain the next implementation step.
+
+## Repository layout
 
 ```text
-GDC WSI → MD5 → OpenSlide → pinned CLAM → 8,911 HDF5 coordinates
+healnet_pilot/
+├── multiscale_feature_pilot/
+│   ├── config/
+│   ├── provenance/
+│   ├── reports/
+│   ├── src/
+│   └── tests/
+├── scripts/
+│   └── check_gpu_readiness.py
+├── reports/                  # audit/history documents
+├── shared/provenance/
+├── tracks/                   # paper/released-code provenance
+├── GPU_HANDOFF.md
+├── SUPERVISOR_PIPELINE.md
+├── PROJECT_STATE.md
+└── TOMORROW_START.md
 ```
 
-Feature extraction is not started. The current Lightning Studio has no accessible GPU, and the exact released-code ImageNet checkpoint has not been downloaded. HEALNet training and evaluation are not started.
+## Test
+
+Keep a clean official HEALNet `v0.1.0` checkout in a sibling directory named `healnet`, then run:
+
+```bash
+python -m pytest multiscale_feature_pilot/tests -q
+```
+
+See [GPU_HANDOFF.md](GPU_HANDOFF.md) for environment, data-transfer, hash-verification, and GPU-gate instructions.
+
+## Reproducibility rules
+
+- Match WSI and Omic data by stable patient/case ID, never row order.
+- Keep only patients with both sources.
+- Preserve paper, released-code, and supervisor-track differences.
+- Do not label `0.4554` or `0.9108 µm/px` as exact `0.5` or `1.0`.
+- Do not modify the official HEALNet checkout for this pilot.
+- Do not commit `.svs`, `.h5`, `.pt`, `.pth`, `.ckpt`, credentials, OAuth/rclone files, caches, or nested third-party repositories.
+- Stop after the first real one-patient forward; do not scale or train until it passes.
 
 ## Official sources
 
 - HEALNet repository: <https://github.com/konst-int-i/healnet>
 - HEALNet paper: <https://arxiv.org/abs/2311.09115>
-- GDC Data Portal: <https://portal.gdc.cancer.gov/>
-- GDC Data Transfer Tool: <https://docs.gdc.cancer.gov/Data_Transfer_Tool/Users_Guide/Data_Download_and_Upload/>
-- OpenSlide: <https://openslide.org/download/>
 - CLAM: <https://github.com/mahmoodlab/CLAM>
-
-## Reproducibility rules
-
-- Never silently replace Kather100K with ImageNet.
-- Never silently replace missing molecular modalities.
-- Never mix paper-faithful and released-code results.
-- Do not download complete WSI cohorts until the pilot passes.
-- Do not destructively modify or reset the official HEALNet checkout.
-- Never commit credentials, OAuth material, raw `.svs`, generated `.h5`/`.pt`, or model checkpoints.
-- Record immutable SHAs, hashes, versions, tensor shapes, and data lineage for every generated artifact.
-
-This directory is not yet a Git repository. Do not initialize, commit, create GitHub resources, or push until the separate repository-creation phase is explicitly authorized.

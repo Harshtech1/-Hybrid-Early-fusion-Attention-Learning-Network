@@ -1,0 +1,65 @@
+schema_version: 1
+purpose: pilot-side multiscale WSI feature adapter
+status: READY_FOR_GPU_MULTISCALE_EXTRACTION
+feature_contract:
+  dtype: float32
+  feature_dim: 2048
+  branch_order:
+    - scale_2x
+    - scale_4x
+  operation: torch.cat
+  concat_dim: 0
+  reject_operations:
+    - feature-axis concatenation
+    - stack
+  reject_non_finite: true
+provenance_columns:
+  - global_row_index
+  - branch
+  - local_patch_index
+  - x
+  - y
+  - level
+  - mpp_x
+  - mpp_y
+released_healnet_orientation:
+  per_patient_input: [patch_count, 2048]
+  per_patient_output: [2048, patch_count]
+  batched_output: [batch, 2048, max_patch_count]
+one_patient_healnet_interface:
+  input_order:
+    - combined_wsi
+    - rna
+    - mutation
+    - cnv
+  combined_wsi_shape: [1, 2048, variable_patch_count]
+  rna_shape: [1, 1, 1523]
+  mutation_shape: [1, 1, 1125]
+  cnv_shape: [1, 1, 193]
+  output_shape: [1, 4]
+  direct_wsi_omic_concatenation: false
+  synthetic_interface_status: VERIFIED
+patient_omic_loader:
+  match_columns: [_PATIENT, slide_id]
+  feature_suffixes:
+    rna: _rnaseq
+    mutation: _mut
+    cnv: _cnv
+  preserve_csv_header_order: true
+  require_exactly_one_match: true
+  reject_non_finite: true
+padding:
+  value: 0.0
+  patient_local_initialization: true
+  validity_mask_shape: [batch, max_patch_count]
+  validity_mask_dtype: bool
+  direct_official_attention_mask_compatible: false
+  incompatibility_reason: >-
+    In the released transposed layout, HEALNet attends over the 2048 axis;
+    this mask describes padded patch slots on the max_patch_count axis.
+real_data_execution:
+  enabled: false
+  checkpoint_download: false
+  resnet_inference: false
+  clam_execution: false
+  training: false

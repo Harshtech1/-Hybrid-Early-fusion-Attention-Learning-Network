@@ -1,0 +1,30 @@
+schema_version: 1
+purpose: supervisor-specified-wsi-feature-extraction
+architecture: ResNet50
+pretraining: ImageNet
+pretraining_variant: IMAGENET1K_V2
+classifier: removed
+feature_dim: 2048
+patch_size: 256
+feature_extraction_mode: pretrained_encoder
+finetuning: not_assumed
+input_resize: [224, 224]
+input_normalization:
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+output_per_patch: true
+patient_bag_shape:
+  - variable_patch_count
+  - 2048
+multiscale_contract:
+  scale_2x_effective_mpp: 0.4554
+  scale_4x_effective_mpp: 0.9108
+  operation: torch.cat
+  concat_dim: 0
+  output_shape: [combined_patch_count, 2048]
+status: READY_FOR_GPU_MULTISCALE_EXTRACTION
+notes:
+  - This is the supervisor-aligned ImageNet track, not the paper's Kather100K encoder.
+  - The scale values are measured engineering approximations, not exact 0.5/1.0 MPP.
+  - Interpolation, tissue filtering, and boundary handling remain to be frozen for scale_2x.
+  - No checkpoint was downloaded and no inference was run for this specification.

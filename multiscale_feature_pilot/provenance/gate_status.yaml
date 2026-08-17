@@ -1,0 +1,60 @@
+schema_version: 1
+checked_at_utc: '2026-08-17T12:20:44Z'
+status: BLOCKED_NO_GPU
+real_feature_extraction_started: false
+checkpoint_download_attempted: false
+model_inference_attempted: false
+healnet_interface_attempted: false
+training_attempted: false
+gpu:
+  torch_cuda_available: false
+  torch_cuda_device_count: 0
+  torch_cuda_build: '12.8'
+  nvidia_smi_available: false
+  device_name: null
+software:
+  torch: 2.8.0+cu128
+  torchvision: 0.23.0+cu128
+  openslide_python: 1.4.6
+  openslide_library: 3.4.1
+checkpoint:
+  weight_enum: ResNet50_Weights.IMAGENET1K_V2
+  official_url: https://download.pytorch.org/models/resnet50-11ad3fa6.pth
+  expected_filename: resnet50-11ad3fa6.pth
+  expected_cache_path: /home/zeus/.cache/torch/hub/checkpoints/resnet50-11ad3fa6.pth
+  cached: false
+  sha256: null
+  reason_sha256_absent: checkpoint was not present and was not downloaded because CUDA was unavailable
+patient_identity_gate:
+  case_id: TCGA-2F-A9KT
+  wsi_case_matches_omic_case: true
+  wsi_slide_id_matches_omic_slide_id: true
+  omic_source: /teamspace/studios/this_studio/healnet/data/tcga/omic_xena/blca_master.csv
+  omic_matching_rows: 1
+  omic_sample_id: TCGA-2F-A9KT-01
+  feature_groups:
+    rna:
+      columns: 1523
+      finite_values: 1523
+    mutation:
+      columns: 1125
+      finite_values: 1125
+    cnv:
+      columns: 193
+      finite_values: 193
+  status: MATCHED_METADATA_ONLY
+  note: >-
+    Identity and finite-value availability were inspected read-only. No real
+    omic transformation or model execution was performed.
+input:
+  gdc_uuid: bc9e3954-59d0-4f25-9022-42c97db7aea2
+  filename: TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C9EB3970F.svs
+  size_bytes: 2658499382
+  expected_md5: 824785fee9387dcf46a7058a0722739b
+  measured_md5: 824785fee9387dcf46a7058a0722739b
+  md5_verified: true
+outputs:
+  branch_0p5_feature: null
+  branch_1p0_feature: null
+  combined_feature: null
+  feature_sha256: []
