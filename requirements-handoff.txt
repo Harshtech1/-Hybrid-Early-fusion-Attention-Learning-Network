@@ -1,0 +1,10 @@
+# Install a CUDA-compatible torch/torchvision pair separately for the target GPU.
+# The source environment used torch 2.8.0+cu128 and torchvision 0.23.0+cu128.
+einops==0.8.2
+h5py==3.16.0
+numpy==1.26.4
+openslide-python==1.4.6
+pandas==2.1.4
+Pillow==12.2.0
+pytest==9.1.1
+PyYAML==6.0.3

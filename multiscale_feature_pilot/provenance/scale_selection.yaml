@@ -1,0 +1,62 @@
+schema_version: 1
+slide:
+  filename: TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C9EB3970F.svs
+  mpp_x: 0.2277
+  mpp_y: 0.2277
+  objective_power: 40
+  level_dimensions:
+    - [131072, 104192]
+    - [32768, 26048]
+    - [8192, 6512]
+    - [2048, 1628]
+  level_downsamples: [1.0, 4.0, 16.0, 64.0]
+branches:
+  branch_0p5:
+    target_mpp: 0.5
+    closest_native_level: 0
+    native_downsample: 1.0
+    native_actual_mpp_x: 0.2277
+    native_actual_mpp_y: 0.2277
+    native_relative_error_percent: 54.46
+    desired_downsample_from_level_0: 2.195872
+    exact_native_level_available: false
+    resampling_required_for_target: true
+    paper_2x_engineering_candidate:
+      source_level: 0
+      effective_downsample: 2.0
+      effective_mpp: 0.4554
+      relative_error_percent: 8.92
+      selected_for_one_patient_pilot: true
+      selection_basis: SUPERVISOR_ALIGNED_INFERENCE
+      provenance_label: engineering 2x resampling approximation
+      output_patch_size: [256, 256]
+      level_0_pixel_footprint: [512, 512]
+      non_overlapping_level_0_step: [512, 512]
+      resampling_interpolation: PENDING_EXPLICIT_IMPLEMENTATION_RECORD
+      tissue_filtering_resolution: PENDING_EXPLICIT_IMPLEMENTATION_RECORD
+      performed: false
+    coordinate_source: null
+    patch_count: null
+    extraction_status: NOT_STARTED_GPU_GATE
+  branch_1p0:
+    target_mpp: 1.0
+    closest_native_level: 1
+    native_downsample: 4.0
+    native_actual_mpp_x: 0.9108
+    native_actual_mpp_y: 0.9108
+    native_relative_error_percent: 8.92
+    exact_native_level_available: false
+    native_level_accepted_as_approximate_paper_scale: true
+    resampling_required_for_first_controlled_test: false
+    coordinate_source: /teamspace/studios/this_studio/healnet_pilot/blca_preprocessed/patches/TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C9EB3970F.h5
+    coordinate_source_sha256: e22bc149a2b192bf917559fb69154143867e8e4e6eb3f28a7b5b5a87a07e0b51
+    coordinate_patch_level: 1
+    coordinate_patch_size: 256
+    patch_count: 8911
+    unique_coordinate_count: 8911
+    extraction_status: NOT_STARTED_GPU_GATE
+notes:
+  - The existing HDF5 is valid only for level 1 and is not assigned to branch_0p5.
+  - No exact 0.5 or 1.0 micrometre-per-pixel native level exists on this slide.
+  - The branch_0p5 2x policy is selected as a supervisor-aligned inference and was not performed.
+  - Interpolation and tissue-filtering details must be recorded before extraction starts.

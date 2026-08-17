@@ -1,52 +1,33 @@
-# Planned GitHub repository contents
+# GitHub publication boundary
 
-No Git repository or GitHub repository has been created yet. This document defines the intended boundary for the future repository.
+This repository publishes only portable source code, tests, small configuration/provenance records, and reviewed documentation.
 
-## Include
+## Included
 
-The future repository should contain reproducibility code, small metadata, and documentation:
+- multiscale tensor, provenance, padding, and patient-matched Omic adapters;
+- synthetic unit/interface tests;
+- read-only GPU/source/data/checkpoint readiness checker;
+- GPU restart documentation and dependency snapshot;
+- small YAML/Markdown provenance;
+- explicitly reviewed public TCGA identifier/checksum metadata; and
+- immutable third-party source URLs and commits.
 
-- `README.md`
-- `PROJECT_STATE.md`
-- `TOMORROW_START.md`
-- `GITHUB_CONTENTS.md`
-- `.gitignore`
-- `reports/`
-- `shared/provenance/`
-- `tracks/paper_faithful/provenance/`
-- `tracks/released_code/provenance/`
-- experiment configuration files
-- small CSV manifests and inclusion/exclusion lists
-- checksum metadata
-- feature-extraction and validation scripts created for this project
-- loader smoke tests
-- environment and dependency specifications
-- documentation describing every deviation from the paper or released code
+## Excluded
 
-The pinned CLAM commit should be recorded as metadata or reproduced through an installation script. Do not vendor the current nested `CLAM/` checkout into the future repository.
+- raw or derived `.svs`, `.h5`, `.pt`, `.pth`, `.ckpt`, `.tif`, and similar artifacts;
+- complete TCGA datasets or archives;
+- generated masks, stitches, patch images, logs, caches, and temporary files;
+- the nested CLAM or official HEALNet checkout;
+- OAuth/rclone configuration, tokens, credentials, private keys, and `.env` files; and
+- any proprietary or controlled-access material.
 
-## Keep outside GitHub
+## Pre-push checks
 
-- raw `.svs` whole-slide images
-- large/generated `.h5` coordinate or patch datasets
-- `.pt` feature tensors
-- `.pth`/`.ckpt` model checkpoints
-- full TCGA datasets
-- large archives (`.tar`, `.zip`, `.7z`, and similar)
-- generated masks and stitches unless a deliberately small, reviewed example is separately approved
-- the nested external CLAM checkout
-- OAuth tokens, refresh tokens, client secrets, or OAuth JSON
-- `rclone.conf`, `healnet.conf`, or any Google Drive configuration
-- `.env` files and credentials
-- proprietary, controlled-access, or authentication material
+1. Stage only explicit paths; never `git add .` or `git add -A`.
+2. Inspect `git diff --cached --stat` and `git diff --cached`.
+3. Run `git diff --cached --check`.
+4. Confirm no forbidden extensions, ignored data, symlinks, credentials, or large files are staged.
+5. Run the full synthetic test suite and YAML validation.
+6. Record the branch, commit, and pushed remote without claiming that excluded data were published.
 
-## Before the first commit
-
-1. Run an explicit credential and large-file audit.
-2. Confirm `.gitignore` excludes the existing CLAM demo checkpoint and demo slides.
-3. Confirm no `.svs`, `.h5`, `.pt`, `.pth`, `.ckpt`, Drive config, or token is staged.
-4. Review all small manifests for identifiers that are acceptable to publish.
-5. Record external source URLs and immutable commits rather than copying third-party repositories.
-6. Create the new Git repository only after separate authorization.
-
-Markdown, YAML provenance, checksums, source code, experiment configuration, reports, and small non-sensitive CSV manifests are intentionally not globally ignored.
+The GPU handoff intentionally requires secure out-of-band transfer or targeted Git LFS retrieval of the verified BLCA inputs. See [GPU_HANDOFF.md](GPU_HANDOFF.md).

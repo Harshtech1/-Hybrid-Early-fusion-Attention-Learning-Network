@@ -3,7 +3,8 @@ purpose: released-code reproduction
 source:
   repository: /teamspace/studios/this_studio/healnet
   tag: v0.1.0
-  commit: beb8b000121e311a219ff5c1837cf05ff8c44c1b
+  tag_object: beb8b000121e311a219ff5c1837cf05ff8c44c1b
+  peeled_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
 encoder:
   architecture: torchvision ResNet50
   weights: IMAGENET1K_V2
