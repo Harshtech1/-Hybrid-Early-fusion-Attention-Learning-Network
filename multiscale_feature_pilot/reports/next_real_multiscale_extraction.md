@@ -1,6 +1,6 @@
 # Next real multiscale extraction step
 
-This document defines the next GPU-enabled action. It does not authorize execution in the current no-GPU runtime. The runtime gate was rechecked on 2026-08-17 and remains closed.
+This document defines the next GPU-enabled action. GPU, OpenSlide, code, and the official ImageNet1K V2 checkpoint are ready. Real extraction remains closed until the external WSI, coordinate HDF5, and Omic object pass the full gate.
 
 ## Fixed adapter contract
 
@@ -67,11 +67,13 @@ The pilot Omic loader now enforces this identity and grouping contract directly:
 - Exact target 0.5 would require an effective downsample of approximately 2.195872 from level 0.
 - The existing HDF5 has `patch_level=1` and must not be used for this branch.
 
-This is a supervisor-aligned **inference**, not an exact native 0.5 MPP reproduction. A 256 x 256 output patch covers 512 x 512 level-0 pixels, and non-overlapping patch origins advance by 512 level-0 pixels. Before extraction, the implementation record must additionally fix:
+This is a supervisor-aligned engineering approximation, not an exact native 0.5 MPP reproduction. The policy is now frozen as `APPROVED_2X_ENGINEERING_POLICY_V1`: read complete 512 x 512 footprints from level 0, convert explicitly to RGB, downsample to 256 x 256 with `PIL.Image.Resampling.LANCZOS`, and reject incomplete footprints. Lanczos itself supplies the PIL downsampling antialiasing; there is no separate PIL antialias flag.
 
-1. resampling interpolation;
-2. tissue-filtering resolution and threshold;
-3. boundary handling for incomplete footprints.
+Tissue segmentation is fixed at level 3 (3.6432 MPP) using the pinned CLAM commit `26e0b6c4873e112f1ccd74cd834894c4ab7a2934` parameters (`sthresh=8`, `mthresh=7`, `close=4`, `use_otsu=false`, `a_t=100`, `a_h=16`, `max_n_holes=8`) and the exact pinned `four_pt` easy rule.
+
+Coordinates use a level-0 global lattice anchored at `(0,0)`, step `(512,512)`, sorted row-major by `(y,x)`. This policy is labelled `custom_global_lattice_v1`; it is an explicit engineering choice and is **not** released-CLAM coordinate reproduction.
+
+The 256 x 256 RGB patches are resized to 224 x 224 with bilinear interpolation and `antialias=True`, then normalized with ImageNet mean `[0.485, 0.456, 0.406]` and standard deviation `[0.229, 0.224, 0.225]`.
 
 Every artifact must report `effective_mpp=0.4554`, the 8.92% target error, and the label `engineering 2x resampling approximation`.
 
@@ -88,14 +90,16 @@ Level 1 is appropriate for the first approximate native 4x branch test. It must 
 
 ## GPU/checkpoint gate
 
-Latest measured state (`2026-08-17T12:20:44Z`):
+Latest measured state (`2026-08-17T16:59:52Z`):
 
 ```text
-nvidia-smi:                         unavailable
-torch.cuda.is_available():         false
-torch.cuda.device_count():         0
+nvidia-smi:                         Tesla T4, driver 580.173.02, 15360 MiB
+torch.cuda.is_available():         true
+torch.cuda.device_count():         1
 torch / torchvision:               2.8.0+cu128 / 0.23.0+cu128
-resnet50-11ad3fa6.pth cached:      false
+resnet50-11ad3fa6.pth cached:      true
+checkpoint SHA256:                 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+synthetic ResNet CUDA smoke test:  [1,2048], float32, finite
 real extraction or inference run:  no
 ```
 

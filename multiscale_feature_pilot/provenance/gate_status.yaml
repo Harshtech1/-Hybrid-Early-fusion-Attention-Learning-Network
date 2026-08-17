@@ -1,17 +1,20 @@
 schema_version: 1
-checked_at_utc: '2026-08-17T12:20:44Z'
-status: BLOCKED_NO_GPU
+checked_at_utc: '2026-08-17T17:02:31Z'
+status: EXTERNAL_DATA_PENDING
 real_feature_extraction_started: false
-checkpoint_download_attempted: false
-model_inference_attempted: false
+checkpoint_download_attempted: true
+model_inference_attempted: true
 healnet_interface_attempted: false
 training_attempted: false
 gpu:
-  torch_cuda_available: false
-  torch_cuda_device_count: 0
+  torch_cuda_available: true
+  torch_cuda_device_count: 1
   torch_cuda_build: '12.8'
-  nvidia_smi_available: false
-  device_name: null
+  nvidia_smi_available: true
+  nvidia_smi_ok: true
+  device_name: Tesla T4
+  driver: 580.173.02
+  memory_mib: 15360
 software:
   torch: 2.8.0+cu128
   torchvision: 0.23.0+cu128
@@ -22,9 +25,16 @@ checkpoint:
   official_url: https://download.pytorch.org/models/resnet50-11ad3fa6.pth
   expected_filename: resnet50-11ad3fa6.pth
   expected_cache_path: /home/zeus/.cache/torch/hub/checkpoints/resnet50-11ad3fa6.pth
-  cached: false
-  sha256: null
-  reason_sha256_absent: checkpoint was not present and was not downloaded because CUDA was unavailable
+  cached: true
+  size_bytes: 102540417
+  sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  synthetic_cuda_output_shape: [1, 2048]
+  synthetic_cuda_output_dtype: float32
+  synthetic_cuda_output_finite: true
+scale_2x_policy:
+  status: APPROVED_2X_ENGINEERING_POLICY_V1
+  grid_label: custom_global_lattice_v1
+  performed: false
 patient_identity_gate:
   case_id: TCGA-2F-A9KT
   wsi_case_matches_omic_case: true
@@ -42,17 +52,22 @@ patient_identity_gate:
     cnv:
       columns: 193
       finite_values: 193
-  status: MATCHED_METADATA_ONLY
+  current_machine_data_status: VERIFIED_GIT_LFS_OBJECT
+  current_machine_size_bytes: 9318450
+  current_machine_sha256: 9fa2cd83906c00e1f50113ba8e806ea4537806aeb2aacbee60e86c80b53f6929
+  status: CURRENT_MACHINE_EXACT_MATCH
   note: >-
-    Identity and finite-value availability were inspected read-only. No real
-    omic transformation or model execution was performed.
+    The strict loader found exactly one case/slide row and produced separate
+    finite float32 RNA, mutation, and CNV tensors. No model execution was
+    performed with these real Omic values.
 input:
   gdc_uuid: bc9e3954-59d0-4f25-9022-42c97db7aea2
   filename: TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C9EB3970F.svs
   size_bytes: 2658499382
   expected_md5: 824785fee9387dcf46a7058a0722739b
-  measured_md5: 824785fee9387dcf46a7058a0722739b
-  md5_verified: true
+  current_machine_present: false
+  source_machine_measured_md5: 824785fee9387dcf46a7058a0722739b
+  current_machine_md5_verified: false
 outputs:
   branch_0p5_feature: null
   branch_1p0_feature: null

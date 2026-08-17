@@ -21,23 +21,51 @@ branches:
     desired_downsample_from_level_0: 2.195872
     exact_native_level_available: false
     resampling_required_for_target: true
-    paper_2x_engineering_candidate:
+    approved_2x_engineering_policy_v1:
+      status: APPROVED_2X_ENGINEERING_POLICY_V1
       source_level: 0
       effective_downsample: 2.0
       effective_mpp: 0.4554
       relative_error_percent: 8.92
       selected_for_one_patient_pilot: true
-      selection_basis: SUPERVISOR_ALIGNED_INFERENCE
+      selection_basis: SUPERVISOR_APPROVED_ENGINEERING_POLICY
       provenance_label: engineering 2x resampling approximation
       output_patch_size: [256, 256]
       level_0_pixel_footprint: [512, 512]
       non_overlapping_level_0_step: [512, 512]
-      resampling_interpolation: PENDING_EXPLICIT_IMPLEMENTATION_RECORD
-      tissue_filtering_resolution: PENDING_EXPLICIT_IMPLEMENTATION_RECORD
+      resampling_interpolation: PIL.Image.Resampling.LANCZOS
+      resampling_note: Lanczos supplies downsampling antialiasing; no separate PIL flag
+      tissue_filtering_resolution:
+        level: 3
+        mpp: 3.6432
+      tissue_parameters:
+        clam_commit: 26e0b6c4873e112f1ccd74cd834894c4ab7a2934
+        sthresh: 8
+        mthresh: 7
+        close: 4
+        use_otsu: false
+        a_t: 100
+        a_h: 16
+        max_n_holes: 8
+      contour_rule: pinned_four_pt_easy
+      boundary_handling: reject_incomplete_source_footprints
+      grid_anchor: [0, 0]
+      grid_step: [512, 512]
+      ordering: row_major_y_x
+      grid_label: custom_global_lattice_v1
+      released_clam_coordinate_reproduction: false
+      rgb_conversion: explicit
+      resnet_resize: [224, 224]
+      resnet_interpolation: bilinear
+      resnet_antialias: true
+      normalization_mean: [0.485, 0.456, 0.406]
+      normalization_std: [0.229, 0.224, 0.225]
+      feature_dtype: float32
+      feature_dim: 2048
       performed: false
     coordinate_source: null
     patch_count: null
-    extraction_status: NOT_STARTED_GPU_GATE
+    extraction_status: NOT_STARTED_EXTERNAL_DATA_PENDING
   branch_1p0:
     target_mpp: 1.0
     closest_native_level: 1
@@ -58,5 +86,6 @@ branches:
 notes:
   - The existing HDF5 is valid only for level 1 and is not assigned to branch_0p5.
   - No exact 0.5 or 1.0 micrometre-per-pixel native level exists on this slide.
-  - The branch_0p5 2x policy is selected as a supervisor-aligned inference and was not performed.
-  - Interpolation and tissue-filtering details must be recorded before extraction starts.
+  - The branch_0p5 policy is approved for one controlled engineering pilot and was not performed.
+  - custom_global_lattice_v1 is an engineering choice, not released-CLAM coordinate reproduction.
+  - The 0.4554 MPP branch must not be described as exact 0.5 MPP or exact paper reproduction.
