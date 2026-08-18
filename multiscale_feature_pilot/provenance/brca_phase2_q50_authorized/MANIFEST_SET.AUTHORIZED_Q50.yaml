@@ -1,0 +1,42 @@
+schema_version: 1
+policy_label: BRCA_Q50_SEQUENTIAL_ACQUISITION_V1
+status: AUTHORIZED_Q50_ONLY
+download_authorized: true
+authorized_label: Q50
+current_executable_scope: Q50_ONLY
+concurrency: 1
+q25_status: SUCCESS_FROZEN_NO_RERUN
+q75_status: NOT_AUTHORIZED
+metadata_opening: Q50_HEADER_ONLY_AFTER_EXACT_SIZE_AND_MD5
+pixel_reads_authorized: false
+coordinate_generation_authorized: false
+feature_extraction_authorized: false
+healnet_execution_authorized: false
+training_authorized: false
+google_drive_required: false
+google_drive_operations_authorized: false
+stop_after: Q50_EXACT_FILE_VERIFICATION_AND_HEADER_METADATA_REPORT
+approval_binding:
+  authorization_config_sha256: 00e2d41323f44a8deec97d3dad3d83bb87ef6700b6a2408253976257e52fec40
+  approval_identity_sha256: 36d82521bd3dada2219452a19844cdf033bf73149571251e0d884fd3fedb0599
+  q25_result_sha256: 76df862c438f4d94e34342b54c80c0866a440af0574be9003444075d7073c6e4
+  q25_feature_manifest_sha256: 88a3146d34cf907604cecf109ff3879b26afcf6458ce86a9e2e46a7e127dcc0f
+source_hashes:
+  proposal_sha256: b1bbeb06bb200813122e0b1a88a3d0258660eaff067d35f1d8de1dd6d79badb2
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  filtered_gdc_manifest_sha256: ac1b4d591ce255a7d4e6bde3778a041b107576693657ee296fe6eb36c4e79a92
+  guarded_q50_manifest_sha256: 1028665e49bab6895a47947d069e225c2d6b4b90f420f7a9dc916ca9313a6062
+manifest_count: 1
+combined_manifest_present: false
+entry:
+  label: Q50
+  patient_id: TCGA-AR-A1AW
+  basename: Q50_TCGA-AR-A1AW_5c1216f3-19ec-4d3c-9bb0-9bd740b79f62.AUTHORIZED_Q50_ONLY.gdc.tsv
+  status: AUTHORIZED_Q50_ONLY
+  rows: 1
+  sha256: 1028665e49bab6895a47947d069e225c2d6b4b90f420f7a9dc916ca9313a6062
+  id: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+  filename: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+  md5: 304509e03f26cbecc9aee4ea691c8e5a
+  size: '975626387'
+  state: released
