@@ -1,6 +1,11 @@
 # BRCA Phase 2 CPU preflight
 
-Status: `BRCA_PHASE_2_CPU_PREFLIGHT_READY_ACQUISITION_BLOCKED`
+Historical status: `BRCA_PHASE_2_CPU_PREFLIGHT_READY_ACQUISITION_BLOCKED`
+
+This is the immutable preapproval record produced at commit `5bd8e4f`. It is
+superseded for current execution decisions by
+`reports/brca_phase2_q25_approval_transition.md`; its `NOT_AUTHORIZED` state
+must not be interpreted as the current Q25 gate.
 
 Phase 2 preparation is complete on the CPU machine. The software, manifests,
 source identities, and synthetic metadata policy are ready. The storage values

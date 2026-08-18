@@ -33,6 +33,11 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--manifests-directory", type=Path, default=defaults.manifests_directory
     )
+    parser.add_argument(
+        "--authorized-q25-directory",
+        type=Path,
+        default=defaults.authorized_q25_directory,
+    )
     parser.add_argument("--gdc-client", type=Path, default=defaults.gdc_client)
     parser.add_argument("--official-repo", type=Path, default=defaults.official_repo)
     parser.add_argument("--pilot-repo", type=Path, default=defaults.pilot_repo)
@@ -47,6 +52,7 @@ def main() -> int:
             authorization=args.authorization,
             metadata_policy=args.metadata_policy,
             manifests_directory=args.manifests_directory,
+            authorized_q25_directory=args.authorized_q25_directory,
             gdc_client=args.gdc_client,
             official_repo=args.official_repo,
             pilot_repo=args.pilot_repo,

@@ -27,7 +27,12 @@ from multiscale_feature_pilot.src.brca_one_row_manifest import (
     EXPECTED_PROPOSAL_SHA256,
     EXPECTED_SOURCE_MANIFEST_SHA256,
     OneRowManifestError,
+    OneRowSelection,
     validate_phase2_manifest_set,
+)
+from multiscale_feature_pilot.src.brca_q25_authorized_manifest import (
+    Q25AuthorizedManifestArtifact,
+    validate_q25_authorized_manifest_against_selection,
 )
 
 
@@ -40,6 +45,12 @@ EXPECTED_BLCA_TAG = "blca-one-patient-pilot-v1"
 EXPECTED_BLCA_TAG_COMMIT = "df7cf2bda783ab6cc09e95d6a1fa0914da05a433"
 EXPECTED_LABELS = ("Q25", "Q50", "Q75")
 MANIFEST_COLUMNS = ("id", "filename", "md5", "size", "state")
+APPROVED_REQUEST_STATEMENT = (
+    "Download only the exact Q25/Q50/Q75 candidates one at a time, beginning "
+    "with Q25; use native pyramid levels within 10% per axis of approximately "
+    "0.5 and 1.0 micrometers per pixel; reject failures without silent "
+    "resampling; stop after Q25 size, MD5, and MPP/pyramid metadata."
+)
 
 _UUID_RE = re.compile(
     r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
@@ -95,6 +106,7 @@ class PreflightPaths:
     official_repo: Path
     pilot_repo: Path
     staging_root: Path
+    authorized_q25_directory: Path | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -130,6 +142,10 @@ def default_paths(repository_root: Path) -> PreflightPaths:
         official_repo=workspace / "healnet",
         pilot_repo=root,
         staging_root=workspace / "brca_pilot_data",
+        authorized_q25_directory=root
+        / "multiscale_feature_pilot"
+        / "provenance"
+        / "brca_phase2_q25_authorized",
     )
 
 
@@ -181,18 +197,18 @@ def validate_authorization_document(document: Mapping[str, Any]) -> dict[str, An
 
     errors: list[str] = []
     _require_equal(document.get("schema_version"), 1, "schema_version", errors)
-    _require_equal(
-        document.get("phase"),
-        "BRCA_PHASE_2_CPU_PREFLIGHT",
-        "phase",
-        errors,
+    phase = document.get("phase")
+    top_status = document.get("status")
+    pending_state = (
+        phase == "BRCA_PHASE_2_CPU_PREFLIGHT"
+        and top_status == "CPU_PREFLIGHT_AUTHORIZED_ACQUISITION_NOT_AUTHORIZED"
     )
-    _require_equal(
-        document.get("status"),
-        "CPU_PREFLIGHT_AUTHORIZED_ACQUISITION_NOT_AUTHORIZED",
-        "status",
-        errors,
+    approved_state = (
+        phase == "BRCA_PHASE_2_Q25_ACQUISITION_GATE"
+        and top_status == "Q25_ACQUISITION_AND_METADATA_AUTHORIZED"
     )
+    if not pending_state and not approved_state:
+        errors.append("phase/status must equal an exact supported authorization state")
 
     authority = _mapping(document.get("authority"), "authority", errors)
     supervisor = _mapping(
@@ -224,15 +240,101 @@ def validate_authorization_document(document: Mapping[str, Any]) -> dict[str, An
         errors,
     )
     exact_download_status = exact_download.get("status")
-    _require_equal(
-        exact_download_status,
-        "NOT_RECORDED",
-        "authority.exact_three_wsi_download.status",
-        errors,
-    )
+    if approved_state:
+        _require_equal(
+            exact_download_status,
+            "APPROVED_SEQUENTIAL",
+            "authority.exact_three_wsi_download.status",
+            errors,
+        )
+        _require_equal(
+            exact_download.get("concurrency"),
+            1,
+            "authority.exact_three_wsi_download.concurrency",
+            errors,
+        )
+        _require_equal(
+            exact_download.get("begin_with"),
+            "Q25",
+            "authority.exact_three_wsi_download.begin_with",
+            errors,
+        )
+        _require_equal(
+            exact_download.get("current_executable_scope"),
+            "Q25_ONLY",
+            "authority.exact_three_wsi_download.current_executable_scope",
+            errors,
+        )
+        _require_equal(
+            exact_download.get("q50_q75_status"),
+            "LOCKED_PENDING_Q25_REPORT",
+            "authority.exact_three_wsi_download.q50_q75_status",
+            errors,
+        )
+        approval_record = _mapping(
+            document.get("approval_record"), "approval_record", errors
+        )
+        _require_equal(
+            approval_record.get("source"),
+            "USER_REPORTED_SUPERVISOR_APPROVAL",
+            "approval_record.source",
+            errors,
+        )
+        _require_equal(
+            approval_record.get("user_statement"),
+            "sir approved",
+            "approval_record.user_statement",
+            errors,
+        )
+        _require_equal(
+            approval_record.get("approved_request"),
+            APPROVED_REQUEST_STATEMENT,
+            "approval_record.approved_request",
+            errors,
+        )
+        metadata_authority = _mapping(
+            authority.get("wsi_open_or_metadata_read"),
+            "authority.wsi_open_or_metadata_read",
+            errors,
+        )
+        _require_equal(
+            metadata_authority.get("status"),
+            "APPROVED_Q25_METADATA_ONLY_AFTER_SIZE_MD5",
+            "authority.wsi_open_or_metadata_read.status",
+            errors,
+        )
+        _require_equal(
+            metadata_authority.get("allowed_fields"),
+            ["mpp_x", "mpp_y", "level_dimensions", "level_downsamples"],
+            "authority.wsi_open_or_metadata_read.allowed_fields",
+            errors,
+        )
+        _require_equal(
+            metadata_authority.get("pixel_or_region_read"),
+            "NOT_AUTHORIZED",
+            "authority.wsi_open_or_metadata_read.pixel_or_region_read",
+            errors,
+        )
+    else:
+        _require_equal(
+            exact_download_status,
+            "NOT_RECORDED",
+            "authority.exact_three_wsi_download.status",
+            errors,
+        )
+        metadata_authority = _mapping(
+            authority.get("wsi_open_or_metadata_read"),
+            "authority.wsi_open_or_metadata_read",
+            errors,
+        )
+        _require_equal(
+            metadata_authority.get("status"),
+            "NOT_AUTHORIZED",
+            "authority.wsi_open_or_metadata_read.status",
+            errors,
+        )
 
     for field in (
-        "wsi_open_or_metadata_read",
         "coordinate_generation",
         "feature_extraction",
         "healnet_real_input_execution",
@@ -248,46 +350,82 @@ def validate_authorization_document(document: Mapping[str, Any]) -> dict[str, An
             errors,
         )
 
-    prohibited = document.get("prohibited_during_cpu_preflight")
-    required_prohibitions = {
-        "invoke_gdc_download",
-        "download_or_open_any_wsi",
-        "import_openslide_in_metadata_policy_module",
-        "inspect_real_wsi_pixels_or_metadata",
-        "generate_coordinates",
-        "run_resnet50",
-        "run_real_input_healnet",
-        "train",
-    }
+    prohibited_key = (
+        "prohibited_until_q25_report_review"
+        if approved_state
+        else "prohibited_during_cpu_preflight"
+    )
+    prohibited = document.get(prohibited_key)
+    required_prohibitions = (
+        {
+            "download_q50_or_q75",
+            "open_q25_before_exact_size_and_md5_match",
+            "read_wsi_pixels_or_regions",
+            "import_openslide_in_metadata_policy_module",
+            "generate_coordinates",
+            "run_resnet50",
+            "run_real_input_healnet",
+            "train",
+        }
+        if approved_state
+        else {
+            "invoke_gdc_download",
+            "download_or_open_any_wsi",
+            "import_openslide_in_metadata_policy_module",
+            "inspect_real_wsi_pixels_or_metadata",
+            "generate_coordinates",
+            "run_resnet50",
+            "run_real_input_healnet",
+            "train",
+        }
+    )
     if not isinstance(prohibited, list) or not all(
         isinstance(item, str) for item in prohibited
     ):
-        errors.append("prohibited_during_cpu_preflight must be a list of strings")
+        errors.append(f"{prohibited_key} must be a list of strings")
     elif not required_prohibitions.issubset(set(prohibited)):
-        errors.append("prohibited_during_cpu_preflight omits a required safety boundary")
+        errors.append(f"{prohibited_key} omits a required safety boundary")
 
-    proposed = _mapping(document.get("proposed_candidates"), "proposed_candidates", errors)
-    selection_status = proposed.get("selection_status")
+    candidates_key = "approved_candidates" if approved_state else "proposed_candidates"
+    candidates = _mapping(document.get(candidates_key), candidates_key, errors)
+    selection_status = candidates.get("selection_status")
     _require_equal(
         selection_status,
-        "PROPOSED_NOT_AUTHORIZED",
-        "proposed_candidates.selection_status",
+        "APPROVED_EXACT_THREE_SEQUENTIAL"
+        if approved_state
+        else "PROPOSED_NOT_AUTHORIZED",
+        f"{candidates_key}.selection_status",
         errors,
     )
     _require_equal(
-        proposed.get("concurrency_after_future_approval"),
+        candidates.get("concurrency")
+        if approved_state
+        else candidates.get("concurrency_after_future_approval"),
         1,
-        "proposed_candidates.concurrency_after_future_approval",
+        f"{candidates_key}.concurrency",
         errors,
     )
+    if approved_state:
+        _require_equal(
+            candidates.get("current_executable_scope"),
+            "Q25_ONLY",
+            "approved_candidates.current_executable_scope",
+            errors,
+        )
+        _require_equal(
+            candidates.get("q50_q75_status"),
+            "LOCKED_PENDING_Q25_REPORT",
+            "approved_candidates.q50_q75_status",
+            errors,
+        )
 
-    raw_rows = proposed.get("rows")
+    raw_rows = candidates.get("rows")
     rows: list[dict[str, Any]] = []
     if not isinstance(raw_rows, list) or len(raw_rows) != 3:
-        errors.append("proposed_candidates.rows must contain exactly three rows")
+        errors.append(f"{candidates_key}.rows must contain exactly three rows")
     else:
         for index, raw_row in enumerate(raw_rows):
-            row_mapping = _mapping(raw_row, f"proposed_candidates.rows[{index}]", errors)
+            row_mapping = _mapping(raw_row, f"{candidates_key}.rows[{index}]", errors)
             if row_mapping:
                 rows.append(dict(row_mapping))
 
@@ -297,7 +435,7 @@ def validate_authorization_document(document: Mapping[str, Any]) -> dict[str, An
     filenames: list[object] = []
     declared_sizes: list[int] = []
     for index, row in enumerate(rows):
-        prefix = f"proposed_candidates.rows[{index}]"
+        prefix = f"{candidates_key}.rows[{index}]"
         label = row.get("label")
         patient_id = row.get("patient_id")
         file_uuid = row.get("wsi_uuid")
@@ -344,15 +482,20 @@ def validate_authorization_document(document: Mapping[str, Any]) -> dict[str, An
             errors.append(f"candidate {name} must be unique")
     if len(declared_sizes) == 3:
         _require_equal(
-            proposed.get("total_declared_bytes"),
+            candidates.get("total_declared_bytes"),
             sum(declared_sizes),
-            "proposed_candidates.total_declared_bytes",
+            f"{candidates_key}.total_declared_bytes",
+            errors,
+        )
+    if approved_state:
+        _require_equal(
+            exact_download.get("candidate_uuids"),
+            uuids,
+            "authority.exact_three_wsi_download.candidate_uuids",
             errors,
         )
 
-    # This checker freezes the pre-approval phase.  A future authorization
-    # requires a separate reviewed transition, not mutation of these records.
-    acquisition_authorized = False
+    acquisition_authorized = approved_state and not errors
     return {
         "ok": not errors,
         "errors": errors,
@@ -362,31 +505,100 @@ def validate_authorization_document(document: Mapping[str, Any]) -> dict[str, An
         "exact_three_wsi_download_status": exact_download_status,
         "selection_status": selection_status,
         "acquisition_authorized": acquisition_authorized,
+        "current_executable_scope": "Q25_ONLY" if approved_state else "NONE",
+        "q50_q75_locked": approved_state,
         "rows": rows,
     }
 
 
 def validate_metadata_policy_document(document: Mapping[str, Any]) -> dict[str, Any]:
-    """Validate a deterministic, metadata-only policy while allowing PENDING."""
+    """Validate the exact pending or approved metadata-only policy state."""
 
     errors: list[str] = []
     _require_equal(document.get("schema_version"), 1, "schema_version", errors)
     _require_equal(document.get("cohort"), "TCGA-BRCA", "cohort", errors)
     _require_equal(document.get("phase"), 2, "phase", errors)
     policy_status = document.get("status")
-    _require_equal(
-        policy_status,
-        "PENDING_SUPERVISOR_APPROVAL",
-        "status",
-        errors,
-    )
+    pending_state = policy_status == "PENDING_SUPERVISOR_APPROVAL"
+    approved_state = policy_status == "APPROVED_NATIVE_LEVEL_METADATA_GATE_V1"
+    if not pending_state and not approved_state:
+        errors.append(
+            "status must equal an exact pending or approved metadata policy state"
+        )
 
     authority = _mapping(document.get("authority"), "authority", errors)
-    for field in ("real_wsi_access", "slide_opening", "feature_extraction", "training"):
+    _require_equal(
+        authority.get("real_wsi_access"),
+        "Q25_METADATA_ONLY_AFTER_EXACT_SIZE_MD5"
+        if approved_state
+        else "NOT_AUTHORIZED",
+        "authority.real_wsi_access",
+        errors,
+    )
+    _require_equal(
+        authority.get("slide_opening"),
+        "Q25_METADATA_ONLY_AFTER_EXACT_SIZE_MD5"
+        if approved_state
+        else "NOT_AUTHORIZED",
+        "authority.slide_opening",
+        errors,
+    )
+    if approved_state:
         _require_equal(
-            authority.get(field),
+            authority.get("pixel_or_region_read"),
             "NOT_AUTHORIZED",
-            f"authority.{field}",
+            "authority.pixel_or_region_read",
+            errors,
+        )
+    for field in ("feature_extraction", "training"):
+        _require_equal(authority.get(field), "NOT_AUTHORIZED", f"authority.{field}", errors)
+
+    if approved_state:
+        collection = _mapping(
+            document.get("real_metadata_collection_boundary"),
+            "real_metadata_collection_boundary",
+            errors,
+        )
+        _require_equal(
+            collection.get("authorized_label"),
+            "Q25",
+            "real_metadata_collection_boundary.authorized_label",
+            errors,
+        )
+        _require_equal(
+            collection.get("exact_uuid"),
+            "dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6",
+            "real_metadata_collection_boundary.exact_uuid",
+            errors,
+        )
+        _require_equal(
+            collection.get("prerequisite"),
+            "exact_size_and_md5_match",
+            "real_metadata_collection_boundary.prerequisite",
+            errors,
+        )
+        _require_equal(
+            collection.get("allowed_operations"),
+            [
+                "openslide_open",
+                "read_mpp_x",
+                "read_mpp_y",
+                "read_level_dimensions",
+                "read_level_downsamples",
+                "openslide_close",
+            ],
+            "real_metadata_collection_boundary.allowed_operations",
+            errors,
+        )
+        _require_equal(
+            collection.get("prohibited_operations"),
+            [
+                "read_region",
+                "read_associated_image_pixels",
+                "coordinate_generation",
+                "feature_extraction",
+            ],
+            "real_metadata_collection_boundary.prohibited_operations",
             errors,
         )
 
@@ -452,7 +664,7 @@ def validate_metadata_policy_document(document: Mapping[str, Any]) -> dict[str, 
     target_status = targets.get("status")
     _require_equal(
         target_status,
-        "PENDING_SUPERVISOR_APPROVAL",
+        "APPROVED" if approved_state else "PENDING_SUPERVISOR_APPROVAL",
         "target_policy.status",
         errors,
     )
@@ -463,17 +675,16 @@ def validate_metadata_policy_document(document: Mapping[str, Any]) -> dict[str, 
     )
     _require_equal(target_mpp.get("scale_2x"), 0.5, "target_policy scale_2x", errors)
     _require_equal(target_mpp.get("scale_4x"), 1.0, "target_policy scale_4x", errors)
-    tolerance = targets.get("proposed_per_axis_relative_tolerance_fraction")
+    tolerance_field = (
+        "approved_per_axis_relative_tolerance_fraction"
+        if approved_state
+        else "proposed_per_axis_relative_tolerance_fraction"
+    )
+    tolerance = targets.get(tolerance_field)
     if isinstance(tolerance, bool) or not isinstance(tolerance, (int, float)):
-        errors.append(
-            "target_policy.proposed_per_axis_relative_tolerance_fraction "
-            "must equal 0.10"
-        )
+        errors.append(f"target_policy.{tolerance_field} must equal 0.10")
     elif float(tolerance) != 0.10:
-        errors.append(
-            "target_policy.proposed_per_axis_relative_tolerance_fraction "
-            "must equal 0.10"
-        )
+        errors.append(f"target_policy.{tolerance_field} must equal 0.10")
     _require_equal(
         targets.get("tolerance_must_be_explicit_at_call"),
         True,
@@ -516,7 +727,9 @@ def validate_metadata_policy_document(document: Mapping[str, Any]) -> dict[str, 
     resampling_status = resampling.get("status")
     _require_equal(
         resampling_status,
-        "PENDING_SUPERVISOR_APPROVAL",
+        "APPROVED_NATIVE_ONLY_NO_RESAMPLING"
+        if approved_state
+        else "PENDING_SUPERVISOR_APPROVAL",
         "resampling_policy.status",
         errors,
     )
@@ -554,12 +767,25 @@ def validate_metadata_policy_document(document: Mapping[str, Any]) -> dict[str, 
     )
     _require_equal(
         result_contract.get("execution_enabled"),
-        False,
+        approved_state,
         "result_contract.execution_enabled",
         errors,
     )
+    if approved_state:
+        _require_equal(
+            result_contract.get("pixel_read_enabled"),
+            False,
+            "result_contract.pixel_read_enabled",
+            errors,
+        )
+        _require_equal(
+            result_contract.get("stop_after_q25_metadata_report"),
+            True,
+            "result_contract.stop_after_q25_metadata_report",
+            errors,
+        )
 
-    decision_approved = False
+    decision_approved = approved_state and not errors
     return {
         "ok": not errors,
         "errors": errors,
@@ -861,6 +1087,78 @@ def validate_frozen_manifest_sources(
     }
 
 
+def validate_current_q25_authorized_scope(
+    directory: Path | None,
+    authorization_result: Mapping[str, Any],
+    *,
+    authorization_path: Path,
+    metadata_policy_path: Path,
+) -> dict[str, Any]:
+    """Validate the separate Q25-only executable manifest boundary."""
+
+    if not authorization_result.get("acquisition_authorized"):
+        return {
+            "ok": True,
+            "errors": [],
+            "status": "NOT_APPLICABLE_PREAPPROVAL",
+            "authorization_lock": "NOT_AUTHORIZED",
+            "current_executable_scope": "NONE",
+            "q50_q75_locked": True,
+        }
+
+    errors: list[str] = []
+    artifact: Q25AuthorizedManifestArtifact | None = None
+    if directory is None:
+        errors.append("authorized Q25 manifest directory is not configured")
+    else:
+        rows = authorization_result.get("rows")
+        q25_rows = (
+            [row for row in rows if isinstance(row, Mapping) and row.get("label") == "Q25"]
+            if isinstance(rows, list)
+            else []
+        )
+        if len(q25_rows) != 1:
+            errors.append("authorization must contain exactly one Q25 row")
+        else:
+            row = q25_rows[0]
+            try:
+                selection = OneRowSelection(
+                    label=str(row["label"]),
+                    patient_id=str(row["patient_id"]),
+                    gdc_file_uuid=str(row["wsi_uuid"]),
+                    filename=str(row["filename"]),
+                    md5=str(row["md5"]),
+                    size_bytes=int(row["declared_bytes"]),
+                    state=str(row["state"]),
+                )
+                artifact = validate_q25_authorized_manifest_against_selection(
+                    directory,
+                    selection,
+                    authorization_path=authorization_path,
+                    metadata_policy_path=metadata_policy_path,
+                )
+            except (KeyError, OneRowManifestError, OSError, TypeError, ValueError) as exc:
+                errors.append(
+                    f"authorized Q25 manifest validation failed: {type(exc).__name__}"
+                )
+
+    return {
+        "ok": not errors,
+        "errors": errors,
+        "status": "AUTHORIZED_Q25_ONLY" if not errors else "INVALID",
+        "authorization_lock": "AUTHORIZED" if not errors else "LOCKED",
+        "current_executable_scope": "Q25_ONLY" if not errors else "NONE",
+        "q50_q75_locked": True,
+        "manifest": str(artifact.path.resolve(strict=False)) if artifact else None,
+        "manifest_sha256": artifact.sha256 if artifact else None,
+        "authorized_uuid": (
+            artifact.selection.gdc_file_uuid if artifact is not None else None
+        ),
+        "authorized_size": artifact.selection.size_bytes if artifact else None,
+        "authorized_md5": artifact.selection.md5 if artifact else None,
+    }
+
+
 def validate_gdc_client(
     path: Path,
     *,
@@ -1120,6 +1418,12 @@ def run_preflight(
         authorization,
         validator=manifest_source_validator,
     )
+    authorized_q25_manifest = validate_current_q25_authorized_scope(
+        paths.authorized_q25_directory,
+        authorization,
+        authorization_path=paths.authorization,
+        metadata_policy_path=paths.metadata_policy,
+    )
     allowed_commands = expected_subprocess_commands(paths, expectations)
     audited_runner = ExactCommandRunner(runner, allowed_commands)
     gdc_client = validate_gdc_client(
@@ -1166,6 +1470,7 @@ def run_preflight(
         "metadata_policy": metadata_policy,
         "manifests": manifests,
         "frozen_manifest_sources": frozen_manifest_sources,
+        "authorized_q25_manifest": authorized_q25_manifest,
         "gdc_client": gdc_client,
         "source_identities": source_identities,
         "staging": staging,
@@ -1178,7 +1483,11 @@ def run_preflight(
     policy_approved = bool(
         metadata_policy.get("ok") and metadata_policy.get("decision_approved")
     )
-    manifest_lock_released = manifests.get("authorization_lock") == "AUTHORIZED"
+    manifest_lock_released = (
+        authorized_q25_manifest.get("authorization_lock") == "AUTHORIZED"
+        and authorized_q25_manifest.get("current_executable_scope") == "Q25_ONLY"
+        and authorized_q25_manifest.get("q50_q75_locked") is True
+    )
     ready_to_download = bool(
         cpu_preflight_ready
         and acquisition_authorized
@@ -1197,11 +1506,11 @@ def run_preflight(
     if not policy_approved:
         blockers.append("MPP/resampling policy remains pending or unapproved")
     if not manifest_lock_released:
-        blockers.append("candidate manifests remain explicitly NOT_AUTHORIZED")
+        blockers.append("the separate Q25-only authorized manifest is absent or invalid")
 
     return {
         "schema_version": 1,
-        "phase": "BRCA_PHASE_2_CPU_PREFLIGHT",
+        "phase": "BRCA_PHASE_2_Q25_ACQUISITION_GATE",
         "mode": "LOCAL_READ_ONLY_NO_NETWORK_NO_WSI",
         "checks": checks,
         "frozen_sources_verified": bool(
@@ -1210,6 +1519,9 @@ def run_preflight(
         "cpu_preflight_ready": cpu_preflight_ready,
         "acquisition_authorized": acquisition_authorized,
         "ready_to_download": ready_to_download,
+        "current_download_scope": "Q25_ONLY" if ready_to_download else "NONE",
+        "q50_q75_locked": True,
+        "stop_after": "Q25_SIZE_MD5_AND_MPP_PYRAMID_REPORT",
         "blockers": blockers,
         "safety": {
             "network_requests_performed": False,

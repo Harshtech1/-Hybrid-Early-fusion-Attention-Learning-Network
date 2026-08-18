@@ -9,6 +9,7 @@ import yaml
 
 from multiscale_feature_pilot.src import wsi_metadata_policy
 from multiscale_feature_pilot.src.wsi_metadata_policy import (
+    APPROVED_PER_AXIS_TOLERANCE_FRACTION,
     POLICY_STATUS,
     PROPOSED_PER_AXIS_TOLERANCE_FRACTION,
     WsiMetadataPolicyError,
@@ -40,10 +41,10 @@ def _preflight(
     )
 
 
-def test_valid_exact_native_levels_are_selected_without_authorization() -> None:
+def test_valid_exact_native_levels_are_selected_without_pixel_authorization() -> None:
     result = _preflight()
 
-    assert result.policy_status == "PENDING_SUPERVISOR_APPROVAL"
+    assert result.policy_status == "APPROVED_NATIVE_LEVEL_METADATA_GATE_V1"
     assert result.real_wsi_execution_authorized is False
     assert result.silent_resampling_allowed is False
     assert [item.level_index for item in result.selections] == [1, 2]
@@ -192,11 +193,11 @@ def test_floor_or_ceiling_dimension_rounding_is_accepted() -> None:
     ]
 
 
-def test_tolerance_is_required_explicitly_and_locked_to_pending_proposal() -> None:
+def test_tolerance_is_required_explicitly_and_locked_to_approved_policy() -> None:
     parameters = inspect.signature(preflight_wsi_metadata).parameters
     assert parameters["tolerance_fraction"].default is inspect.Parameter.empty
 
-    with pytest.raises(WsiMetadataPolicyError, match="pending 10% proposal"):
+    with pytest.raises(WsiMetadataPolicyError, match="approved 10% policy"):
         preflight_wsi_metadata(
             mpp_x=0.25,
             mpp_y=0.25,
@@ -218,22 +219,27 @@ def test_public_contract_has_no_file_or_slide_object_input() -> None:
     assert "openslide" not in wsi_metadata_policy.__dict__
 
 
-def test_yaml_keeps_every_policy_decision_pending_and_non_authorizing() -> None:
+def test_yaml_records_approved_metadata_policy_but_prohibits_pixels() -> None:
     policy = yaml.safe_load(POLICY_PATH.read_text(encoding="utf-8"))
 
     assert policy["status"] == POLICY_STATUS
-    assert policy["target_policy"]["status"] == POLICY_STATUS
-    assert policy["resampling_policy"]["status"] == POLICY_STATUS
+    assert policy["target_policy"]["status"] == "APPROVED"
+    assert policy["resampling_policy"]["status"] == (
+        "APPROVED_NATIVE_ONLY_NO_RESAMPLING"
+    )
     assert policy["target_policy"][
-        "proposed_per_axis_relative_tolerance_fraction"
+        "approved_per_axis_relative_tolerance_fraction"
     ] == pytest.approx(0.10)
     assert policy["target_policy"]["tie_break_rule"] == "lower_native_level_index"
     assert policy["resampling_policy"]["silent_resampling"] == "prohibited"
     assert policy["result_contract"]["real_slide_authorized_by_success"] is False
-    assert policy["result_contract"]["execution_enabled"] is False
+    assert policy["result_contract"]["execution_enabled"] is True
+    assert policy["result_contract"]["pixel_read_enabled"] is False
+    assert policy["authority"]["pixel_or_region_read"] == "NOT_AUTHORIZED"
 
 
-def test_policy_constants_are_pending_and_non_authorizing() -> None:
-    assert POLICY_STATUS == "PENDING_SUPERVISOR_APPROVAL"
+def test_policy_constants_are_approved_and_non_pixel_authorizing() -> None:
+    assert POLICY_STATUS == "APPROVED_NATIVE_LEVEL_METADATA_GATE_V1"
     assert PROPOSED_PER_AXIS_TOLERANCE_FRACTION == pytest.approx(0.10)
+    assert APPROVED_PER_AXIS_TOLERANCE_FRACTION == pytest.approx(0.10)
     assert math.isfinite(PROPOSED_PER_AXIS_TOLERANCE_FRACTION)

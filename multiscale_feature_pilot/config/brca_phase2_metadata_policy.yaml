@@ -1,13 +1,31 @@
 schema_version: 1
 cohort: TCGA-BRCA
 phase: 2
-status: PENDING_SUPERVISOR_APPROVAL
+status: APPROVED_NATIVE_LEVEL_METADATA_GATE_V1
 
 authority:
-  real_wsi_access: NOT_AUTHORIZED
-  slide_opening: NOT_AUTHORIZED
+  real_wsi_access: Q25_METADATA_ONLY_AFTER_EXACT_SIZE_MD5
+  slide_opening: Q25_METADATA_ONLY_AFTER_EXACT_SIZE_MD5
+  pixel_or_region_read: NOT_AUTHORIZED
   feature_extraction: NOT_AUTHORIZED
   training: NOT_AUTHORIZED
+
+real_metadata_collection_boundary:
+  authorized_label: Q25
+  exact_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+  prerequisite: exact_size_and_md5_match
+  allowed_operations:
+    - openslide_open
+    - read_mpp_x
+    - read_mpp_y
+    - read_level_dimensions
+    - read_level_downsamples
+    - openslide_close
+  prohibited_operations:
+    - read_region
+    - read_associated_image_pixels
+    - coordinate_generation
+    - feature_extraction
 
 input_contract:
   supplied_metadata_values_only: true
@@ -38,11 +56,11 @@ pyramid_validation:
     y: mpp_y * level_downsample
 
 target_policy:
-  status: PENDING_SUPERVISOR_APPROVAL
+  status: APPROVED
   targets_micrometers_per_pixel:
     scale_2x: 0.5
     scale_4x: 1.0
-  proposed_per_axis_relative_tolerance_fraction: 0.10
+  approved_per_axis_relative_tolerance_fraction: 0.10
   tolerance_must_be_explicit_at_call: true
   nearest_level_rule: independently_minimize_relative_error_on_each_axis
   tie_break_rule: lower_native_level_index
@@ -54,7 +72,7 @@ target_policy:
   out_of_tolerance_action: reject
 
 resampling_policy:
-  status: PENDING_SUPERVISOR_APPROVAL
+  status: APPROVED_NATIVE_ONLY_NO_RESAMPLING
   silent_resampling: prohibited
   resampling_performed_by_preflight: false
   native_level_only: true
@@ -62,4 +80,6 @@ resampling_policy:
 result_contract:
   validates_and_reports_metadata_only: true
   real_slide_authorized_by_success: false
-  execution_enabled: false
+  execution_enabled: true
+  pixel_read_enabled: false
+  stop_after_q25_metadata_report: true

@@ -347,6 +347,83 @@ def test_authorization_document_is_technically_valid_but_not_authorized() -> Non
     assert not result["acquisition_authorized"]
 
 
+def _production_authorization_document() -> dict[str, Any]:
+    repository_root = Path(__file__).resolve().parents[2]
+    return yaml.safe_load(
+        (
+            repository_root
+            / "multiscale_feature_pilot/config/brca_phase2_authorization.yaml"
+        ).read_text(encoding="utf-8")
+    )
+
+
+def _production_metadata_policy_document() -> dict[str, Any]:
+    repository_root = Path(__file__).resolve().parents[2]
+    return yaml.safe_load(
+        (
+            repository_root
+            / "multiscale_feature_pilot/config/brca_phase2_metadata_policy.yaml"
+        ).read_text(encoding="utf-8")
+    )
+
+
+def test_production_authorization_is_q25_only_and_sequential() -> None:
+    result = validate_authorization_document(_production_authorization_document())
+
+    assert result["ok"]
+    assert result["acquisition_authorized"]
+    assert result["candidate_labels"] == ["Q25", "Q50", "Q75"]
+    assert result["current_executable_scope"] == "Q25_ONLY"
+    assert result["q50_q75_locked"] is True
+
+
+@pytest.mark.parametrize(
+    ("section", "field", "value"),
+    [
+        ("download", "current_executable_scope", "ALL_THREE"),
+        ("download", "q50_q75_status", "AUTHORIZED"),
+        ("download", "concurrency", 3),
+        ("metadata", "pixel_or_region_read", "AUTHORIZED"),
+        ("approval", "user_statement", "unrecorded"),
+    ],
+)
+def test_production_authorization_scope_drift_fails_closed(
+    section: str, field: str, value: object
+) -> None:
+    document = _production_authorization_document()
+    if section == "download":
+        document["authority"]["exact_three_wsi_download"][field] = value
+    elif section == "metadata":
+        document["authority"]["wsi_open_or_metadata_read"][field] = value
+    else:
+        document["approval_record"][field] = value
+
+    result = validate_authorization_document(document)
+
+    assert not result["ok"]
+    assert not result["acquisition_authorized"]
+
+
+def test_production_metadata_policy_is_approved_but_pixel_reads_are_blocked() -> None:
+    result = validate_metadata_policy_document(_production_metadata_policy_document())
+
+    assert result["ok"]
+    assert result["decision_approved"]
+    assert result["status"] == "APPROVED_NATIVE_LEVEL_METADATA_GATE_V1"
+
+
+def test_production_metadata_policy_cannot_add_read_region() -> None:
+    document = _production_metadata_policy_document()
+    document["real_metadata_collection_boundary"]["prohibited_operations"].remove(
+        "read_region"
+    )
+
+    result = validate_metadata_policy_document(document)
+
+    assert not result["ok"]
+    assert not result["decision_approved"]
+
+
 def test_authorization_rejects_duplicate_uuid_and_wrong_total() -> None:
     document = _authorization_document()
     document["proposed_candidates"]["rows"][1]["wsi_uuid"] = document[

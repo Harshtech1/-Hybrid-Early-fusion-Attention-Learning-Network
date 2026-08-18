@@ -1,9 +1,10 @@
-"""Fail-closed, metadata-only BRCA native-level preflight.
+"""Fail-closed, metadata-only BRCA native-level evaluator.
 
 This module deliberately accepts values supplied by a caller.  It has no path
 argument, does not open slides, and does not import OpenSlide.  A successful
 result means only that synthetic or previously collected metadata satisfies
-the proposed policy; it never authorizes WSI access or extraction.
+the approved native-only policy; it never authorizes pixel access, coordinate
+generation, or extraction.
 """
 
 from __future__ import annotations
@@ -14,8 +15,11 @@ from dataclasses import dataclass, field
 from numbers import Integral
 
 
-POLICY_STATUS = "PENDING_SUPERVISOR_APPROVAL"
+POLICY_STATUS = "APPROVED_NATIVE_LEVEL_METADATA_GATE_V1"
 PROPOSED_PER_AXIS_TOLERANCE_FRACTION = 0.10
+# Backward-compatible name: approval changed the decision state, not the
+# numeric value callers already supply explicitly.
+APPROVED_PER_AXIS_TOLERANCE_FRACTION = PROPOSED_PER_AXIS_TOLERANCE_FRACTION
 TARGET_MPP_BY_BRANCH = (
     ("scale_2x", 0.5),
     ("scale_4x", 1.0),
@@ -26,7 +30,7 @@ _BOUNDARY_ABS_TOLERANCE = 1e-12
 
 
 class WsiMetadataPolicyError(ValueError):
-    """Raised when supplied WSI metadata cannot pass the proposed policy."""
+    """Raised when supplied WSI metadata cannot pass the approved policy."""
 
 
 @dataclass(frozen=True)
@@ -325,11 +329,11 @@ def preflight_wsi_metadata(
     level_downsamples: object,
     tolerance_fraction: object,
 ) -> WsiMetadataPreflight:
-    """Evaluate the two fixed native-MPP targets under the pending proposal.
+    """Evaluate the two fixed native-MPP targets under the approved policy.
 
-    The tolerance is required explicitly and must equal the currently proposed
-    10%.  Returning a result validates metadata only: real WSI access,
-    extraction, and all resampling remain unauthorized.
+    The tolerance is required explicitly and must equal the approved 10%.
+    Returning a result validates metadata only: pixel reads, coordinate
+    generation, extraction, and all resampling remain unauthorized.
     """
 
     tolerance = _positive_finite_float(
@@ -342,7 +346,7 @@ def preflight_wsi_metadata(
         abs_tol=_BOUNDARY_ABS_TOLERANCE,
     ):
         raise WsiMetadataPolicyError(
-            "tolerance_fraction must explicitly equal the pending 10% proposal"
+            "tolerance_fraction must explicitly equal the approved 10% policy"
         )
 
     levels = validate_metadata_pyramid(

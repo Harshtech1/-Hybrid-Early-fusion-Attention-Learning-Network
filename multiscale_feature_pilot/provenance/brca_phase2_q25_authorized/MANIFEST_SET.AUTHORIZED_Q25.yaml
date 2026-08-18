@@ -1,0 +1,35 @@
+schema_version: 1
+policy_label: BRCA_PHASE2_Q25_SEQUENTIAL_ACQUISITION_V1
+status: AUTHORIZED_Q25_ONLY
+download_authorized: true
+authorized_label: Q25
+current_executable_scope: Q25_ONLY
+concurrency: 1
+q50_q75_status: LOCKED_PENDING_Q25_REPORT
+metadata_opening: Q25_ONLY_AFTER_EXACT_SIZE_AND_MD5
+pixel_reads_authorized: false
+coordinate_generation_authorized: false
+feature_extraction_authorized: false
+stop_after: Q25_SIZE_MD5_AND_MPP_PYRAMID_REPORT
+approval_binding:
+  authorization_config_sha256: a3a0704b8cc56acc6b082fd969e137107af3f64f27217fd808b9e9f4a54c016b
+  metadata_policy_sha256: daffdd77d271f28cb9440061b675d0991529f03ab99fb77bcdf5a3fb17275c43
+  approval_identity_sha256: cf2ba45a8df674a9e83310ec26ffa9dff90d403446c71371c8cd63ae15011cee
+source_hashes:
+  proposal_sha256: b1bbeb06bb200813122e0b1a88a3d0258660eaff067d35f1d8de1dd6d79badb2
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  filtered_gdc_manifest_sha256: ac1b4d591ce255a7d4e6bde3778a041b107576693657ee296fe6eb36c4e79a92
+manifest_count: 1
+combined_manifest_present: false
+entry:
+  label: Q25
+  patient_id: TCGA-LL-A6FP
+  basename: Q25_TCGA-LL-A6FP_dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6.AUTHORIZED_Q25_ONLY.gdc.tsv
+  status: AUTHORIZED_Q25_ONLY
+  rows: 1
+  sha256: 95bb1c4491497c265b868e96698cef3c3dd501458f801dae3c1dd702f3efa297
+  id: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+  filename: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+  md5: 75536393096ffd928bc35ec9503c3655
+  size: '648046947'
+  state: released

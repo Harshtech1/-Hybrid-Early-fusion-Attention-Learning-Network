@@ -1,6 +1,11 @@
 # BRCA pilot execution approval request
 
-Status: `PENDING_SUPERVISOR_EXECUTION_APPROVAL`
+Historical status: `PENDING_SUPERVISOR_EXECUTION_APPROVAL`
+
+This request has been answered and is superseded by
+`reports/brca_phase2_q25_approval_transition.md`. Only the Q25 sequential
+acquisition/metadata scope recorded there is currently executable; this
+historical request is not an active gate.
 
 Phase 2 CPU preflight is now technically ready. The verified Linux GDC client,
 three separate one-row manifests, storage boundary, and metadata-only policy
