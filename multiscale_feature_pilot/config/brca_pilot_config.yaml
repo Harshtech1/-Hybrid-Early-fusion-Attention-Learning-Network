@@ -1,0 +1,107 @@
+schema_version: 1
+cohort: TCGA-BRCA
+status: BRCA_CPU_PREPARATION_READY_WSI_NOT_AUTHORIZED
+
+authority:
+  supervisor_cohort_choice:
+    decision: APPROVED
+    statement: Go with brca, blca
+    interpretation:
+      brca: approved next cohort for preparation
+      blca: frozen validated reference
+  wsi_download: NOT_AUTHORIZED
+  wsi_open_or_extraction: NOT_AUTHORIZED
+  training: NOT_AUTHORIZED
+
+source_of_truth:
+  official_repository_policy: read_only
+  omic_archive:
+    path: /teamspace/studios/this_studio/Author_Official_Repo_directery/healnet/data/tcga/omic/tcga_brca_all_clean.csv.zip
+    bytes: 4081277
+    sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+    archive_member: ./tcga_brca_all_clean.csv.zip
+    member_format: csv
+    member_uncompressed_bytes: 15021018
+    data_rows: 1022
+    total_columns: 2922
+    access_mode: stream_without_extraction
+
+patient_omic_contract:
+  identity_columns: [case_id, slide_id]
+  match_mode: exact_literal_both_columns
+  require_exactly_one_match: true
+  row_order_identity: prohibited
+  metadata_columns:
+    - ""
+    - case_id
+    - slide_id
+    - age
+    - site
+    - survival_months
+    - censorship
+    - is_female
+    - oncotree_code
+    - train
+  feature_suffixes:
+    rna: _rnaseq
+    mutation: _mut
+    cnv: _cnv
+  archive_feature_block_order: [rna, cnv, mutation]
+  expected_widths:
+    rna: 1558
+    mutation: 21
+    cnv: 1333
+  preserve_csv_header_order: true
+  dtype: float32
+  contiguous: true
+  reject_non_finite: true
+  output_shapes:
+    rna: [1, 1, 1558]
+    mutation: [1, 1, 21]
+    cnv: [1, 1, 1333]
+
+four_input_contract:
+  input_order: [combined_wsi, rna, mutation, cnv]
+  combined_wsi_shape: [1, 2048, P]
+  patch_count_P: dynamic_per_patient
+  patch_count_formula: N_scale_2x + N_scale_4x
+  fixed_brca_patch_count: prohibited
+  direct_wsi_omic_concatenation: false
+  output_shape: [1, 4]
+  execution_status: DOCUMENTED_NOT_EXECUTED
+
+proposed_multiscale_policy:
+  status: PENDING_SUPERVISOR_METHOD_APPROVAL
+  hardcoded_openslide_level: prohibited
+  branch_targets_micrometers_per_pixel:
+    scale_2x: 0.5
+    scale_4x: 1.0
+  mpp_acceptance_tolerance_fraction: null
+  level_selection: physical_mpp_metadata_driven
+  missing_or_invalid_mpp_action: reject_slide
+  no_level_within_approved_tolerance_action: reject_slide
+  silent_level_fallback: prohibited
+  silent_resampling: prohibited
+  execution_enabled: false
+
+pending_before_any_wsi_access:
+  - exact three-patient case_id, slide_id, GDC UUID, size, and MD5 confirmation
+  - explicit three-patient WSI download authorization
+  - physical MPP tolerance approval
+  - native-level versus approved-resampling rule
+  - multi-WSI patient inclusion or exclusion rule
+  - boundary-patch handling approval
+  - encoder checkpoint decision
+  - raw-WSI retention and remote-upload policy
+
+runtime:
+  current_machine: cpu
+  cpu_safe_now:
+    - archive schema verification
+    - exact Omic row selection
+    - RNA, mutation, and CNV tensor construction
+    - unit and contract tests
+  gpu_switch_gate: >-
+    Switch only after the exact three-patient WSI plan and physical-scale policy
+    are approved, immediately before ResNet50 feature extraction and the
+    four-input HEALNet smoke execution.
