@@ -1,0 +1,108 @@
+schema_version: 1
+cohort: TCGA-BRCA
+candidate_label: Q25
+recorded_at_utc: "2026-08-18T21:16:39Z"
+status: BRCA_Q25_SCALE_POLICY_APPROVED_CPU_RECORDED
+
+approval_evidence:
+  relay_source: user
+  relay_text: he approved everything
+  bounded_interpretation: >-
+    For this exact Q25 WSI, use native level 0 at 0.2525 MPP and explicitly
+    downsample spatially by a factor of 2 to an effective 0.505 MPP for the
+    0.5-MPP branch; use native level 1 at 1.0100149842739303 MPP for the
+    1.0-MPP branch. No silent level or resampling substitution is permitted.
+  interpretation_boundary: >-
+    This record does not infer an interpolation kernel, patch footprint,
+    coordinate lattice, tissue mask, or boundary rule that was not included
+    in the relayed decision.
+
+wsi_identity:
+  patient_id: TCGA-LL-A6FP
+  slide_id: TCGA-LL-A6FP-01Z-00-DX1
+  gdc_file_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+  filename: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+  size_bytes: 648046947
+  md5: 75536393096ffd928bc35ec9503c3655
+  sha256: ac852be806eb0d91214145983319b604919a8e1d16bd59378a3dba69a600979c
+
+approved_scale_mapping:
+  maximum_relative_error_per_axis: 0.10
+  scale_2x:
+    target_mpp: 0.5
+    source_level: 0
+    source_native_mpp_x: 0.2525
+    source_native_mpp_y: 0.2525
+    operation: EXPLICIT_LINEAR_DOWNSAMPLE
+    linear_downsample_factor: 2.0
+    effective_mpp_x: 0.505
+    effective_mpp_y: 0.505
+    relative_error_x: 0.01
+    relative_error_y: 0.01
+    result: PASS_APPROVED_EXPLICIT_2X
+  scale_4x:
+    target_mpp: 1.0
+    source_level: 1
+    source_native_mpp_x: 1.0100149842739303
+    source_native_mpp_y: 1.0100149842739303
+    operation: NATIVE_LEVEL
+    linear_downsample_factor: 1.0
+    effective_mpp_x: 1.0100149842739303
+    effective_mpp_y: 1.0100149842739303
+    relative_error_x: 0.010014984273930328
+    relative_error_y: 0.010014984273930328
+    result: PASS_NATIVE
+
+guards:
+  metadata_drift_action: reject
+  silent_level_substitution: prohibited
+  silent_resampling: prohibited
+  q50_q75_status: LOCKED
+  pixel_or_region_read: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  coordinate_generation: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  feature_extraction: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  healnet_execution: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  training: NOT_AUTHORIZED
+
+implementation_identity:
+  pilot_head_before_transition: 853bfeadd642cf575c258e220f55ce2e15cce7ad
+  config:
+    path: multiscale_feature_pilot/config/brca_q25_scale_policy.yaml
+    sha256: fd54080543706d56cf6fe336b61630f3f8c09a6741e4fcf5ea7c42801d0ff816
+  pure_evaluator:
+    path: multiscale_feature_pilot/src/brca_q25_scale_policy.py
+    sha256: 6ede1db26638363f1ecca2fbd8db3f2ae222eacff291ba6de44634f26d148a89
+  focused_tests:
+    path: multiscale_feature_pilot/tests/test_brca_q25_scale_policy.py
+    sha256: 7711991c9a4ec9f46e50a8f5455d3341ad3b7f8cb4537daace9831fce51caa8a
+  prior_metadata_evidence:
+    yaml_path: multiscale_feature_pilot/provenance/brca_q25_metadata_gate.yaml
+    yaml_sha256: 6c342b5be92844e07aa9b57551537432d7bb261849ed3cc3d661582763e6bb26
+    report_path: reports/brca_q25_metadata_gate.md
+    report_sha256: 795cd14f0d6507b2bcc48f51a8a5bfc6f2bda02f2083597af253a575e5d1af97
+
+verification:
+  focused_command: >-
+    /home/zeus/miniconda3/envs/cloudspace/bin/python -m pytest
+    multiscale_feature_pilot/tests/test_brca_q25_scale_policy.py -q
+  focused_result: 8 passed
+  full_suite_command: >-
+    /home/zeus/miniconda3/envs/cloudspace/bin/python -m pytest
+    multiscale_feature_pilot/tests -q
+  full_suite_result: 230 passed
+  wsi_opened: false
+  pixels_read: false
+
+actions_not_performed:
+  - wsi_open
+  - pixel_or_region_read
+  - coordinate_generation
+  - clam_execution
+  - resampling_execution
+  - resnet50_feature_extraction
+  - pt_generation
+  - healnet_execution
+  - training
+  - q50_or_q75_download
+  - google_drive_mount_or_upload
+  - git_stage_commit_or_push

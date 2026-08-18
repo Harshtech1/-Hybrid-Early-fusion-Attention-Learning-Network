@@ -1,0 +1,112 @@
+schema_version: 1
+cohort: TCGA-BRCA
+candidate_label: Q25
+phase: BRCA_Q25_COORDINATE_GATE
+status: AUTHORIZED_Q25_MASK_READ_AND_COORDINATES_ONLY
+
+approval_evidence:
+  source: supervisor_approval_relayed_by_user
+  relay_messages:
+    - he approved everything
+    - ok continue the work
+  bounded_interpretation: >-
+    Continue the exact Q25 workflow described immediately before the second
+    relay: freeze and test the BRCA-specific tissue/coordinate policy, recheck
+    the Q25 identity and storage, read only the approved level-2 tissue-mask
+    image, generate and validate both coordinate bags atomically outside Git,
+    and stop before ResNet50 feature extraction. This does not authorize Q50,
+    Q75, cohort acquisition, patch-image reads, HEALNet execution, or training.
+
+q25_identity:
+  patient_id: TCGA-LL-A6FP
+  slide_id: TCGA-LL-A6FP-01Z-00-DX1
+  gdc_file_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+  filename: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+  size_bytes: 648046947
+  md5: 75536393096ffd928bc35ec9503c3655
+  sha256: ac852be806eb0d91214145983319b604919a8e1d16bd59378a3dba69a600979c
+  exact_path: /teamspace/studios/this_studio/brca_pilot_data/Q25.incoming/dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6/TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+
+bound_policy_identity:
+  scale_policy_config:
+    path: multiscale_feature_pilot/config/brca_q25_scale_policy.yaml
+    sha256: fd54080543706d56cf6fe336b61630f3f8c09a6741e4fcf5ea7c42801d0ff816
+  scale_policy_evaluator:
+    path: multiscale_feature_pilot/src/brca_q25_scale_policy.py
+    sha256: 6ede1db26638363f1ecca2fbd8db3f2ae222eacff291ba6de44634f26d148a89
+  coordinate_policy_config:
+    path: multiscale_feature_pilot/config/brca_q25_coordinate_policy.yaml
+    sha256: 85410751aec43b14997fa4c0e2a611ceb329178f788df04f336031104b697d43
+  coordinate_policy_core:
+    path: multiscale_feature_pilot/src/brca_q25_coordinates.py
+    sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+  coordinate_artifact_publisher:
+    path: multiscale_feature_pilot/src/brca_coordinate_artifacts.py
+    sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+
+prerequisites:
+  exact_regular_non_symlink_wsi: required
+  no_partial_file: required
+  exact_size_md5_sha256: required
+  exact_header_metadata: required
+  storage_recheck: required
+  final_output_directory_absent: required
+  sibling_staging_and_lock_absent: required
+  output_outside_git: required
+
+authorized_operations:
+  openslide_open_exact_q25: true
+  header_metadata_read: true
+  mask_pixel_read:
+    maximum_calls: 1
+    level: 2
+    level_0_location: [0, 0]
+    size_at_level: [4108, 4212]
+  mask_processing: pinned_brca_q25_coordinate_policy_v1
+  coordinate_generation:
+    branches: [scale_2x, scale_4x]
+    coordinate_space: level_0_x_y
+  artifact_publication:
+    exact_output_directory: /teamspace/studios/this_studio/brca_pilot_data/Q25.coordinates
+    atomic_directory_transaction: required
+    no_overwrite: true
+
+execution_policy:
+  tissue_mask_level: 2
+  tissue_mask_is_shared_by_branches: true
+  scale_2x:
+    level_0_footprint: [512, 512]
+    level_0_step: [512, 512]
+    later_output_patch: [256, 256]
+    later_interpolation: PIL.Image.Resampling.LANCZOS
+    later_effective_mpp: [0.505, 0.505]
+  scale_4x:
+    level_0_declared_footprint: [1024, 1024]
+    level_0_step: [1024, 1024]
+    later_read_level: 1
+    later_read_size: [256, 256]
+    later_effective_mpp: [1.0100149842739303, 1.0100149842739303]
+  grid_anchor: [0, 0]
+  reject_incomplete_footprints: true
+  coordinate_order: row_major_y_then_x
+  require_nonempty: true
+  require_unique: true
+
+explicitly_prohibited:
+  - level_0_or_level_1_patch_pixel_read
+  - patch_resampling_execution
+  - associated_image_or_thumbnail_read
+  - resnet50_feature_extraction
+  - pt_feature_generation
+  - healnet_execution
+  - model_training
+  - q50_or_q75_download_or_open
+  - full_cohort_download_or_processing
+  - google_drive_mount_upload_or_delete
+  - official_healnet_modification
+  - frozen_blca_modification
+  - git_tracking_of_wsi_hdf5_or_feature_artifacts
+
+required_stop:
+  after: Q25_COORDINATE_ARTIFACT_VALIDATION_AND_REPORT
+  gpu_switch_authorized_by_this_record: false

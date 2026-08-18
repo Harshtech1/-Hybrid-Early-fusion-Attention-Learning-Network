@@ -1,0 +1,117 @@
+schema_version: 1
+cohort: TCGA-BRCA
+candidate_label: Q25
+policy_status: APPROVED_BRCA_Q25_COORDINATE_POLICY_V1
+
+scope:
+  source_and_synthetic_tests: authorized
+  real_wsi_pixel_read: not_performed_by_policy_core
+  coordinate_artifact_write: not_performed_by_policy_core
+  feature_extraction: not_performed_by_policy_core
+  q50_q75: locked
+
+q25_identity:
+  patient_id: TCGA-LL-A6FP
+  slide_id: TCGA-LL-A6FP-01Z-00-DX1
+  gdc_file_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+  filename: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+  size_bytes: 648046947
+  md5: 75536393096ffd928bc35ec9503c3655
+  sha256: ac852be806eb0d91214145983319b604919a8e1d16bd59378a3dba69a600979c
+
+pinned_header_metadata:
+  mpp_x: 0.2525
+  mpp_y: 0.2525
+  level_dimensions:
+    - [65736, 67406]
+    - [16434, 16851]
+    - [4108, 4212]
+    - [2054, 2106]
+  openslide_scalar_level_downsamples:
+    - 1.0
+    - 4.00005934365913
+    - 16.002635628163056
+    - 32.00527125632611
+  geometry_rule: >-
+    Derive x and y downsample independently as level-0 dimensions divided by
+    the selected native-level dimensions. Never use the OpenSlide scalar
+    downsample for two-axis coordinate mapping.
+  coordinate_geometry_scale_xy:
+    level_0: [1.0, 1.0]
+    level_1: [4.0, 4.00011868731826]
+    level_2: [16.001947419668937, 16.00332383665717]
+  terminology_guard: >-
+    coordinate_geometry_scale_xy is derived only for coordinate geometry and
+    does not replace the OpenSlide scalar used by the approved physical-MPP
+    scale gate.
+
+tissue_mask:
+  level: 2
+  policy_kind: custom_engineering_mask_selection
+  exact_released_clam_or_paper_reproduction: false
+  shared_by_branches: true
+  contour_coordinate_space: level_0_x_y
+  clam_commit: 26e0b6c4873e112f1ccd74cd834894c4ab7a2934
+  color_space: HSV_saturation
+  sthresh: 8
+  mthresh: 7
+  close: 4
+  use_otsu: false
+  a_t: 100
+  a_h: 16
+  max_n_holes: 8
+  reference_patch_size: 512
+  contour_rule: pinned_four_pt_easy_any_probe_on_or_inside
+  hole_rule: reject_only_when_mapped_patch_center_is_strictly_inside
+
+branches:
+  scale_2x:
+    target_mpp: 0.5
+    source_level: 0
+    grid_label: custom_global_level0_lattice_v1
+    released_clam_coordinate_reproduction: false
+    exact_paper_coordinate_reproduction: false
+    level_0_lattice_anchor: [0, 0]
+    native_source_footprint: [512, 512]
+    native_step: [512, 512]
+    reject_incomplete_native_footprints: true
+    returned_coordinate_space: level_0_x_y
+    output_patch_later: [256, 256]
+    later_interpolation: PIL.Image.Resampling.LANCZOS
+    effective_mpp: [0.505, 0.505]
+  scale_4x:
+    target_mpp: 1.0
+    source_level: 1
+    grid_label: custom_global_level0_lattice_v1
+    geometry_compatibility: CLAM_INT_CAST_GEOMETRY_COMPATIBLE
+    released_clam_coordinate_reproduction: false
+    exact_native_level_grid_tiling: false
+    level_0_lattice_anchor: [0, 0]
+    native_source_footprint: [256, 256]
+    coordinate_geometry_scale_xy: [4.0, 4.00011868731826]
+    level_0_declared_footprint: [1024, 1024]
+    level_0_step: [1024, 1024]
+    geometry_derivation: 256*int(ds_x),256*int(ds_y)
+    reject_incomplete_level_0_footprints: true
+    returned_coordinate_space: level_0_x_y
+    later_read_region:
+      level: 1
+      size: [256, 256]
+    resampling: none
+    approved_physical_mpp_from_openslide_scalar: [1.0100149842739303, 1.0100149842739303]
+    caveat: >-
+      This is a custom constant-step global level-0 engineering lattice with
+      CLAM-compatible integer-cast geometry. It is not released-CLAM
+      coordinate reproduction and not exact native level-1 grid tiling, which
+      could accumulate occasional extra y pixels from the non-integer ratio.
+
+coordinate_contract:
+  branch_order: [scale_2x, scale_4x]
+  shape_each: [N, 2]
+  dtype: int64
+  columns: [x, y]
+  coordinate_space: level_0
+  require_nonempty: true
+  require_unique: true
+  ordering: row_major_y_then_x
+  artifacts_written_by_core: false

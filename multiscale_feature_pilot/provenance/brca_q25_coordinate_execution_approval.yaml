@@ -1,0 +1,65 @@
+schema_version: 1
+cohort: TCGA-BRCA
+candidate_label: Q25
+recorded_at_utc: "2026-08-18T21:32:09Z"
+status: Q25_COORDINATE_EXECUTION_AUTHORIZED_CPU_ONLY
+
+approval:
+  relay_source: user
+  relay_messages:
+    - he approved everything
+    - ok continue the work
+  authorization_config:
+    path: multiscale_feature_pilot/config/brca_q25_coordinate_execution_authorization.yaml
+    sha256: 3797f428f5d1d49334fc2c0665325728318083d5deb8831deec5ad1f560ac617
+  bounded_scope: >-
+    One exact Q25 OpenSlide level-2 mask read, deterministic two-branch
+    coordinate generation under APPROVED_BRCA_Q25_COORDINATE_POLICY_V1,
+    atomic external artifact publication, validation, and reporting only.
+
+supersession:
+  historical_native_only_metadata_gate_preserved: true
+  historical_pixel_prohibition_superseded_only_for:
+    - exact_q25_level_2_mask_read
+    - exact_q25_coordinate_generation
+    - exact_q25_coordinate_artifact_publication
+  still_locked:
+    - q50
+    - q75
+    - level_0_or_level_1_patch_pixels
+    - resnet50
+    - healnet
+    - training
+    - cohort_processing
+
+q25_identity:
+  patient_id: TCGA-LL-A6FP
+  gdc_file_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+  size_bytes: 648046947
+  md5: 75536393096ffd928bc35ec9503c3655
+  sha256: ac852be806eb0d91214145983319b604919a8e1d16bd59378a3dba69a600979c
+
+policy_identity:
+  scale_policy_status: APPROVED_Q25_EXPLICIT_2X_SCALE_POLICY_V1
+  coordinate_policy_status: APPROVED_BRCA_Q25_COORDINATE_POLICY_V1
+  scale_config_sha256: fd54080543706d56cf6fe336b61630f3f8c09a6741e4fcf5ea7c42801d0ff816
+  coordinate_config_sha256: 85410751aec43b14997fa4c0e2a611ceb329178f788df04f336031104b697d43
+  coordinate_core_sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+  coordinate_artifact_publisher_sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+
+execution_boundary:
+  cpu_only: true
+  maximum_mask_reads: 1
+  mask_level: 2
+  coordinate_output: /teamspace/studios/this_studio/brca_pilot_data/Q25.coordinates
+  output_outside_git: true
+  patch_pixel_reads: prohibited
+  feature_extraction: prohibited
+  training: prohibited
+  stop_after_coordinate_validation: true
+
+execution_at_record_time:
+  wsi_opened: false
+  mask_pixels_read: false
+  coordinates_generated: false
+  artifacts_written: false
