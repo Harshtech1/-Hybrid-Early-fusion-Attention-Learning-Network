@@ -2,6 +2,13 @@
 
 Status: `PENDING_SUPERVISOR_EXECUTION_APPROVAL`
 
+Phase 2 CPU preflight is now technically ready. The verified Linux GDC client,
+three separate one-row manifests, storage boundary, and metadata-only policy
+all pass their local checks. The executable gate still reports
+`acquisition_authorized: false` and `ready_to_download: false`; preparation did
+not broaden the supervisor's earlier cohort choice into slide-download
+permission.
+
 The cohort decision is resolved: BLCA is the frozen reference and BRCA is the
 next supervisor-aligned cohort. CPU validation found 894 exact singleton
 BRCA patients with genuine RNA, mutation, and CNV inputs. All 62 multi-WSI
@@ -40,6 +47,14 @@ Suggested WhatsApp message:
 > ImageNet1K_V2 pipeline for comparability. May I proceed with only these three
 > WSI downloads and the pilot extraction? No training or full-cohort download
 > will start.
+
+The scale-policy approval should be recorded explicitly as well:
+
+> For the metadata gate, may I use a native-level-only rule with a maximum 10%
+> MPP error on both x and y axes for the approximately 0.5 and 1.0 µm/px
+> branches, rejecting any slide that cannot provide two distinct acceptable
+> levels? I will not resample silently; if resampling is preferred, I will stop
+> and document a separate deterministic rule first.
 
 If the supervisor approves only the downloads but not extraction, remain on
 CPU and stop after hash plus MPP/pyramid inspection. A GPU switch is required

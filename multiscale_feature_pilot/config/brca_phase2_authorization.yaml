@@ -1,0 +1,83 @@
+schema_version: 1
+phase: BRCA_PHASE_2_CPU_PREFLIGHT
+status: CPU_PREFLIGHT_AUTHORIZED_ACQUISITION_NOT_AUTHORIZED
+recorded_utc_date: 2026-08-18
+
+authority:
+  supervisor_cohort_choice:
+    status: APPROVED
+    statement: Go with brca, blca
+  user_phase_2_cpu_preflight:
+    status: APPROVED
+    statement: start phase 2 now
+  exact_three_wsi_download:
+    status: NOT_RECORDED
+  wsi_open_or_metadata_read:
+    status: NOT_AUTHORIZED
+  coordinate_generation:
+    status: NOT_AUTHORIZED
+  feature_extraction:
+    status: NOT_AUTHORIZED
+  healnet_real_input_execution:
+    status: NOT_AUTHORIZED
+  training:
+    status: NOT_AUTHORIZED
+  full_cohort_acquisition:
+    status: NOT_AUTHORIZED
+
+approved_cpu_preflight_actions:
+  - verify_external_linux_gdc_client
+  - construct_guarded_one_row_manifest_candidates
+  - validate_manifest_identity_size_and_md5_against_frozen_sources
+  - implement_and_test_metadata_policy_with_synthetic_inputs
+  - verify_storage_budget_without_downloading_data
+
+prohibited_during_cpu_preflight:
+  - invoke_gdc_download
+  - download_or_open_any_wsi
+  - import_openslide_in_metadata_policy_module
+  - inspect_real_wsi_pixels_or_metadata
+  - generate_coordinates
+  - run_resnet50
+  - run_real_input_healnet
+  - train
+
+proposed_candidates:
+  selection_status: PROPOSED_NOT_AUTHORIZED
+  concurrency_after_future_approval: 1
+  total_declared_bytes: 2984417159
+  rows:
+    - label: Q25
+      patient_id: TCGA-LL-A6FP
+      wsi_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+      filename: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+      declared_bytes: 648046947
+      md5: 75536393096ffd928bc35ec9503c3655
+      state: released
+    - label: Q50
+      patient_id: TCGA-AR-A1AW
+      wsi_uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+      filename: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+      declared_bytes: 975626387
+      md5: 304509e03f26cbecc9aee4ea691c8e5a
+      state: released
+    - label: Q75
+      patient_id: TCGA-E2-A154
+      wsi_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+      filename: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+      declared_bytes: 1360743825
+      md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+      state: released
+
+next_transition_requirements:
+  - record_explicit_approval_for_the_exact_three_uuids
+  - approve_physical_mpp_tolerance_and_resampling_policy
+  - recheck_lightning_200gb_quota_and_local_staging_ledger
+  - retain_one_patient_concurrency
+  - begin_with_q25_and_stop_after_hash_and_metadata_validation
+
+gpu_switch:
+  required_now: false
+  earliest_allowed_point: >-
+    After an authorized WSI passes size, MD5, MPP, pyramid, coordinate, and
+    storage gates, immediately before ResNet50 feature extraction.
