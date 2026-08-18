@@ -1,0 +1,95 @@
+schema_version: 1
+policy_id: SUPERVISOR_TENSOR_POLICY_V1
+status: CPU_VERIFIED
+scope:
+  cohorts: [TCGA-BLCA, TCGA-BRCA]
+  phase: 1
+  wsi_download: NOT_AUTHORIZED
+  wsi_open_or_extraction: NOT_AUTHORIZED
+  training: NOT_AUTHORIZED
+
+repository_identity:
+  official_healnet_tag: v0.1.0
+  official_healnet_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  official_healnet_model_source_sha256: 78e9c2b10455f6ad43a88ed4e0a646cbf6304bf52cac06a5140f49dbc4796820
+  official_checkout_policy: read_only
+  frozen_blca_tag: blca-one-patient-pilot-v1
+  frozen_blca_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+
+notation:
+  S: number_of_wsi_aligned_samples
+  P_2x_i: accepted_2x_patch_count_for_wsi_i
+  P_4x_i: accepted_4x_patch_count_for_wsi_i
+  P_i: P_2x_i_plus_P_4x_i
+  D: 2048
+
+per_wsi_contract:
+  scale_2x_shape: [P_2x_i, 2048]
+  scale_4x_shape: [P_4x_i, 2048]
+  branch_concatenation_axis: 0
+  stored_shape: [P_i, 2048]
+  model_shape: [1, P_i, 2048]
+  model_axis_order: [batch, patches, channels]
+  healnet_channel_dimension: 2048
+  healnet_attention_length: P_i
+  dtype: float32
+  finite: true
+  contiguous: true
+
+cohort_contract:
+  representation: ragged_collection_of_per_wsi_bags
+  cross_patient_patch_concatenation: prohibited
+  per_wsi_global_pooling: prohibited
+  initial_batch_size: 1
+  initial_padding: prohibited
+  initial_attention_mask: none
+  multi_wsi_patients: excluded
+  split_group: patient_id
+
+omic_contract:
+  input_order: [wsi, rna, mutation, cnv]
+  shape_pattern: [1, 1, D_modality]
+  direct_concatenation_with_wsi: prohibited
+
+encoder:
+  architecture: torchvision.models.resnet50
+  weights: IMAGENET1K_V2
+  output_per_patch: 2048
+  checkpoint_bytes: 102540417
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  exact_paper_reproduction: false
+  paper_difference: paper_describes_Kather100K_pretraining
+
+source_classification:
+  paper: 2048_dimensional_feature_vector_for_each_patch
+  released_code: one_feature_row_per_patch_with_per_slide_tensor_files
+  supervisor: cohort_wide_N_refers_to_all_wsi_samples
+  engineering_resolution: preserve_each_wsi_as_its_own_variable_length_patch_bag
+
+compatibility:
+  frozen_blca_feature_matrix_reusable_without_reextraction: true
+  frozen_blca_stored_shape: [44445, 2048]
+  frozen_blca_tag_modified: false
+  natural_orientation_smoke_required: true
+  released_orientation_helper_modified: false
+
+verification:
+  interpreter: /home/zeus/miniconda3/envs/cloudspace/bin/python
+  focused_tests_passed: 32
+  full_suite_passed: 121
+  device: cpu
+  real_wsi_accessed: false
+  feature_extraction_performed: false
+  training_performed: false
+
+implementation_sha256:
+  multiscale_feature_pilot/src/supervisor_tensor.py: 9456f92e578bacc0f5f639b0846fb3d953acecdd6e51ff80896f38650627589d
+  multiscale_feature_pilot/src/supervisor_healnet_smoke.py: df2c0010347ddc6cfc49200bf35802337752c01a78b96727a5ad538fb847eec4
+  multiscale_feature_pilot/src/healnet_smoke.py: 34a7ad1204dfc84ef8e63a2ac4cd8b932dbccf39e9f424b424dc6eb37a4d6009
+  multiscale_feature_pilot/tests/test_supervisor_tensor.py: 6adba52e05f2277451608c19121295e232d843ebf3c97525b9fd0d2e988b0317
+  multiscale_feature_pilot/tests/test_supervisor_healnet_smoke.py: 6095e636811a894fb68f703661a90362663ae514ba09ed2d1f547d9350482eca
+  multiscale_feature_pilot/tests/test_supervisor_tensor_policy_contract.py: 62da2a4b440c9993ea19ea659b6ea5abfc2f421a4c1f8b77d00e782a629b6737
+
+future_extension_gate:
+  multi_patient_batching: requires_modality_specific_padding_and_masking
+  real_brca_execution: requires_separate_download_scale_and_storage_approval

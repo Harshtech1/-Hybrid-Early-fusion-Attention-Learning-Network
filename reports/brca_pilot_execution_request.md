@@ -7,6 +7,11 @@ next supervisor-aligned cohort. CPU validation found 894 exact singleton
 BRCA patients with genuine RNA, mutation, and CNV inputs. All 62 multi-WSI
 patients remain excluded.
 
+Phase 1 also fixes the tensor semantics: every WSI remains a separate
+variable-length patch bag `[P_i,2048]`, supplied to HEALNet at batch size one
+as `[1,P_i,2048]`. There is no cross-patient patch concatenation, no per-WSI
+global pooling, no padding, and no mask in the initial pilot.
+
 Before any WSI is downloaded, request explicit approval for:
 
 1. Only the three UUIDs listed in `reports/brca_three_patient_plan.md`

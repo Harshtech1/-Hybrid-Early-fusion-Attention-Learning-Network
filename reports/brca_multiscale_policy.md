@@ -1,6 +1,6 @@
 # BRCA multiscale policy gate
 
-Status: `BRCA_CPU_PREPARATION_READY_WSI_NOT_AUTHORIZED`
+Status: `BRCA_PHASE_1_TENSOR_POLICY_CPU_VERIFIED_WSI_NOT_AUTHORIZED`
 
 The supervisor has approved BRCA as the next cohort and BLCA remains the frozen
 engineering reference. This approval does **not** yet authorize downloading,
@@ -68,23 +68,52 @@ For each subsequently authorized slide, the policy will be fail-closed:
 No OpenSlide level is hardcoded by this policy. The frozen BLCA level choices
 are slide-specific evidence and must not be copied to BRCA.
 
-## Dynamic WSI input contract
+## Phase 1 WSI tensor contract
 
-Once authorized, the two feature matrices will remain separate until validated:
+Phase 1 resolves the distinction between a patch count and a cohort count.
+Let `S` be the number of WSI-aligned samples, `P_i` the accepted patch count
+for WSI `i`, and `D=2048` the ResNet50 feature width. Each WSI remains its own
+variable-length bag:
 
 ```text
-scale_2x [N2, 2048]
-scale_4x [N4, 2048]
-torch.cat([scale_2x, scale_4x], dim=0) -> [P, 2048]
-transpose + one-patient batch          -> [1, 2048, P]
-P = N2 + N4
+scale_2x_i [P_2x_i, 2048]
+scale_4x_i [P_4x_i, 2048]
+torch.cat([scale_2x_i, scale_4x_i], dim=0) -> F_i [P_i, 2048]
+one-WSI model batch                          -> [1, P_i, 2048]
+P_i = P_2x_i + P_4x_i
+cohort                                      -> {F_i}_{i=1..S}
 ```
 
-`P` is a positive runtime value for each patient. It is not 44,445 by default,
-and the BLCA patch count must never be hardcoded for BRCA. WSI is a separate
-HEALNet input alongside the three Omic tensors; WSI and Omic values are never
-directly concatenated. This interface is documented only and has not been run
-for BRCA.
+The natural HEALNet WSI axis order is `[batch, patches, channels]`. Therefore
+the WSI `channel_dims` entry is `2048`, while the attention length is the
+runtime patch count `P_i`. `P_i` is not 44,445 by default, and the BLCA patch
+count must never be hardcoded for BRCA.
+
+The initial supervisor-aligned execution is deliberately batch size one. It
+uses no padding and no attention mask. The released model exposes one shared
+mask argument across modalities of different lengths; silently applying a WSI
+padding mask to the one-token Omic modalities would be unsafe. Any future
+multi-patient batching requires a separately implemented and tested
+modality-specific masking extension.
+
+Patches from different patients must not be concatenated into a single
+unlabelled matrix, and a WSI must not be globally averaged to `[1,2048]`.
+Multi-WSI patients remain excluded initially, and later train/validation/test
+splits must be grouped by patient identity to prevent leakage. WSI remains a
+separate HEALNet input alongside the three Omic tensors; WSI and Omic values
+are never directly concatenated. This corrected interface passed synthetic CPU
+validation in Phase 1 and has not been run on a BRCA WSI.
+
+## Encoder contract
+
+The supervisor requested ImageNet-pretrained ResNet50 features. For direct
+engineering comparability with the frozen BLCA pilot and the released feature
+code, Phase 1 freezes torchvision `ResNet50_Weights.IMAGENET1K_V2`, removes the
+classifier, and retains a 2,048-dimensional vector for every patch. The
+checkpoint is 102,540,417 bytes with SHA256
+`11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca`.
+The paper described Kather100K pretraining, so this engineering pipeline must
+not be described as an exact paper reproduction.
 
 ## Pending decisions before any WSI access
 
@@ -93,9 +122,7 @@ for BRCA.
 - Explicitly authorize those three WSI downloads.
 - Approve the physical-MPP tolerance and deterministic tie rule.
 - Approve native-level use versus a defined resampling procedure.
-- Approve the treatment of multi-WSI patients.
 - Approve incomplete-boundary patch handling and the tissue-coordinate policy.
-- Choose ImageNet1K V2 or Kather100K encoder weights and freeze the checksum.
 - Approve raw-WSI retention, remote-upload, and verified deletion policy.
 
 Training is separately unauthorized.

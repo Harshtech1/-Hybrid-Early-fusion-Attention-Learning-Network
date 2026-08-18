@@ -1,6 +1,6 @@
-schema_version: 1
+schema_version: 2
 cohort: TCGA-BRCA
-status: BRCA_CPU_PREPARATION_READY_WSI_NOT_AUTHORIZED
+status: BRCA_PHASE_1_TENSOR_POLICY_CPU_VERIFIED
 
 authority:
   supervisor_cohort_choice:
@@ -62,13 +62,37 @@ patient_omic_contract:
 
 four_input_contract:
   input_order: [combined_wsi, rna, mutation, cnv]
-  combined_wsi_shape: [1, 2048, P]
-  patch_count_P: dynamic_per_patient
-  patch_count_formula: N_scale_2x + N_scale_4x
+  stored_wsi_shape: [P_i, 2048]
+  model_wsi_shape: [1, P_i, 2048]
+  model_axis_order: [batch, patches, channels]
+  wsi_channel_dimension: 2048
+  wsi_attention_length: P_i
+  patch_count_P_i: dynamic_per_wsi
+  patch_count_formula: P_2x_i + P_4x_i
+  branch_concatenation_axis: 0
+  cohort_representation: ragged_collection_of_per_wsi_bags
+  cross_patient_patch_concatenation: prohibited
+  per_wsi_global_pooling: prohibited
+  initial_execution_batch_size: 1
+  initial_padding: prohibited
+  initial_attention_mask: none
+  initial_multi_wsi_patients: excluded
+  future_split_grouping: patient_id
   fixed_brca_patch_count: prohibited
   direct_wsi_omic_concatenation: false
   output_shape: [1, 4]
-  execution_status: DOCUMENTED_NOT_EXECUTED
+  execution_status: SYNTHETIC_CPU_INTERFACE_VERIFIED_REAL_BRCA_NOT_EXECUTED
+
+encoder_contract:
+  architecture: torchvision.models.resnet50
+  weights: IMAGENET1K_V2
+  feature_dimension: 2048
+  classifier_removed: true
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  checkpoint_bytes: 102540417
+  engineering_basis: frozen_BLCA_comparability_and_released_code
+  paper_encoder_difference: paper_describes_Kather100K_pretraining
+  exact_paper_reproduction_claim: prohibited
 
 proposed_multiscale_policy:
   status: PENDING_SUPERVISOR_METHOD_APPROVAL
@@ -89,9 +113,7 @@ pending_before_any_wsi_access:
   - explicit three-patient WSI download authorization
   - physical MPP tolerance approval
   - native-level versus approved-resampling rule
-  - multi-WSI patient inclusion or exclusion rule
   - boundary-patch handling approval
-  - encoder checkpoint decision
   - raw-WSI retention and remote-upload policy
 
 runtime:
