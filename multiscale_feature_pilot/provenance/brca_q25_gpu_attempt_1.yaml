@@ -1,0 +1,86 @@
+schema_version: 1
+status: BRCA_Q25_GPU_ATTEMPT_1_BLOCKED_RECOVERABLE_CONFIGURATION
+cohort: TCGA-BRCA
+candidate: Q25
+recorded_at_utc: "2026-08-18T22:51:11Z"
+
+attempt:
+  source_commit: 27bedc6739be3e9c4afc41a2391c53cc26441968
+  authorization_sha256: 0195f1f2d631a3a29c01077aa455b8a0f20a6b2c885988fcb162ba7b1bfd8805
+  stopped_stage: HEALNET_PREPUBLICATION_REAL_FEATURE_INTERFACE_SMOKE
+  outer_exception_type: SupervisorHealNetSmokeError
+  outer_exception: cross-attention modality 0 did not run
+  required_stop_reached: true
+
+root_cause:
+  category: DETERMINISTIC_CUDA_PROCESS_CONFIGURATION
+  torch_deterministic_algorithms: true
+  cublas_workspace_config_at_attempt: absent
+  underlying_exception: >-
+    PyTorch deterministic CUDA execution reached a cuBLAS-backed linear
+    operation without CUBLAS_WORKSPACE_CONFIG=:4096:8 or :16:8.
+  released_code_behavior: >-
+    Official HEALNet v0.1.0 catches cross-attention exceptions internally,
+    so it returned a finite random-latent classifier output while all four
+    attention weights remained absent. The project attention gate detected
+    this and blocked publication.
+  ruled_out:
+    - WSI_or_coordinate_identity_error
+    - tensor_shape_or_orientation_error
+    - missing_BRCA_omic_modality
+    - GPU_out_of_memory
+    - ResNet50_extraction_error
+
+completed_only_in_process_memory:
+  scale_2x_feature_rows: 7404
+  scale_4x_feature_rows: 1918
+  combined_feature_rows: 9322
+  feature_width: 2048
+  persisted_feature_rows: 0
+  note: In-memory feature tensors were released when the blocked process exited.
+
+postcondition:
+  feature_output_directory_present: false
+  feature_staging_directory_present: false
+  feature_lock_present: false
+  feature_pt_files_published: 0
+  active_q25_gpu_processes: 0
+  training_runs: 0
+  optimizer_steps: 0
+  q50_q75_operations: 0
+  full_cohort_operations: 0
+  google_drive_operations: 0
+  raw_wsi_deletions: 0
+
+immutable_inputs_reverified:
+  wsi:
+    size_bytes: 648046947
+    md5: 75536393096ffd928bc35ec9503c3655
+    sha256: ac852be806eb0d91214145983319b604919a8e1d16bd59378a3dba69a600979c
+  coordinate_manifest_sha256: 7d64ec37595792994e61ab3bf60461498e805bbff0429599f0328b49c93d2ad2
+  scale_2x_coordinate_hdf5_sha256: 4458a8d1c79eac1b7a0bec68871ffc7a71ec2dc21b4e3b9206ae2601410ff0cc
+  scale_4x_coordinate_hdf5_sha256: f055a37018c9b978da60c3aca6258b75853778974e1c4f9ddd32e2aaa2b492fa
+  brca_omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  resnet50_checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  official_healnet_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  frozen_blca_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+
+corrective_evidence:
+  required_launch_environment: CUBLAS_WORKSPACE_CONFIG=:4096:8
+  deterministic_algorithms_preserved: true
+  exact_full_size_synthetic_wsi_shape: [1, 9322, 2048]
+  exact_synthetic_omic_shapes:
+    - [1, 1, 1558]
+    - [1, 1, 21]
+    - [1, 1, 1333]
+  verified_output_shape: [1, 4]
+  verified_attention_shapes:
+    - [1, 2, 9322]
+    - [1, 2, 1]
+    - [1, 2, 1]
+    - [1, 2, 1]
+  output_and_attention_finite: true
+  peak_gpu_memory_bytes: 266871808
+  no_official_healnet_modification: true
+
+scientific_interpretation: NOT_A_TRAINED_PREDICTION

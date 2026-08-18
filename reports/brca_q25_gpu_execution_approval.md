@@ -2,6 +2,12 @@
 
 Status: `BRCA_Q25_GPU_EXECUTION_AUTHORIZED_NOT_YET_RUN`
 
+> Historical snapshot: attempt 1 has since run and stopped safely before
+> publication. See [brca_q25_gpu_attempt_1.md](brca_q25_gpu_attempt_1.md) and
+> [brca_q25_gpu_corrective_authorization.md](brca_q25_gpu_corrective_authorization.md)
+> for the current corrective transition. The facts below are retained as they
+> were true at this record's creation time.
+
 The separate Q25 GPU gate is now implemented, reviewed, and fail-closed. The
 Tesla T4 is available in the approved execution context, every immutable input
 has passed its exact identity/hash check, and the complete synthetic suite

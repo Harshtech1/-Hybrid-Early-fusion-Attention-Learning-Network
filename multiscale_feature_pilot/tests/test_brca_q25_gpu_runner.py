@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -24,6 +25,20 @@ def _auth_document(paths: runner.PilotPaths) -> dict[str, object]:
             "user_action": "switched to GPU Now !",
             "supervisor_cohort": "Go with brca, blca",
         },
+        "corrective_transition": {
+            "prior_attempt_status": (
+                "BRCA_Q25_GPU_ATTEMPT_1_BLOCKED_RECOVERABLE_CONFIGURATION"
+            ),
+            "incident_record_path": (
+                "multiscale_feature_pilot/provenance/"
+                "brca_q25_gpu_attempt_1.yaml"
+            ),
+            "incident_record_sha256": (
+                "2fe5fd4343082bec7bd421c56d039b1bcb50c5097e300d836ab7dd5101579e46"
+            ),
+            "root_cause": "missing_pre_cuda_CUBLAS_WORKSPACE_CONFIG",
+            "scope_expanded": False,
+        },
         "approval_scope": {
             "allowed": sorted(runner._ALLOWED_OPERATIONS),
             "prohibited": sorted(runner._PROHIBITED_OPERATIONS),
@@ -39,6 +54,8 @@ def _auth_document(paths: runner.PilotPaths) -> dict[str, object]:
             "cudnn_benchmark": False,
             "cudnn_deterministic": True,
             "torch_deterministic_algorithms": True,
+            "cublas_workspace_config": ":4096:8",
+            "pre_extraction_synthetic_interface_smoke": True,
             "branch_order": ["scale_2x", "scale_4x"],
             "combined_operation": "torch.cat",
             "combined_dim": 0,
@@ -204,6 +221,7 @@ def _small_run_setup(
     monkeypatch.setattr(runner, "FEATURE_DIM", 4)
     monkeypatch.setattr(runner, "DEVICE", "cpu")
     monkeypatch.setattr(runner, "AUTH_SHA256", "a" * 64)
+    monkeypatch.setenv("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
     monkeypatch.setattr(feature_artifacts, "SCALE_2X_ROWS", 2)
     monkeypatch.setattr(feature_artifacts, "SCALE_4X_ROWS", 1)
     monkeypatch.setattr(feature_artifacts, "COMBINED_ROWS", 3)
@@ -305,11 +323,17 @@ def _small_run_setup(
         cnv=torch.zeros((1, 1, 3), dtype=torch.float32),
     )
 
+    smoke_calls = 0
+
     def smoke(**kwargs: object) -> dict[str, object]:
-        events.append("smoke")
+        nonlocal smoke_calls
+        smoke_calls += 1
+        event = "pre_extraction_smoke" if smoke_calls == 1 else "smoke"
+        events.append(event)
         wsi_input = kwargs["wsi"]
         assert isinstance(wsi_input, torch.Tensor)
-        observed["wsi"] = wsi_input.detach().cpu().clone()
+        if smoke_calls == 2:
+            observed["wsi"] = wsi_input.detach().cpu().clone()
         return {
             "training": False,
             "patch_count": 3,
@@ -321,6 +345,14 @@ def _small_run_setup(
                 (1, 1, 1),
                 (1, 1, 3),
             ),
+            "attention_shapes": (
+                (1, 2, 3),
+                (1, 2, 1),
+                (1, 2, 1),
+                (1, 2, 1),
+            ),
+            "attention_finite": True,
+            "output_finite": True,
         }
 
     dependencies = runner.PilotDependencies(
@@ -443,6 +475,8 @@ def test_mocked_gpu_run_preserves_branch_order_no_transpose_and_real_artifact_co
     )
 
     assert result["status"] == runner.SUCCESS_STATUS
+    assert events.index("pre_extraction_smoke") < events.index("model")
+    assert events.index("pre_extraction_smoke") < events.index("dataset:scale_2x")
     assert events.index("extract:scale_2x") < events.index("dataset:scale_4x")
     assert events.index("extract:scale_4x") < events.index("smoke")
     assert all(dataset.closed >= 1 for dataset in datasets)
@@ -458,6 +492,8 @@ def test_mocked_gpu_run_preserves_branch_order_no_transpose_and_real_artifact_co
     assert result["features"]["combined"]["branch_order"] == ["scale_2x", "scale_4x"]
     assert result["features"]["combined"]["transpose_performed"] is False
     assert result["healnet_smoke"]["output_shape"] == [1, 4]
+    assert result["pre_extraction_healnet_contract"]["output_shape"] == [1, 4]
+    assert result["operations"]["healnet_interface_smokes"] == 2
     assert result["operations"]["training"] == 0
     assert result["operations"]["q50_q75_operations"] == 0
     assert paths.output.is_dir()
@@ -538,3 +574,66 @@ def test_cli_has_one_execution_switch_and_strict_json_rejects_nan() -> None:
     with pytest.raises(ValueError):
         runner._strict_json({"bad": float("nan")})
     assert json.loads(runner._strict_json({"ok": True})) == {"ok": True}
+
+
+def test_missing_cublas_workspace_config_fails_before_gpu_preflight_or_dataset(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    paths, dependencies, events, _datasets, _observed = _small_run_setup(
+        monkeypatch, tmp_path
+    )
+    monkeypatch.delenv("CUBLAS_WORKSPACE_CONFIG", raising=False)
+    gpu_calls: list[str] = []
+
+    with pytest.raises(runner.Q25GpuPilotError, match="CUBLAS_WORKSPACE_CONFIG"):
+        runner.run_q25_gpu_pilot(
+            paths=paths,
+            dependencies=dependencies,
+            gpu_preflight=lambda: (
+                gpu_calls.append("gpu") or torch.device("cpu"),
+                {"device": "cpu"},
+            ),
+        )
+
+    assert gpu_calls == []
+    assert not any(event.startswith("dataset:") for event in events)
+    assert not paths.output.exists()
+
+
+def test_pre_extraction_interface_failure_occurs_before_model_or_dataset(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    paths, dependencies, events, _datasets, _observed = _small_run_setup(
+        monkeypatch, tmp_path
+    )
+
+    def blocked_smoke(**_kwargs: object) -> object:
+        events.append("pre_extraction_smoke_failed")
+        raise RuntimeError("synthetic deterministic attention failure")
+
+    dependencies = replace(dependencies, smoke_runner=blocked_smoke)
+    with pytest.raises(RuntimeError, match="deterministic attention failure"):
+        runner.run_q25_gpu_pilot(
+            paths=paths,
+            dependencies=dependencies,
+            gpu_preflight=lambda: (
+                torch.device("cpu"),
+                {"device": "cpu", "name": "mocked Tesla T4", "cpu_fallback": False},
+            ),
+        )
+
+    assert "pre_extraction_smoke_failed" in events
+    assert "model" not in events
+    assert not any(event.startswith("dataset:") for event in events)
+    assert not paths.output.exists()
+
+
+def test_preinitialized_cuda_is_rejected_at_process_environment_gate(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
+    monkeypatch.setattr(torch.cuda, "is_initialized", lambda: True)
+    with pytest.raises(runner.Q25GpuPilotError, match="CUDA was initialized"):
+        runner._validate_process_environment()

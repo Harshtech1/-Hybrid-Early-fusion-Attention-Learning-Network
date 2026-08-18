@@ -1,0 +1,74 @@
+schema_version: 1
+status: BRCA_Q25_GPU_CORRECTIVE_RERUN_AUTHORIZED
+cohort: TCGA-BRCA
+candidate: Q25
+recorded_at_utc: "2026-08-18T22:51:11Z"
+
+scope_basis:
+  supervisor_cohort_statement: Go with brca, blca
+  user_gpu_transition_statement: switched to GPU Now !
+  scope_expanded_after_attempt_1: false
+  note: >-
+    This correction preserves the already authorized Q25-only feature and
+    interface pilot. It adds a deterministic CUDA process requirement and an
+    earlier synthetic interface gate; it does not authorize training, Q50,
+    Q75, a cohort, KIRP, Drive operations, or deletion.
+
+supersedes_runtime_configuration_from:
+  authorization_sha256: 0195f1f2d631a3a29c01077aa455b8a0f20a6b2c885988fcb162ba7b1bfd8805
+  attempt_source_commit: 27bedc6739be3e9c4afc41a2391c53cc26441968
+  incident_record:
+    path: multiscale_feature_pilot/provenance/brca_q25_gpu_attempt_1.yaml
+    sha256: 2fe5fd4343082bec7bd421c56d039b1bcb50c5097e300d836ab7dd5101579e46
+
+corrected_authorization:
+  path: multiscale_feature_pilot/config/brca_q25_gpu_execution_authorization.yaml
+  sha256: b64578f2138d8adc94a931f565eddd32257f541b49fc8fd1fc8718e2c4ca1060
+  required_launch_environment:
+    CUBLAS_WORKSPACE_CONFIG: ":4096:8"
+  torch_deterministic_algorithms: true
+  deterministic_mode_weakened: false
+
+pre_extraction_gate:
+  position: before_ResNet50_construction_and_before_pixel_capable_dataset
+  inputs:
+    wsi: [1, 9322, 2048]
+    rna: [1, 1, 1558]
+    mutation: [1, 1, 21]
+    cnv: [1, 1, 1333]
+  values: synthetic_zeros
+  required_output: [1, 4]
+  required_attention_shapes:
+    - [1, 2, 9322]
+    - [1, 2, 1]
+    - [1, 2, 1]
+    - [1, 2, 1]
+  finite_output_and_attention_required: true
+  model_training: false
+
+implementation_identity:
+  runner:
+    path: scripts/run_brca_q25_gpu_pilot.py
+    sha256: a23a4aeb60073a3060e288cfde18f0faeb73ffd75c1a5c7062faf0ca4cbf273f
+  runner_tests:
+    path: multiscale_feature_pilot/tests/test_brca_q25_gpu_runner.py
+    sha256: 91381e6c67265be76465deeb09508645a8da97518199eaca01f7635bea1f69fc
+  source_only_commit_required_before_execution: true
+  critical_files_must_equal_execution_HEAD: true
+
+verification:
+  full_synthetic_suite: 306 passed
+  exact_T4_synthetic_contract: passed
+  exact_T4_output_shape: [1, 4]
+  exact_T4_attention_shapes:
+    - [1, 2, 9322]
+    - [1, 2, 1]
+    - [1, 2, 1]
+    - [1, 2, 1]
+  exact_T4_peak_gpu_memory_bytes: 266871808
+  output_directory_before_corrective_rerun: absent
+  staging_and_lock_before_corrective_rerun: absent
+
+required_stop:
+  after: VALIDATED_Q25_FEATURE_ARTIFACTS_AND_HEALNET_SMOKE
+  training_authorized: false

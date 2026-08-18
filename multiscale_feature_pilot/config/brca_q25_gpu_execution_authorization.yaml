@@ -8,6 +8,13 @@ approval_evidence:
   user_action: switched to GPU Now !
   supervisor_cohort: Go with brca, blca
 
+corrective_transition:
+  prior_attempt_status: BRCA_Q25_GPU_ATTEMPT_1_BLOCKED_RECOVERABLE_CONFIGURATION
+  incident_record_path: multiscale_feature_pilot/provenance/brca_q25_gpu_attempt_1.yaml
+  incident_record_sha256: 2fe5fd4343082bec7bd421c56d039b1bcb50c5097e300d836ab7dd5101579e46
+  root_cause: missing_pre_cuda_CUBLAS_WORKSPACE_CONFIG
+  scope_expanded: false
+
 approval_scope:
   allowed:
     - exact_q25_level_0_and_level_1_patch_reads
@@ -15,6 +22,7 @@ approval_scope:
     - resnet50_imagenet1k_v2_feature_extraction
     - external_atomic_feature_artifact_publication
     - natural_layout_healnet_numerical_interface_smoke
+    - pre_extraction_synthetic_natural_layout_healnet_contract_smoke
   prohibited:
     - model_training
     - optimizer_or_backward_execution
@@ -42,6 +50,8 @@ execution_contract:
   cudnn_benchmark: false
   cudnn_deterministic: true
   torch_deterministic_algorithms: true
+  cublas_workspace_config: ":4096:8"
+  pre_extraction_synthetic_interface_smoke: true
   branch_order: [scale_2x, scale_4x]
   combined_operation: torch.cat
   combined_dim: 0
@@ -95,6 +105,9 @@ bound_inputs:
     overwrite_or_resume: false
 
 bound_sources:
+  attempt_1_incident_record:
+    path: multiscale_feature_pilot/provenance/brca_q25_gpu_attempt_1.yaml
+    sha256: 2fe5fd4343082bec7bd421c56d039b1bcb50c5097e300d836ab7dd5101579e46
   scale_policy_config:
     path: multiscale_feature_pilot/config/brca_q25_scale_policy.yaml
     sha256: fd54080543706d56cf6fe336b61630f3f8c09a6741e4fcf5ea7c42801d0ff816

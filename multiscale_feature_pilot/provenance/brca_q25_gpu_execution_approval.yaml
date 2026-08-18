@@ -1,5 +1,9 @@
 schema_version: 1
 status: BRCA_Q25_GPU_EXECUTION_AUTHORIZED_NOT_YET_RUN
+historical_snapshot: true
+superseded_by:
+  incident: multiscale_feature_pilot/provenance/brca_q25_gpu_attempt_1.yaml
+  corrective_authorization: multiscale_feature_pilot/provenance/brca_q25_gpu_corrective_authorization.yaml
 cohort: TCGA-BRCA
 candidate: Q25
 recorded_at_utc: "2026-08-18T23:20:00Z"

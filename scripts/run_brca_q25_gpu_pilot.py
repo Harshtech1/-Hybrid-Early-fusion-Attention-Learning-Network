@@ -166,15 +166,20 @@ NUM_WORKERS: Final = 2
 SEED: Final = 0
 DEVICE: Final = "cuda:0"
 EXPECTED_GPU_NAME_TOKEN: Final = "Tesla T4"
+CUBLAS_WORKSPACE_CONFIG: Final = ":4096:8"
 
 # The authorization does not bind this runner (which would create a hash
 # cycle).  Instead, the runner pins the authorization and every imported
 # policy/helper below, then independently requires its own bytes and all
 # critical files to be tracked and byte-identical to the current source HEAD.
 AUTH_SHA256: Final = (
-    "0195f1f2d631a3a29c01077aa455b8a0f20a6b2c885988fcb162ba7b1bfd8805"
+    "b64578f2138d8adc94a931f565eddd32257f541b49fc8fd1fc8718e2c4ca1060"
 )
 BOUND_FILES: Final = (
+    (
+        Path("multiscale_feature_pilot/provenance/brca_q25_gpu_attempt_1.yaml"),
+        "2fe5fd4343082bec7bd421c56d039b1bcb50c5097e300d836ab7dd5101579e46",
+    ),
     (
         Path("multiscale_feature_pilot/config/brca_q25_scale_policy.yaml"),
         "fd54080543706d56cf6fe336b61630f3f8c09a6741e4fcf5ea7c42801d0ff816",
@@ -245,6 +250,7 @@ _ALLOWED_OPERATIONS: Final = {
     "resnet50_imagenet1k_v2_feature_extraction",
     "external_atomic_feature_artifact_publication",
     "natural_layout_healnet_numerical_interface_smoke",
+    "pre_extraction_synthetic_natural_layout_healnet_contract_smoke",
 }
 _PROHIBITED_OPERATIONS: Final = {
     "model_training",
@@ -525,6 +531,24 @@ def _validate_authorization_semantics(document: object, paths: PilotPaths) -> No
         },
         "authorization approval evidence drift",
     )
+    _require(
+        document.get("corrective_transition")
+        == {
+            "prior_attempt_status": (
+                "BRCA_Q25_GPU_ATTEMPT_1_BLOCKED_RECOVERABLE_CONFIGURATION"
+            ),
+            "incident_record_path": (
+                "multiscale_feature_pilot/provenance/"
+                "brca_q25_gpu_attempt_1.yaml"
+            ),
+            "incident_record_sha256": (
+                "2fe5fd4343082bec7bd421c56d039b1bcb50c5097e300d836ab7dd5101579e46"
+            ),
+            "root_cause": "missing_pre_cuda_CUBLAS_WORKSPACE_CONFIG",
+            "scope_expanded": False,
+        },
+        "authorization corrective transition drift",
+    )
 
     approval_scope = document.get("approval_scope")
     _require(isinstance(approval_scope, dict), "authorization approval scope missing")
@@ -550,6 +574,8 @@ def _validate_authorization_semantics(document: object, paths: PilotPaths) -> No
             "cudnn_benchmark": False,
             "cudnn_deterministic": True,
             "torch_deterministic_algorithms": True,
+            "cublas_workspace_config": CUBLAS_WORKSPACE_CONFIG,
+            "pre_extraction_synthetic_interface_smoke": True,
             "branch_order": ["scale_2x", "scale_4x"],
             "combined_operation": "torch.cat",
             "combined_dim": 0,
@@ -909,6 +935,10 @@ def _gpu_preflight() -> tuple[torch.device, dict[str, object]]:
 
 
 def _configure_determinism(device: torch.device) -> dict[str, object]:
+    _require(
+        os.environ.get("CUBLAS_WORKSPACE_CONFIG") == CUBLAS_WORKSPACE_CONFIG,
+        "CUBLAS_WORKSPACE_CONFIG must be :4096:8 before any CUDA operation",
+    )
     torch.manual_seed(SEED)
     np.random.seed(SEED)
     torch.cuda.manual_seed_all(SEED)
@@ -934,9 +964,119 @@ def _configure_determinism(device: torch.device) -> dict[str, object]:
         "cudnn_benchmark": False,
         "cudnn_deterministic": True,
         "torch_deterministic_algorithms": True,
+        "cublas_workspace_config": CUBLAS_WORKSPACE_CONFIG,
         "batch_size": BATCH_SIZE,
         "num_workers": NUM_WORKERS,
     }
+
+
+def _validate_process_environment() -> dict[str, str]:
+    """Require the deterministic cuBLAS contract before CUDA is touched."""
+
+    _require(
+        not torch.cuda.is_initialized(),
+        "CUDA was initialized before deterministic cuBLAS environment validation",
+    )
+    observed = os.environ.get("CUBLAS_WORKSPACE_CONFIG")
+    _require(
+        observed == CUBLAS_WORKSPACE_CONFIG,
+        "CUBLAS_WORKSPACE_CONFIG must be :4096:8 before any CUDA operation",
+    )
+    return {"CUBLAS_WORKSPACE_CONFIG": observed}
+
+
+def _validate_smoke_summary(
+    smoke: object,
+    *,
+    label: str,
+    expected_input_shapes: list[list[int]],
+) -> dict[str, object]:
+    summary = _as_strict_mapping(smoke, label)
+    expected_attention_shapes = [
+        [1, 2, EXPECTED_TOTAL_PATCHES],
+        [1, 2, 1],
+        [1, 2, 1],
+        [1, 2, 1],
+    ]
+    _require(summary.get("training") is False, f"{label} unexpectedly trained")
+    _require(
+        summary.get("patch_count") == EXPECTED_TOTAL_PATCHES,
+        f"{label} patch count drift",
+    )
+    _require(summary.get("wsi_layout") == "[1,P,2048]", f"{label} WSI layout drift")
+    _require(summary.get("output_shape") == [1, 4], f"{label} output shape drift")
+    _require(
+        summary.get("input_shapes") == expected_input_shapes,
+        f"{label} input shape drift",
+    )
+    _require(
+        summary.get("attention_shapes") == expected_attention_shapes,
+        f"{label} attention shape drift",
+    )
+    _require(summary.get("attention_finite") is True, f"{label} attention is non-finite")
+    _require(summary.get("output_finite") is True, f"{label} output is non-finite")
+    return summary
+
+
+def _run_pre_extraction_healnet_contract(
+    *,
+    deps: PilotDependencies,
+    paths: PilotPaths,
+    device: torch.device,
+    omic: object,
+) -> tuple[dict[str, object], int]:
+    """Exercise the exact full-size interface before any WSI patch read."""
+
+    rna_source = getattr(omic, "rna", None)
+    mutation_source = getattr(omic, "mutation", None)
+    cnv_source = getattr(omic, "cnv", None)
+    _require(
+        all(isinstance(value, torch.Tensor) for value in (rna_source, mutation_source, cnv_source)),
+        "pre-extraction HEALNet contract requires three Omic tensors",
+    )
+    expected_input_shapes = [
+        [1, EXPECTED_TOTAL_PATCHES, FEATURE_DIM],
+        list(rna_source.shape),
+        list(mutation_source.shape),
+        list(cnv_source.shape),
+    ]
+    wsi = torch.zeros(
+        (1, EXPECTED_TOTAL_PATCHES, FEATURE_DIM),
+        dtype=torch.float32,
+        device=device,
+    )
+    rna = torch.zeros(tuple(rna_source.shape), dtype=torch.float32, device=device)
+    mutation = torch.zeros(
+        tuple(mutation_source.shape), dtype=torch.float32, device=device
+    )
+    cnv = torch.zeros(tuple(cnv_source.shape), dtype=torch.float32, device=device)
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats(device)
+    try:
+        smoke = deps.smoke_runner(
+            official_repo=paths.official_repo,
+            wsi=wsi,
+            rna=rna,
+            mutation=mutation,
+            cnv=cnv,
+        )
+        if device.type == "cuda":
+            torch.cuda.synchronize(device)
+            peak_memory_bytes = int(torch.cuda.max_memory_allocated(device))
+        else:
+            peak_memory_bytes = 0
+        summary = _validate_smoke_summary(
+            smoke,
+            label="pre-extraction synthetic HEALNet contract",
+            expected_input_shapes=expected_input_shapes,
+        )
+    finally:
+        del wsi, rna, mutation, cnv
+        gc.collect()
+        if device.type == "cuda":
+            torch.cuda.synchronize(device)
+            torch.cuda.empty_cache()
+    return summary, peak_memory_bytes
 
 
 def _feature_tensor(value: object, *, branch: str, rows: int) -> torch.Tensor:
@@ -1160,9 +1300,26 @@ def run_q25_gpu_pilot(
         == wsi_identity_token,
         "Q25 WSI changed during header preflight",
     )
+    # This environment variable must already exist before _gpu_preflight makes
+    # the first CUDA call.  Setting it after CUDA initialization is too late to
+    # guarantee deterministic cuBLAS behavior.
+    process_environment = _validate_process_environment()
     device, gpu = gpu_preflight()
     _require(str(device) == DEVICE, "GPU preflight selected a non-authorized device")
     determinism = _configure_determinism(device)
+
+    stage = time.perf_counter()
+    pre_extraction_smoke, pre_extraction_smoke_peak = (
+        _run_pre_extraction_healnet_contract(
+            deps=deps,
+            paths=paths,
+            device=device,
+            omic=omic,
+        )
+    )
+    timings["pre_extraction_synthetic_healnet_seconds"] = (
+        time.perf_counter() - stage
+    )
 
     # Re-evaluate all cheap, mutable gates immediately before the first object
     # capable of a patch read is created.
@@ -1295,15 +1452,15 @@ def run_q25_gpu_pilot(
         gc.collect()
         torch.cuda.empty_cache()
     timings["healnet_interface_seconds"] = time.perf_counter() - smoke_started
-    smoke_summary = _as_strict_mapping(smoke, "HEALNet smoke")
-    _require(smoke_summary.get("training") is False, "smoke unexpectedly trained")
-    _require(smoke_summary.get("patch_count") == EXPECTED_TOTAL_PATCHES, "smoke patch count drift")
-    _require(smoke_summary.get("wsi_layout") == "[1,P,2048]", "smoke WSI layout drift")
-    _require(smoke_summary.get("output_shape") == [1, 4], "smoke output shape drift")
-    _require(
-        smoke_summary.get("input_shapes", [None])[0]
-        == [1, EXPECTED_TOTAL_PATCHES, FEATURE_DIM],
-        "smoke natural input shape drift",
+    smoke_summary = _validate_smoke_summary(
+        smoke,
+        label="real-feature HEALNet smoke",
+        expected_input_shapes=[
+            [1, EXPECTED_TOTAL_PATCHES, FEATURE_DIM],
+            list(omic.rna.shape),
+            list(omic.mutation.shape),
+            list(omic.cnv.shape),
+        ],
     )
 
     extraction_summary = {
@@ -1439,6 +1596,7 @@ def run_q25_gpu_pilot(
         ],
         "repositories_unchanged": True,
         "runtime_versions": runtime_versions,
+        "process_environment": process_environment,
         "gpu": gpu,
         "determinism": determinism,
         "wsi": wsi,
@@ -1447,6 +1605,16 @@ def run_q25_gpu_pilot(
         "omic": omic_summary,
         "checkpoint": checkpoint,
         "features": extraction_summary,
+        "pre_extraction_healnet_contract": {
+            **pre_extraction_smoke,
+            "synthetic_zero_inputs": True,
+            "ran_before_pixel_capable_dataset": True,
+            "interface_seconds": timings[
+                "pre_extraction_synthetic_healnet_seconds"
+            ],
+            "peak_gpu_memory_bytes": pre_extraction_smoke_peak,
+            "trained_prediction": False,
+        },
         "healnet_smoke": {
             **smoke_summary,
             "interface_seconds": timings["healnet_interface_seconds"],
@@ -1465,7 +1633,9 @@ def run_q25_gpu_pilot(
             "scale_2x_patch_reads": int(EXPECTED_COORDINATE_BRANCHES["scale_2x"]["count"]),
             "scale_4x_patch_reads": int(EXPECTED_COORDINATE_BRANCHES["scale_4x"]["count"]),
             "resnet50_feature_rows": EXPECTED_TOTAL_PATCHES,
-            "healnet_interface_smokes": 1,
+            "healnet_interface_smokes": 2,
+            "synthetic_pre_extraction_interface_smokes": 1,
+            "real_feature_interface_smokes": 1,
             "training": 0,
             "optimizer_steps": 0,
             "q50_q75_operations": 0,
