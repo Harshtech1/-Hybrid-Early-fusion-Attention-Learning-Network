@@ -60,6 +60,7 @@ COUNTS = (3773, 969)
 FEATURE_DIM = 2048
 ALLOWED_DIRTY = {
     " M reports/blca_one_patient_multiscale_pilot.md",
+    "M reports/blca_one_patient_multiscale_pilot.md",
     " M reports/brca_compact_artifact_and_recovery_design.md",
     "?? reports/brca_supervisor_progress_report.html",
 }

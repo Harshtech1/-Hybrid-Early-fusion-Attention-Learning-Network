@@ -31,3 +31,7 @@ def test_runner_requires_deterministic_gpu_contract() -> None:
     source = RUNNER.read_text()
     for token in ('CUBLAS_WORKSPACE_CONFIG") != ":4096:8"', "torch.use_deterministic_algorithms(True)", "allow_tf32 = False", 'torch.device("cuda:0")', '"Tesla T4"', "preserve_failed_staging=True"):
         assert token in source
+
+def test_protected_first_status_line_survives_trimmed_git_output() -> None:
+    source = RUNNER.read_text()
+    assert '"M reports/blca_one_patient_multiscale_pilot.md"' in source
