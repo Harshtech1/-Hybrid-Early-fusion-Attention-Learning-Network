@@ -1,0 +1,40 @@
+schema_version: 1
+status: B02_GPU_PILOT_CPU_PREFLIGHT_PASS_AWAITING_GPU_MACHINE
+cohort: TCGA-BRCA
+batch_label: B02
+source_commit: 7323a14d483a9ee3871289708a63737be6f3b4bd
+authorization:
+  path: multiscale_feature_pilot/config/brca_b02_gpu_execution_authorization.yaml
+  sha256: bd2ca8270089945a9060b802c1e4c8d32da73bd24f3124cd1ceed703b1d29471
+  statement_sha256: 8f769df11703e623608e49626f80cc0e5f56ee60c1d6ee7d2dbc9900a9fcf084
+implementation:
+  runner_path: scripts/run_brca_b02_gpu_pilot.py
+  runner_sha256: a58ee5c37a1edb6c63d71a947ac7ac5415bf6c1e0f0aec131d7f91b36514e18e
+  test_path: multiscale_feature_pilot/tests/test_brca_b02_gpu_runner.py
+  test_sha256: ceeb242ecbb20c94e4171b010b1502e852a70b3ee316b51381e1b929bc8ee313
+verified_inputs:
+  patient_id: TCGA-BH-A0BG
+  wsi_size_bytes: 724114911
+  wsi_sha256: df85b3c048b18ae0a5b9414e7e220110d98891f73f28189849e6e602d1743741
+  coordinate_manifest_sha256: 2b3e5dd754ebb4ca4ec26f3e017e21548b0115dc2d0517ae83146d8f7ec52ba2
+  scale_2x_coordinates: [7158, 2]
+  scale_4x_coordinates: [1862, 2]
+  omic_row: "472"
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+expected_contract:
+  combined_shape: [9020, 2048]
+  natural_healnet_wsi_shape: [1, 9020, 2048]
+  dtype: float32
+  branch_order: [scale_2x, scale_4x]
+  compact_exact_files: 4
+  estimated_artifact_bytes: 74500000
+  estimated_t4_runtime_minutes: [2, 3]
+cpu_validation:
+  focused_tests_passed: 14
+  full_tests_passed: 660
+  actual_pixel_reads: 0
+  actual_feature_rows: 0
+  cuda_operations: 0
+  output_destination_absent: true
+execution_state: READY_REQUIRES_SWITCH_TO_TESLA_T4
+required_next_action: SWITCH_TO_GPU_AND_REQUEST_EXECUTION_OF_COMMITTED_B02_GATE
