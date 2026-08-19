@@ -1,0 +1,215 @@
+schema_version: 2
+status: BRCA_Q75_FILE_AND_HEADER_METADATA_VERIFIED
+cohort: TCGA-BRCA
+candidate: Q75
+patient_id: TCGA-E2-A154
+slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+gdc_file_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+execution:
+  mode: CPU_ONLY_HEADER_METADATA
+  started_at_utc: '2026-08-19T02:47:08.740418+00:00'
+  finished_at_utc: '2026-08-19T02:47:17.005476+00:00'
+  total_seconds: 8.26508666199993
+  cuda_used: false
+  gpu_work_performed: false
+source:
+  source_commit: ef6c8921d993567c8178fc932f7315378714ca5a
+  allowed_dirty_status:
+  - ' M reports/blca_one_patient_multiscale_pilot.md'
+  critical_file_sha256:
+    multiscale_feature_pilot/config/brca_q75_acquisition_authorization.yaml: 335e6d36aac1c21cc1cd52f8a14e5d2ecfde1f3a6f398d796bf842baaca35979
+    multiscale_feature_pilot/provenance/brca_phase2_q75_authorized/MANIFEST_SET.AUTHORIZED_Q75.yaml: 2330c4bc66c73c8e150be2d028aefb2a84916b18e4b5076d95fc28cf869d7050
+    ? multiscale_feature_pilot/provenance/brca_phase2_q75_authorized/Q75_TCGA-E2-A154_25aec062-60d1-446e-a1c6-0c79cc74a770.AUTHORIZED_Q75_ONLY.gdc.tsv
+    : 8e2a17e21c6dafbae384ea729ed24b7c769df7510df0b318ee6ce15e2169553a
+    multiscale_feature_pilot/src/brca_omic.py: 5061039913cb0dd4e8e30958c8b4b76f088396f7841255dd94234c3b462d5a5d
+    multiscale_feature_pilot/src/brca_q75_authorized_manifest.py: 6caedfc164617fcf99bb17b99da975ebd8a89d5daec4827826cad8f016ff0afa
+    multiscale_feature_pilot/src/brca_q75_download_runner.py: 53d178dd5a230c06be7dd80e96b92567b8622d4e0849cb3aa12a8f72bffdf070
+    multiscale_feature_pilot/src/brca_q75_header_gate.py: 7c07a215edf077d041f9279eb854a4459c5adeb28fafc0fef92fdfa47ba4f996
+    multiscale_feature_pilot/src/wsi_metadata_policy.py: b443ec59b96fc5bf117891389e8c5521a2dda028215b270811b3fca4a80fce48
+    scripts/run_brca_q75_download.py: dfb28a7984ee08f2c7a571105cebe1f302cf546fe9895a85fa1865d5a12c0b79
+    scripts/run_brca_q75_header_gate.py: 93ed8d3727e2682503397cdf1328b06b5c6b2fb1e79c6126a3474297d0e643a9
+  critical_files_head_equal: true
+authorization:
+  config_sha256: 335e6d36aac1c21cc1cd52f8a14e5d2ecfde1f3a6f398d796bf842baaca35979
+  record_sha256: 2330c4bc66c73c8e150be2d028aefb2a84916b18e4b5076d95fc28cf869d7050
+  manifest_sha256: 8e2a17e21c6dafbae384ea729ed24b7c769df7510df0b318ee6ce15e2169553a
+download_result:
+  path: /teamspace/studios/this_studio/brca_pilot_data/Q75.download_result/download_result.yaml
+  sha256: 510d51d6cb81b4c603b2fd653aab615cef230743135145719972f4b8616eba00
+  source_commit: ef6c8921d993567c8178fc932f7315378714ca5a
+  wsi_sha256: 844eb17d1bf66136b61f0c0e69ae1609e7dc9eca096e8c206e60ddd34332ab37
+  filesystem_before_download: &id001
+    total_bytes: 395184570368
+    used_bytes: 25645146112
+    free_bytes: 349390200832
+  filesystem_after_download: &id002
+    total_bytes: 395184570368
+    used_bytes: 27006050304
+    free_bytes: 348029296640
+  gdc_created_tree:
+  - 25aec062-60d1-446e-a1c6-0c79cc74a770
+  - 25aec062-60d1-446e-a1c6-0c79cc74a770/TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  - 25aec062-60d1-446e-a1c6-0c79cc74a770/logs
+  - 25aec062-60d1-446e-a1c6-0c79cc74a770/logs/TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs.parcel
+  parcel:
+    path: 25aec062-60d1-446e-a1c6-0c79cc74a770/logs/TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs.parcel
+    absolute_path: /teamspace/studios/this_studio/brca_pilot_data/Q75.incoming/25aec062-60d1-446e-a1c6-0c79cc74a770/logs/TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs.parcel
+    size_bytes: 82071
+    sha256: 680777fd62dee07311118ac84560e7e64d35a80e8317c95adeb5777fb3b49bbe
+    regular_non_symlink: true
+wsi:
+  path: /teamspace/studios/this_studio/brca_pilot_data/Q75.incoming/25aec062-60d1-446e-a1c6-0c79cc74a770/TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  size_bytes: 1360743825
+  md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+  sha256: 844eb17d1bf66136b61f0c0e69ae1609e7dc9eca096e8c206e60ddd34332ab37
+  sha256_status: ESTABLISHED_AND_BOUND_TO_DOWNLOAD_RESULT
+  held_o_nofollow_descriptor_used: true
+  openslide_stable_proc_fd_path_used: true
+  same_descriptor_final_hash_recheck: true
+  regular_non_symlink: true
+  exact_svs_suffix: true
+omic:
+  archive_path: /teamspace/studios/this_studio/Author_Official_Repo_directery/healnet/data/tcga/omic/tcga_brca_all_clean.csv.zip
+  archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  held_o_nofollow_descriptor_used: true
+  patient_id: TCGA-E2-A154
+  slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  source_row_index: '771'
+  exact_case_and_full_slide_match: true
+  shapes:
+    rna:
+    - 1
+    - 1
+    - 1558
+    mutation:
+    - 1
+    - 1
+    - 21
+    cnv:
+    - 1
+    - 1
+    - 1333
+  dtype: float32
+  device: cpu
+  all_finite: true
+  reverified_before_recording: true
+openslide_header:
+  mpp_x: 0.2468
+  mpp_y: 0.2468
+  level_count: 4
+  level_dimensions:
+  - - 108528
+    - 90471
+  - - 27132
+    - 22617
+  - - 6783
+    - 5654
+  - - 3391
+    - 2827
+  level_downsamples:
+  - 1.0
+  - 4.000066321793341
+  - 16.000619030774672
+  - 32.00359724763015
+  native_levels:
+  - level_index: 0
+    dimensions:
+    - 108528
+    - 90471
+    downsample: 1.0
+    native_mpp_x: 0.2468
+    native_mpp_y: 0.2468
+  - level_index: 1
+    dimensions:
+    - 27132
+    - 22617
+    downsample: 4.000066321793341
+    native_mpp_x: 0.9872163682185965
+    native_mpp_y: 0.9872163682185965
+  - level_index: 2
+    dimensions:
+    - 6783
+    - 5654
+    downsample: 16.000619030774672
+    native_mpp_x: 3.948952776795189
+    native_mpp_y: 3.948952776795189
+  - level_index: 3
+    dimensions:
+    - 3391
+    - 2827
+    downsample: 32.00359724763015
+    native_mpp_x: 7.89848780071512
+    native_mpp_y: 7.89848780071512
+target_assessment:
+- target_label: approximately_0_5_um_per_px
+  target_mpp: 0.5
+  closest_native_level: 0
+  closest_native_mpp_x: 0.2468
+  closest_native_mpp_y: 0.2468
+  relative_error_x: 0.5064
+  relative_error_y: 0.5064
+  comparison_tolerance_fraction: 0.1
+  appears_natively_achievable: false
+  controlled_resampling_appears_required: true
+  scale_policy_approved: false
+- target_label: approximately_1_0_um_per_px
+  target_mpp: 1.0
+  closest_native_level: 1
+  closest_native_mpp_x: 0.9872163682185965
+  closest_native_mpp_y: 0.9872163682185965
+  relative_error_x: 0.012783631781403515
+  relative_error_y: 0.012783631781403515
+  comparison_tolerance_fraction: 0.1
+  appears_natively_achievable: true
+  controlled_resampling_appears_required: false
+  scale_policy_approved: false
+storage:
+  filesystem_before_download: *id001
+  filesystem_after_download: *id002
+  filesystem_before_header_gate:
+    total_bytes: 395184570368
+    used_bytes: 27006148608
+    free_bytes: 348029198336
+  filesystem_after_header_gate:
+    total_bytes: 395184570368
+    used_bytes: 27006148608
+    free_bytes: 348029198336
+  raw_wsi_retained: true
+validations:
+  source_commit_and_critical_files_head_equal: PASS
+  only_protected_blca_worktree_edit: PASS
+  secure_authorization_record_manifest_reads: PASS
+  download_result_binding: PASS
+  same_held_wsi_descriptor_before_and_after_header: PASS
+  exact_uuid_filename_size_md5_sha256: PASS
+  partial_or_incomplete_download_check: PASS
+  regular_non_symlink_svs_and_parcel: PASS
+  held_omic_archive_and_exact_row_rematch: PASS
+  finite_positive_consistent_openslide_header: PASS
+  zero_pixel_or_region_reads: PASS
+operations:
+  openslide_header_opens: 1
+  pixel_or_region_reads: 0
+  tissue_masks: 0
+  coordinates: 0
+  patches: 0
+  resnet50_inference: 0
+  healnet_execution: 0
+  q75_features: 0
+  raw_wsi_deletions: 0
+  google_drive_operations: 0
+  full_cohort_operations: 0
+  q25_q50_modifications: 0
+  blca_modifications: 0
+  training_runs: 0
+scale_policy_approved: false
+publication:
+  atomic_directory_rename_noreplace: true
+  output_directory: /teamspace/studios/this_studio/healnet_pilot/multiscale_feature_pilot/provenance/brca_q75_header_metadata_result
+  files:
+  - result.yaml
+  - report.md
+  other_files_modified_by_runner: []
+required_stop: Q75_EXACT_FILE_OMIC_AND_OPENSLIDE_HEADER_METADATA_ONLY
+required_stop_reached: true
+next_gate: USER_REVIEW_REQUIRED_BEFORE_ANY_Q75_PIXEL_ACCESS_OR_SCALE_POLICY
