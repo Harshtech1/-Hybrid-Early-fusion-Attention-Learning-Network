@@ -1,0 +1,262 @@
+schema_version: 1
+status: Q75_GPU_PREEXECUTION_PREPARED_EXECUTION_LOCKED
+authorization_status: AWAITING_SEPARATE_USER_AUTHORIZATION
+cohort: TCGA-BRCA
+candidate: Q75
+recorded_at_utc: "2026-08-19T17:57:10Z"
+
+preparation_authority:
+  user_statement: >-
+    we are at CPU start the work and let me know the progress time to time before
+    final GPU requirement !
+  cpu_only_design_and_review_permitted: true
+  q75_wsi_hash_or_header_access_permitted_in_this_stage: false
+  q75_patch_pixel_reads_permitted_in_this_stage: false
+  gpu_or_cuda_permitted_in_this_stage: false
+  resnet50_or_healnet_execution_permitted_in_this_stage: false
+  feature_artifact_publication_permitted_in_this_stage: false
+  executable_gpu_authorization_created: false
+  gpu_execution_authorized: false
+
+completed_coordinate_binding:
+  result:
+    path: multiscale_feature_pilot/provenance/brca_q75_coordinate_execution_result.yaml
+    sha256: 1b583b9366a5308c26ee74de3686f080992f9381dc93b8b2d8f6729854e4be17
+    source_commit: e22099eae2893fa3bb6123f1ff53872238f7c5e4
+    result_commit: 91ed3ae128e577faf2a271badb23f2de7f4c3c83
+    status: BRCA_Q75_COORDINATES_VERIFIED
+  patient_id: TCGA-E2-A154
+  slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  gdc_file_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  wsi:
+    filename: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+    size_bytes: 1360743825
+    md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+    sha256: 844eb17d1bf66136b61f0c0e69ae1609e7dc9eca096e8c206e60ddd34332ab37
+    level_0_dimensions: [108528, 90471]
+    mpp_x: 0.2468
+    mpp_y: 0.2468
+  coordinate_artifacts:
+    directory: /teamspace/studios/this_studio/brca_pilot_data/Q75.coordinates
+    schema: BRCA_COORDINATE_ARTIFACT_SET_V1
+    manifest_size_bytes: 6537
+    manifest_sha256: 438165ce6b3be9d26d66c65cd70793e29cc92208cfb6a78bf68043bc4b4a4e90
+    manifest_sidecar_sha256: 28885db3c297b1604a4a76a2e61c1e84df413f94b1146c819a7ba2cc51fc2fbc
+    exact_file_count: 4
+    scale_2x:
+      filename: scale_2x_coordinates.h5
+      size_bytes: 225464
+      sha256: d88c201d379a5954cdfa4d785760f6c8f9d4b8bec498f7f31d040b1fdf7440ec
+      coordinates_sha256: 88e1ac8e00d4f05da7f83e542bfe7c933e9849a29ae60deac68adabe79e748b0
+      coordinate_count: 13487
+      source_level: 0
+      source_patch_shape: [512, 512]
+      output_patch_shape: [256, 256]
+      effective_mpp: [0.4936, 0.4936]
+      interpolation: PIL.Image.Resampling.LANCZOS
+    scale_4x:
+      filename: scale_4x_coordinates.h5
+      size_bytes: 65000
+      sha256: 0b0cfdaa26493dd24c3bbcba9f57c6b10d6060ba0f5f8b0a59bc0938ff655d94
+      coordinates_sha256: 63f58c687943509a55314ced55c7afe1610a26873a751d3e1d0f2d06cff3fb5d
+      coordinate_count: 3458
+      source_level: 1
+      source_patch_shape: [256, 256]
+      output_patch_shape: [256, 256]
+      effective_mpp: [0.9872163682185965, 0.9872163682185965]
+      interpolation: none
+    total_coordinate_count: 16945
+
+same_patient_omic_binding:
+  archive_path: >-
+    /teamspace/studios/this_studio/Author_Official_Repo_directery/healnet/data/tcga/omic/tcga_brca_all_clean.csv.zip
+  archive_size_bytes: 4081277
+  archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  member_filename: ./tcga_brca_all_clean.csv.zip
+  member_size_bytes: 15021018
+  member_sha256: 052637f2a69c515812796d9638566cb75299b6a3571dbdc5363496f12665027d
+  source_row_index: "771"
+  exact_case_and_full_slide_match: true
+  rna:
+    shape: [1, 1, 1558]
+    dtype: float32
+    content_sha256: 7c8ec0aa7c77227ad1ad5347b3612fe2c38d210295d6d1914862c7638960f916
+  mutation:
+    shape: [1, 1, 21]
+    dtype: float32
+    content_sha256: 81adcc3d1d6cfdde773ea46a27284afcf586598b5bd5cfecb675d98d70eabedf
+  cnv:
+    shape: [1, 1, 1333]
+    dtype: float32
+    content_sha256: 78bf5e3d18c12923687506d873800f5c01a83a5737e488296acde26814ed6803
+  remain_three_separate_healnet_modalities: true
+  concatenation_with_wsi: prohibited
+
+checkpoint_binding:
+  path: /home/zeus/.cache/torch/hub/checkpoints/resnet50-11ad3fa6.pth
+  filename: resnet50-11ad3fa6.pth
+  size_bytes: 102540417
+  sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  identity: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+
+prepared_future_contract:
+  applies_only_after_separate_exact_user_authorization: true
+  fail_closed_before_wsi_hashing_openslide_cuda_model_or_pixel_dataset: true
+  runtime:
+    gpu: Tesla T4
+    device: cuda:0
+    batch_size: 32
+    num_workers: 2
+    seed: 0
+    dtype: float32
+    cublas_workspace_config: ":4096:8"
+    torch_deterministic_algorithms: true
+    cudnn_deterministic: true
+    cudnn_benchmark: false
+    automatic_mixed_precision: false
+    tf32: false
+    cpu_fallback: false
+  extraction:
+    branch_execution_order: [scale_2x, scale_4x]
+    scale_2x_feature_shape: [13487, 2048]
+    scale_4x_feature_shape: [3458, 2048]
+    combined_operation: torch.cat
+    combined_dim: 0
+    combined_feature_shape: [16945, 2048]
+    scale_2x_prefix_exact: required
+    scale_4x_suffix_exact: required
+    pooling: prohibited
+    transpose: prohibited
+    natural_healnet_wsi_shape: [1, 16945, 2048]
+  healnet_smokes:
+    pre_pixel_synthetic_full_size_required: true
+    real_feature_smoke_required: true
+    modality_order: [wsi, rna, mutation, cnv]
+    channel_dims: [2048, 1558, 21, 1333]
+    input_shapes:
+      - [1, 16945, 2048]
+      - [1, 1, 1558]
+      - [1, 1, 21]
+      - [1, 1, 1333]
+    expected_output_shape: [1, 4]
+    expected_attention_shapes:
+      - [1, 2, 16945]
+      - [1, 2, 1]
+      - [1, 2, 1]
+      - [1, 2, 1]
+    output_and_attention_finite: required
+    random_initialized_evaluation_inference_mode: true
+    scientific_prediction: false
+  future_output:
+    directory: /teamspace/studios/this_studio/brca_pilot_data/Q75.features
+    schema: BRCA_Q75_FEATURE_ARTIFACT_SET_V1
+    exact_file_count: 6
+    outside_git: true
+    atomic_no_overwrite_publication: required
+    overwrite_or_resume: prohibited
+
+resource_estimate:
+  classification: ESTIMATE_NOT_A_MEASURED_Q75_GPU_RESULT
+  verified_float32_tensor_payload_bytes:
+    scale_2x: 110485504
+    scale_4x: 28327936
+    combined: 138813440
+    three_retained_tensor_payloads_total: 277626880
+  retained_artifact_size_estimate:
+    basis: linear_bytes_per_row_from_verified_q25_and_q50_six_file_artifacts
+    range_bytes: [278494000, 278522000]
+    planning_value_bytes: 279000000
+  same_t4_runtime_estimate:
+    basis: coordinate_count_scaling_from_verified_q25_and_q50_total_runtimes
+    range_seconds: [269, 284]
+    plain_language: approximately_4_5_to_4_8_minutes_with_6_minutes_planning_allowance
+  peak_gpu_allocated_memory_estimate:
+    resnet_fixed_batch_empirical_bytes: 481334784
+    healnet_linear_token_estimate_bytes: 444084000
+    planning_value_bytes: 550000000
+    plain_language: approximately_0_55_GB_allocated_with_runtime_headroom_still_required
+  caveats:
+    - runtime_depends_on_q75_slide_io_and_same_t4_runtime_conditions
+    - serialized_container_and_csv_overheads_are_estimated
+    - cuda_context_and_driver_reservation_are_not_peak_allocated_tensor_memory
+    - only_a_later_authorized_run_can_measure_q75_runtime_memory_and_artifact_bytes
+
+implementation_identity:
+  base_commit_before_preexecution_files: 91ed3ae128e577faf2a271badb23f2de7f4c3c83
+  official_healnet_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  frozen_blca_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+  bound_existing_sources:
+    multiscale_feature_pilot/__init__.py: f05f42721ce2380799c1e655e85d267b73bdf54eec02bcd6a7afaaf42faf93d3
+    multiscale_feature_pilot/src/__init__.py: 1f56e6eecfd95b2d6fdc69114a616edf4cf87d6174958bfd2cc58cb79b6605dd
+    multiscale_feature_pilot/src/omic.py: cd9c80bd9ab3a049beca682131f2553f526a38a0dee09608eb016ae1f79607ed
+    multiscale_feature_pilot/src/padding.py: 27498695f5aa717411adb44583c4044cbae96e47e0662586c3f4d4eb8cd64174
+    multiscale_feature_pilot/config/brca_q75_scale_policy.yaml: d29be0892e0b0324ae9b4390a1db9a9ae4b5a60b4541ddb7a36c81b8d2bca6b5
+    multiscale_feature_pilot/src/brca_q75_scale_policy.py: 3aecb1f3818f9ae98708cdf61f6ccf4b938ffe5fe78bbbaff6e11896e5eb4482
+    multiscale_feature_pilot/config/brca_q75_coordinate_policy.yaml: 58f15a9e39fcd3469ec656ef98c72ad6e42b8a3eab16fcbc24c4345cc4337d88
+    multiscale_feature_pilot/src/brca_q75_coordinate_policy.py: 6f58c3b5f23f91d16c60e041933418ddf176bad70defdc7428176ae7505c35d0
+    multiscale_feature_pilot/src/brca_coordinate_artifacts.py: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+    multiscale_feature_pilot/src/feature_extraction.py: 9731f9773238800268673ec299acbcdf8caaa4ac676c96f4559cb10604c707e7
+    multiscale_feature_pilot/src/scale_2x_policy.py: a3672f730f8be026edfab0ea25c4460836aad227099152e5cc7d290c03d1f7aa
+    multiscale_feature_pilot/src/multiscale_bag.py: 26a85db8738b80c7f7f2f75d1379a54203ee870519ee1ee63f78f809ed17d914
+    multiscale_feature_pilot/src/provenance.py: 76f8c9eac1ba0c32679a1d7f8d34c07c79fc27cdc28c6762dd13a169e5db5917
+    multiscale_feature_pilot/src/brca_omic.py: 5061039913cb0dd4e8e30958c8b4b76f088396f7841255dd94234c3b462d5a5d
+    multiscale_feature_pilot/src/supervisor_healnet_smoke.py: df2c0010347ddc6cfc49200bf35802337752c01a78b96727a5ad538fb847eec4
+    multiscale_feature_pilot/src/healnet_smoke.py: 34a7ad1204dfc84ef8e63a2ac4cd8b932dbccf39e9f424b424dc6eb37a4d6009
+  prepared_execution_locked_sources:
+    multiscale_feature_pilot/src/brca_q75_feature_extraction.py: 5b2c3c426eab17b9312cdd692e81c35c4dac552d47e0f9cddd07a05df1e2abd1
+    multiscale_feature_pilot/src/brca_q75_feature_artifacts.py: df927ba75f8cfa1865f69b31073b1fab36f7480ad652c1ecc7c2e81488e8a280
+    scripts/run_brca_q75_gpu_pilot.py: 93436c9f164b74c3e8e2fc513c1ede99fd090c2b4c5601de5a7be5b4a4d949ea
+  tests:
+    multiscale_feature_pilot/tests/test_brca_q75_feature_extraction.py: 545ee6f1dd47a7b7eac4c8ad9e16df3b24405ec5107f96bbdd6fe6b41c47f5a4
+    multiscale_feature_pilot/tests/test_brca_q75_feature_artifacts.py: 36f09563abd38a781791cc30394f0e28a34de9b93a58d6601946f92ec9a67210
+    multiscale_feature_pilot/tests/test_brca_q75_gpu_runner.py: e45708209e53e67d3faff77bb35dac4140400116bb7ee0f758278f282b25096b
+
+cpu_verification:
+  q75_focused_tests: 59
+  q75_focused_tests_passed: 59
+  full_pilot_tests: 623
+  full_pilot_tests_passed: 623
+  python_compile: PASS
+  yaml_parse: PASS
+  diff_check: PASS
+  runner_locked_before_wsi_hash_openslide_cuda_model_or_pixel_dataset: PASS
+  executable_gpu_authorization_config_absent_at_review: PASS
+  q75_feature_output_absent_at_review: PASS
+  wsi_accesses_in_this_stage: 0
+  patch_reads_in_this_stage: 0
+  cuda_operations_in_this_stage: 0
+  model_executions_in_this_stage: 0
+  feature_artifacts_written_in_this_stage: 0
+  training_runs_in_this_stage: 0
+
+current_prohibitions:
+  - q75_wsi_hash_header_or_pixel_access
+  - q75_patch_reads_or_patch_image_persistence
+  - q75_resnet50_or_healnet_execution
+  - q75_feature_artifact_publication
+  - gpu_or_cuda_operations
+  - executable_gpu_authorization_creation_without_new_exact_user_statement
+  - q75_coordinate_regeneration
+  - q25_q50_rerun_or_modification
+  - blca_modification
+  - official_healnet_modification
+  - full_cohort_download_or_processing
+  - network_or_google_drive_operations
+  - raw_wsi_or_existing_artifact_deletion
+  - model_training_backward_or_optimizer_steps
+
+proposed_exact_future_authorization: >-
+  I authorize the exact Q75-only GPU pilot for patient TCGA-E2-A154 using the
+  frozen verified Q75 coordinates: read-only input/hash/header/Omic/checkpoint
+  preflights; 13,487 scale-2x and 3,458 scale-4x patch reads; float32 ResNet50
+  ImageNet1K V2 feature extraction; torch.cat([features_2x, features_4x], dim=0)
+  with no transpose or pooling; atomic publication to Q75.features; and synthetic
+  plus real-feature four-modality HEALNet numerical smoke tests. No training,
+  backward pass, optimizer step, AMP, TF32, CPU fallback, coordinate regeneration,
+  Q25/Q50/BLCA changes, full-cohort processing, network or Google Drive operations,
+  raw-file deletion, or official HEALNet modification. Stop after validated Q75
+  feature artifacts and smoke-test reporting.
+
+required_stop: CPU_ONLY_Q75_GPU_PREEXECUTION_DESIGN_AND_VALIDATION
+required_stop_reached: true
+next_gate: SEPARATE_EXACT_USER_AUTHORIZATION_AND_TESLA_T4_RUNTIME_REQUIRED
