@@ -1,0 +1,73 @@
+schema_version: 1
+status: NOT_AUTHORIZED
+executable: false
+cohort: TCGA-BRCA
+purpose: SIX_PATIENT_STAGED_ACQUISITION_AND_HEADER_ONLY_PLANNING
+manifest_count: 6
+combined_manifest_present: false
+patient_concurrency: 1
+fixed_order: [B01, B02, B03, B04, B05, B06]
+entries:
+  - label: B01
+    patient_id: TCGA-GI-A2C8
+    omic_source_row_id: "924"
+    basename: B01_TCGA-GI-A2C8_0a886f18-c44c-4b5e-b243-6df6e27f426a.NOT_AUTHORIZED.gdc.tsv
+    sha256: 7f1236c48bb76baf76904234433edd63f5e5643f6cb1de3110baa15d1c1c8b92
+    id: 0a886f18-c44c-4b5e-b243-6df6e27f426a
+    filename: TCGA-GI-A2C8-01Z-00-DX1.09BD8AC9-645A-4C8B-9B36-77D833BDBA09.svs
+    md5: a9f830d456b4a1fe0e9bb5b5b99f4b7e
+    size: "408704377"
+    state: released
+  - label: B02
+    patient_id: TCGA-BH-A0BG
+    omic_source_row_id: "472"
+    basename: B02_TCGA-BH-A0BG_c5331e5e-10b4-4979-958b-d4592a2805de.NOT_AUTHORIZED.gdc.tsv
+    sha256: 8c398bab8159885645ca45006a78872db64234eb37be566631f3ebf1b593bf89
+    id: c5331e5e-10b4-4979-958b-d4592a2805de
+    filename: TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+    md5: a8c6e730df401ff67e1a1e52a6cb6307
+    size: "724114911"
+    state: released
+  - label: B03
+    patient_id: TCGA-AR-A1AY
+    omic_source_row_id: "372"
+    basename: B03_TCGA-AR-A1AY_266c3852-f5d0-4815-94d9-dac5b0ff8276.NOT_AUTHORIZED.gdc.tsv
+    sha256: 847ff7458fafafbba4596178531d7caf3e66a01d47a775e1879c5db4526ac73b
+    id: 266c3852-f5d0-4815-94d9-dac5b0ff8276
+    filename: TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs
+    md5: 1980b183d5bb948c2fc263af62a4b1b4
+    size: "918454431"
+    state: released
+  - label: B04
+    patient_id: TCGA-D8-A4Z1
+    omic_source_row_id: "742"
+    basename: B04_TCGA-D8-A4Z1_d39d5d1d-2999-4b82-b2d0-8fba2ccc20cc.NOT_AUTHORIZED.gdc.tsv
+    sha256: 90432dabe3448551f58188e33072d971b83e197ee472e642dcc2d9320884d068
+    id: d39d5d1d-2999-4b82-b2d0-8fba2ccc20cc
+    filename: TCGA-D8-A4Z1-01Z-00-DX1.D39D38B5-FC9F-4298-8720-016407DC6591.svs
+    md5: 597bdbd393212083833deb80358f2301
+    size: "1038326117"
+    state: released
+  - label: B05
+    patient_id: TCGA-LL-A5YL
+    omic_source_row_id: "951"
+    basename: B05_TCGA-LL-A5YL_1e3d7e89-ee2c-46fd-8697-2e62886657fb.NOT_AUTHORIZED.gdc.tsv
+    sha256: d2520ecf8dccd4fe2aa5d871b14ea71b7907040084aa492751d9522c789067ae
+    id: 1e3d7e89-ee2c-46fd-8697-2e62886657fb
+    filename: TCGA-LL-A5YL-01Z-00-DX1.164C74AB-87D5-46CC-9D96-33FE1F88DC80.svs
+    md5: b0394b138fefd48d2a2f43b7900fa284
+    size: "1281197011"
+    state: released
+  - label: B06
+    patient_id: TCGA-EW-A1OY
+    omic_source_row_id: "897"
+    basename: B06_TCGA-EW-A1OY_00e926c5-d65d-42e5-8ba4-afaab66db47c.NOT_AUTHORIZED.gdc.tsv
+    sha256: 2616a09f26ee75460ca19dd1529c12b37981943256edbcf1f175dd50dfb3b3bb
+    id: 00e926c5-d65d-42e5-8ba4-afaab66db47c
+    filename: TCGA-EW-A1OY-01Z-00-DX1.42AF5C9A-A90F-4A58-B5D4-B615F8CD4333.svs
+    md5: dbb9edd8528f25bbcaaee907b1b1ab68
+    size: "1691494753"
+    state: released
+total_declared_raw_bytes: 6062291600
+all_entries_are_guarded_non_executable_one_row_manifests: true
+

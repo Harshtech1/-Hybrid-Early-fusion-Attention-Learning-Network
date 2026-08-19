@@ -1,0 +1,125 @@
+schema_version: 1
+phase: BRCA_SIX_PATIENT_STAGED_ACQUISITION_AND_HEADER_ONLY_PLAN
+status: PLANNING_ACCEPTED_EXECUTION_NOT_AUTHORIZED
+executable: false
+cohort: TCGA-BRCA
+
+user_authority:
+  statement: >-
+    I accept the proposed six-patient BRCA validation batch for planning.
+    Prepare the staged acquisition and header-only authorization package, but
+    do not download or open any WSI yet. No GPU, coordinate generation,
+    feature extraction, deletion, Drive operations, cohort expansion, or
+    training.
+  statement_sha256: 84370be7c0a14a66b400a8deeed55b2fdb26c4fd3ddf3f7f84b7b8de7edca943
+  interpretation: PLANNING_AND_GUARDED_MANIFEST_PREPARATION_ONLY
+
+authority_now:
+  download: NOT_AUTHORIZED
+  wsi_open_or_header_read: NOT_AUTHORIZED
+  pixel_or_region_read: NOT_AUTHORIZED
+  gpu_or_cuda: NOT_AUTHORIZED
+  coordinate_generation: NOT_AUTHORIZED
+  feature_extraction: NOT_AUTHORIZED
+  deletion: NOT_AUTHORIZED
+  google_drive_operations: NOT_AUTHORIZED
+  additional_patient_or_cohort_expansion: NOT_AUTHORIZED
+  training: NOT_AUTHORIZED
+
+source_bindings:
+  small_batch_proposal:
+    path: reports/brca_small_batch_proposal.tsv
+    sha256: 6133920baaccb73805d58daf53b8ffe93c30c49468a4a3e96a53bd8b960455d2
+  proposal_report:
+    path: reports/brca_small_batch_proposal.md
+    sha256: 60a7ccb7435bf189e5f8d2f252787b38093be2c888ab80479314778ed25e2fd9
+  proposal_config:
+    path: multiscale_feature_pilot/config/brca_small_batch_proposal.yaml
+    sha256: 104bca7d69886a6579ea794be168cd67969ee8f41a601172a68bda2f7c3072e6
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  filtered_gdc_manifest_sha256: ac1b4d591ce255a7d4e6bde3778a041b107576693657ee296fe6eb36c4e79a92
+  clean_omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  selection_sha256: a3905e103ae7b77183c0e06503630875772efe674033730a181a5dc5baafc538
+
+manifest_set:
+  path: multiscale_feature_pilot/provenance/brca_six_patient_batch_guarded/MANIFEST_SET.NOT_AUTHORIZED.yaml
+  manifest_count: 6
+  combined_manifest_present: false
+  each_manifest_rows: 1
+  status: NOT_AUTHORIZED
+
+staging_policy:
+  fixed_order: [B01, B02, B03, B04, B05, B06]
+  active_patient_concurrency: 1
+  active_gdc_client_count: 1
+  next_patient_requires_separate_user_authorization_after_prior_header_review: true
+  destinations:
+    B01: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B01.incoming
+    B02: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B02.incoming
+    B03: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B03.incoming
+    B04: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B04.incoming
+    B05: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B05.incoming
+    B06: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B06.incoming
+  all_destinations_absent_at_planning_time: true
+
+storage_gate_before_each_future_download:
+  quota_assumption_bytes: 200000000000
+  minimum_post_operation_free_bytes: 20000000000
+  conservative_required_available_bytes_formula: 2 * expected_raw_bytes + 20000000000
+  rationale: reserve one expected raw file for transfer/verification overhead plus the retained file and a 20 GB safety floor
+  current_filesystem_snapshot:
+    total_bytes: 395184570368
+    used_bytes: 35548372992
+    available_bytes: 339486973952
+    percent_used: 10
+  snapshot_is_advisory_and_must_be_rechecked_immediately_before_each_future_transfer: true
+
+future_header_only_gate:
+  exact_file_checks_before_openslide:
+    - exact_uuid_directory
+    - exact_filename
+    - exact_declared_size
+    - exact_manifest_md5
+    - independent_sha256
+    - no_partial_incomplete_or_unexpected_payload_files
+    - regular_non_symlink_svs_and_non_symlink_path_components
+    - exact_patient_and_full_slide_omic_rematch
+  permitted_header_fields_only:
+    - mpp_x
+    - mpp_y
+    - level_count
+    - level_dimensions
+    - level_downsamples
+  read_region_calls: 0
+  thumbnail_or_associated_image_access: false
+  stop_after_each_patient: EXACT_FILE_AND_HEADER_METADATA_REPORT
+
+failure_policy:
+  fail_closed_on:
+    - source_or_manifest_hash_drift
+    - authorization_mismatch
+    - destination_preexistence
+    - insufficient_storage
+    - client_or_download_failure
+    - uuid_filename_size_md5_or_sha256_mismatch
+    - symlink_or_non_regular_file
+    - partial_or_unexpected_file
+    - patient_slide_or_omic_mismatch
+    - openslide_header_failure_or_invalid_metadata
+  never_advance_automatically_to_next_patient: true
+  no_cleanup_or_deletion_is_authorized: true
+
+future_authorization_template_for_B01_only: >-
+  I authorize downloading only BRCA validation-batch patient B01, UUID
+  0a886f18-c44c-4b5e-b243-6df6e27f426a (408,704,377 bytes), from GDC to
+  local persistent staging at concurrency one using its exact one-row
+  manifest. After download, perform only exact UUID/filename/size/MD5
+  verification, independent SHA256 calculation, partial/incomplete checks,
+  regular non-symlink SVS confirmation, exact Omic rematch, and OpenSlide
+  header-only inspection of MPP and every pyramid level. Do not call
+  read_region or access pixels; do not generate masks, coordinates, or
+  features; do not use GPU/CUDA, Drive, deletion, additional-patient
+  processing, cohort expansion, or training. Stop after the B01 metadata
+  report and wait for my review.
+template_is_not_current_execution_authority: true
+next_decision_required: EXPLICIT_B01_ACQUISITION_AND_HEADER_ONLY_AUTHORIZATION_OR_DECLINE
