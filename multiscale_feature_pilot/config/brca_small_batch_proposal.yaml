@@ -1,0 +1,34 @@
+schema_version: 1
+status: METADATA_ONLY_PROPOSAL_NOT_AUTHORIZED_FOR_EXECUTION
+cohort: TCGA-BRCA
+population: 894
+selection:
+  ordering: ascending_size_bytes_then_case_id_then_slide_id
+  target_quantiles: [0.10, 0.30, 0.45, 0.55, 0.70, 0.90]
+  index_rule: floor_of_quantile_times_n_minus_one_plus_one_half
+  existing_pilot_uuids_excluded: true
+  selected_count: 6
+  selected_one_based_ranks: [90, 269, 403, 492, 626, 805]
+  canonical_selection_sha256: a3905e103ae7b77183c0e06503630875772efe674033730a181a5dc5baafc538
+storage:
+  declared_raw_total_bytes: 6062291600
+  largest_single_raw_bytes: 1691494753
+  processing_concurrency_if_later_authorized: 1
+estimates_not_guarantees:
+  gpu_minutes_observed_rate_range: [15.579171268499977, 24.515734978399995]
+  gpu_minutes_observed_mean_rate: 19.079259113366653
+  compact_artifact_bytes_observed_rate_range: [461039250, 838250640]
+  compact_artifact_bytes_observed_mean_rate: 611062452
+authorization:
+  proposal_preparation: true
+  gdc_manifest_generation: false
+  downloads: false
+  wsi_access: false
+  coordinate_generation: false
+  gpu: false
+  feature_extraction: false
+  pilot_modification: false
+  deletion: false
+  drive: false
+  training: false
+next_decision: ACCEPT_REJECT_OR_REVISE_SIX_PATIENT_BATCH
