@@ -35,6 +35,8 @@ class _SyntheticProcessRunner:
         if command == [str(self.paths.gdc_client), "--version"]:
             return subprocess.CompletedProcess(command, 0, f"{self.version}\n", "")
         assert command == runner._exact_download_command(self.paths)
+        assert self.paths.incoming_directory.is_dir()
+        assert not self.paths.incoming_directory.is_symlink()
         assert kwargs["cwd"] == str(self.paths.data_root)
         assert kwargs["check"] is False
         assert kwargs["capture_output"] is True

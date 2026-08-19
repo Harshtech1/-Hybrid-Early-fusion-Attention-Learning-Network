@@ -865,11 +865,29 @@ def _run_download_gate(
 
         active_before = tuple(process_scanner(paths.gdc_client))
         _require(not active_before, "another GDC client process is active")
+
+        # GDC validates that its destination already exists before it creates the
+        # UUID subtree.  Create only the exact authorized incoming directory,
+        # under the held runner lock and after every non-mutating preflight, then
+        # fail closed if its identity changes before the client starts.
+        paths.incoming_directory.mkdir(mode=0o700)
+        incoming_details = paths.incoming_directory.lstat()
+        _require(
+            stat.S_ISDIR(incoming_details.st_mode)
+            and not stat.S_ISLNK(incoming_details.st_mode),
+            "Q75 incoming destination is not a regular directory",
+        )
+        incoming_identity = (incoming_details.st_dev, incoming_details.st_ino)
         _require(
             _validate_authorized_inputs(paths) == bindings,
             "authorized inputs changed immediately before GDC execution",
         )
         _reverify_gdc_client_file(paths.gdc_client, client)
+        current_incoming = paths.incoming_directory.lstat()
+        _require(
+            (current_incoming.st_dev, current_incoming.st_ino) == incoming_identity,
+            "Q75 incoming destination identity changed before GDC execution",
+        )
         command = _exact_download_command(paths)
         command_started = datetime.now(timezone.utc)
         command_clock = time.perf_counter()
