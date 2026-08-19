@@ -35,3 +35,8 @@ def test_runner_requires_deterministic_gpu_contract() -> None:
 def test_protected_first_status_line_survives_trimmed_git_output() -> None:
     source = RUNNER.read_text()
     assert '"M reports/blca_one_patient_multiscale_pilot.md"' in source
+
+def test_both_healnet_smokes_use_keyword_only_interface() -> None:
+    source = RUNNER.read_text()
+    assert source.count("official_repo=OFFICIAL") == 2
+    assert source.count("wsi=") == 2

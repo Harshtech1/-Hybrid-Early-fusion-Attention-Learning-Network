@@ -137,9 +137,9 @@ def run(expected_commit: str) -> dict[str, object]:
     c2, c4, omic = validate_inputs()
     device = configure_cuda()
     synthetic = run_one_patient_supervisor_healnet_smoke(
-        OFFICIAL, torch.zeros((1,4742,2048),device=device),
-        torch.zeros((1,1,1558),device=device), torch.zeros((1,1,21),device=device),
-        torch.zeros((1,1,1333),device=device))
+        official_repo=OFFICIAL, wsi=torch.zeros((1,4742,2048),device=device),
+        rna=torch.zeros((1,1,1558),device=device), mutation=torch.zeros((1,1,21),device=device),
+        cnv=torch.zeros((1,1,1333),device=device))
     model = build_resnet50_imagenet1k_v2(CHECKPOINT).to(device).eval()
     branch2 = PatchBranchSpec("scale_2x", c2, 0, 256)
     branch4 = PatchBranchSpec("scale_4x", c4, 1, 256)
@@ -149,8 +149,8 @@ def run(expected_commit: str) -> dict[str, object]:
     if tuple(combined.shape) != (4742,2048) or combined.dtype != torch.float32 or not torch.isfinite(combined).all():
         raise RuntimeError("combined feature contract failed")
     real = run_one_patient_supervisor_healnet_smoke(
-        OFFICIAL, combined.unsqueeze(0).to(device), omic.rna.to(device),
-        omic.mutation.to(device), omic.cnv.to(device))
+        official_repo=OFFICIAL, wsi=combined.unsqueeze(0).to(device),
+        rna=omic.rna.to(device), mutation=omic.mutation.to(device), cnv=omic.cnv.to(device))
     provenance = build_two_scale_provenance(
         scale_2x=BranchProvenanceSpec("scale_2x", c2, 0, .4936, .4936),
         scale_4x=BranchProvenanceSpec("scale_4x", c4, 1, .9872376717207693, .9872376717207693),
