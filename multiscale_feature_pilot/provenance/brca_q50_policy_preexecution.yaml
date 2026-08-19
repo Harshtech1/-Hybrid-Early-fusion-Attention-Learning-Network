@@ -1,0 +1,140 @@
+schema_version: 1
+status: BRCA_Q50_SCALE_AND_COORDINATE_POLICY_CPU_VERIFIED_EXECUTION_LOCKED
+cohort: TCGA-BRCA
+candidate: Q50
+recorded_at_utc: "2026-08-19T00:27:13Z"
+
+scope:
+  completed:
+    - exact_q50_scale_mapping
+    - deterministic_coordinate_policy_core
+    - synthetic_tissue_and_lattice_tests
+    - synthetic_atomic_coordinate_artifact_roundtrip
+  real_wsi_header_reads_in_this_stage: 0
+  real_wsi_pixel_reads_in_this_stage: 0
+  real_coordinate_artifacts_written: 0
+  feature_extraction_runs: 0
+  healnet_runs: 0
+  q75_operations: 0
+  training_runs: 0
+  google_drive_operations: 0
+
+identity:
+  patient_id: TCGA-AR-A1AW
+  slide_id: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+  gdc_file_uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+  size_bytes: 975626387
+  md5: 304509e03f26cbecc9aee4ea691c8e5a
+  sha256: 6b960db7e6e5772f4f626daa7b023ffbb5e3b20f9f6ff5c7d52f4554cf33399b
+  metadata_evidence_sha256: 1d912d81416ad4cc41c128f82e6ac8a02ae4315cd99b1ba098ea1024383efb7a
+
+resolved_scale_plan:
+  scale_2x:
+    target_mpp: 0.5
+    source_level: 0
+    source_footprint: [512, 512]
+    output_patch: [256, 256]
+    interpolation: PIL.Image.Resampling.LANCZOS
+    effective_mpp: [0.4936, 0.4936]
+    relative_error_fraction: [0.0128, 0.0128]
+  scale_4x:
+    target_mpp: 1.0
+    source_level: 1
+    source_patch: [256, 256]
+    resampling: none
+    effective_mpp: [0.9872151105124595, 0.9872151105124595]
+    relative_error_fraction:
+      - 0.0127848894875405
+      - 0.0127848894875405
+
+resolved_coordinate_plan:
+  mask_level: 2
+  mask_dimensions: [6247, 4083]
+  mask_coordinate_scale_xy:
+    - 16.001280614695054
+    - 16.001469507714916
+  tissue_algorithm:
+    color_space: HSV_saturation
+    sthresh: 8
+    mthresh: 7
+    close: 4
+    use_otsu: false
+    a_t: 100
+    a_h: 16
+    max_n_holes: 8
+    clam_commit: 26e0b6c4873e112f1ccd74cd834894c4ab7a2934
+  shared_contours_between_branches: true
+  scale_2x_lattice:
+    coordinate_frame: level0_x_y
+    anchor: [0, 0]
+    footprint: [512, 512]
+    step: [512, 512]
+  scale_4x_lattice:
+    coordinate_frame: level0_x_y
+    anchor: [0, 0]
+    source_level: 1
+    native_patch: [256, 256]
+    source_to_level0_dimension_ratio_xy: [4.0, 4.000122451478602]
+    declared_footprint: [1024, 1024]
+    step: [1024, 1024]
+    geometry: CLAM_INT_CAST_GEOMETRY_COMPATIBLE
+  boundary_rule: reject_incomplete_footprints
+  ordering: row_major_y_then_x
+  uniqueness_required: true
+  exact_released_clam_or_paper_reproduction: false
+
+implementation:
+  base_commit_before_policy_files: 4d5c13d816725c05373e24a1b65e9a3725b7c9af
+  q50_scale_config:
+    path: multiscale_feature_pilot/config/brca_q50_scale_policy.yaml
+    sha256: 979278fd97d79718464f5918e2250993addbf5638fa721390b09dbc0a74eae32
+  q50_scale_core:
+    path: multiscale_feature_pilot/src/brca_q50_scale_policy.py
+    sha256: d54fccccaca2271552eaccf02fcbb7eaf1561a10a2c07da3d53e6ab4f1951a0c
+  q50_coordinate_config:
+    path: multiscale_feature_pilot/config/brca_q50_coordinate_policy.yaml
+    sha256: e5cb83739d3d8fab04da8a63ae1560df04ccc547a79512c219eecb575c0c2114
+  q50_coordinate_core:
+    path: multiscale_feature_pilot/src/brca_q50_coordinates.py
+    sha256: 7dd739667cb6fe0887f3452127c9ff4d43659831d17096922a9f62685149f892
+  reviewed_shared_coordinate_algorithm:
+    path: multiscale_feature_pilot/src/brca_q25_coordinates.py
+    sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+    q25_numerical_metadata_reused: false
+  coordinate_artifact_schema:
+    path: multiscale_feature_pilot/src/brca_coordinate_artifacts.py
+    sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+  tests:
+    - path: multiscale_feature_pilot/tests/test_brca_q50_scale_policy.py
+      sha256: bd4b8443a9e720f28a09364de7a9b789838164f994f31ed56a7f83ad2c885804
+    - path: multiscale_feature_pilot/tests/test_brca_q50_coordinates.py
+      sha256: 722b3b3471ed16d9a86d2aefec459e280e4aeff7c7e3954902c2c939ff3d0701
+    - path: multiscale_feature_pilot/tests/test_brca_q50_coordinate_artifact_contract.py
+      sha256: 19bb36c04aee899728d87f095c09b19a5e8c714a73cbe7cfff32c1010904c2d5
+
+verification:
+  q50_focused_tests: 17
+  q50_focused_tests_passed: 17
+  full_pilot_tests: 335
+  full_pilot_tests_passed: 335
+  diff_check: PASS
+  synthetic_artifact_output_retained: false
+  real_q50_coordinate_count: NOT_YET_KNOWN
+
+repository_guards:
+  official_healnet_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  frozen_blca_tag_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+  frozen_blca_modified: false
+  unrelated_user_dirty_report_excluded: reports/blca_one_patient_multiscale_pilot.md
+
+execution_boundary:
+  status: LOCKED_PENDING_SEPARATE_Q50_COORDINATE_EXECUTION_AUTHORIZATION
+  first_real_pixel_operation_if_later_authorized: ONE_LEVEL_2_MASK_READ_ONLY
+  coordinate_artifact_destination_if_later_authorized: >-
+    /teamspace/studios/this_studio/brca_pilot_data/Q50.coordinates
+  q50_patch_reads: NOT_AUTHORIZED
+  q50_feature_extraction: NOT_AUTHORIZED
+  q50_healnet_execution: NOT_AUTHORIZED
+  q75: LOCKED
+  training: LOCKED
+  google_drive: NOT_REQUIRED

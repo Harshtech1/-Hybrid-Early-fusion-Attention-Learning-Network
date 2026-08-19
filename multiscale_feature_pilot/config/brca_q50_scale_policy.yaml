@@ -1,0 +1,91 @@
+schema_version: 1
+cohort: TCGA-BRCA
+candidate_label: Q50
+policy_status: RESOLVED_BRCA_Q50_SCALE_POLICY_V1
+
+authority:
+  source: direct_user_continue_instruction
+  user_statement: ok procced with the work now
+  approved_scope: Q50_CPU_POLICY_IMPLEMENTATION_ONLY
+  real_wsi_pixel_or_region_read: NOT_AUTHORIZED_BY_THIS_POLICY
+  coordinate_generation: NOT_AUTHORIZED_BY_THIS_POLICY
+  feature_extraction: NOT_AUTHORIZED_BY_THIS_POLICY
+  healnet_execution: NOT_AUTHORIZED_BY_THIS_POLICY
+  q75_processing: NOT_AUTHORIZED
+  training: NOT_AUTHORIZED
+
+wsi_identity:
+  patient_id: TCGA-AR-A1AW
+  slide_id: TCGA-AR-A1AW-01Z-00-DX1
+  gdc_file_uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+  filename: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+  size_bytes: 975626387
+  md5: 304509e03f26cbecc9aee4ea691c8e5a
+  sha256: 6b960db7e6e5772f4f626daa7b023ffbb5e3b20f9f6ff5c7d52f4554cf33399b
+
+pinned_header_metadata:
+  source_provenance: multiscale_feature_pilot/provenance/brca_q50_metadata_gate.yaml
+  mpp_x: 0.2468
+  mpp_y: 0.2468
+  level_dimensions:
+    - [99960, 65334]
+    - [24990, 16333]
+    - [6247, 4083]
+    - [3123, 2041]
+  level_downsamples:
+    - 1.0
+    - 4.000061225739301
+    - 16.001375061204985
+    - 32.009231974117526
+
+acceptance:
+  target_mpp_per_axis:
+    scale_2x: 0.5
+    scale_4x: 1.0
+  maximum_relative_error_per_axis: 0.10
+  exact_metadata_required: true
+  silent_level_substitution: prohibited
+  silent_resampling: prohibited
+  explicit_declared_resampling: scale_2x_only
+  metadata_drift_action: reject
+
+branches:
+  scale_2x:
+    target_mpp: 0.5
+    source_level: 0
+    source_native_mpp_x: 0.2468
+    source_native_mpp_y: 0.2468
+    source_footprint: [512, 512]
+    output_patch: [256, 256]
+    operation: EXPLICIT_LINEAR_DOWNSAMPLE
+    linear_downsample_factor: 2.0
+    interpolation: PIL.Image.Resampling.LANCZOS
+    effective_mpp_x: 0.4936
+    effective_mpp_y: 0.4936
+    relative_error_x: 0.0128
+    relative_error_y: 0.0128
+    result: PASS_EXPLICIT_DECLARED_2X
+  scale_4x:
+    target_mpp: 1.0
+    source_level: 1
+    source_native_mpp_x: 0.9872151105124595
+    source_native_mpp_y: 0.9872151105124595
+    source_footprint: [256, 256]
+    output_patch: [256, 256]
+    operation: NATIVE_LEVEL
+    linear_downsample_factor: 1.0
+    interpolation: none
+    effective_mpp_x: 0.9872151105124595
+    effective_mpp_y: 0.9872151105124595
+    relative_error_x: 0.0127848894875405
+    relative_error_y: 0.0127848894875405
+    result: PASS_NATIVE
+
+execution_boundary:
+  scale_mapping_resolved: true
+  policy_core_accepts_metadata_only: true
+  real_pixel_execution_enabled: false
+  coordinate_artifact_write_enabled: false
+  q25_rerun: prohibited
+  q75_status: locked
+  training_status: locked
