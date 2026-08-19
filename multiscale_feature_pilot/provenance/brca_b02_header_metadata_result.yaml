@@ -1,0 +1,78 @@
+schema_version: 1
+status: BRCA_BATCH_B02_HEADER_METADATA_VERIFIED
+cohort: TCGA-BRCA
+batch_label: B02
+recorded_at_utc: "2026-08-19T20:45:25Z"
+execution:
+  mode: CPU_ONLY_ACQUISITION_INTEGRITY_AND_HEADER_ONLY
+  source_commit: 64becf4ca16f1140e1d250315bfce3a9e97f737f
+  authorization_path: multiscale_feature_pilot/config/brca_b02_acquisition_header_authorization.yaml
+  authorization_statement_sha256: 5a5ed9f4226814cca5a7a3869d222c0003c55574116b3dc5573ce6b9224ddfa1
+  gdc_client_version: "2.3"
+  gdc_client_sha256: 1df9281cbacbb53413607a4b9b682947dcb48b6ac7fade6527748bc025ae8c96
+  concurrency: 1
+  successful_download_count: 1
+  initial_no_payload_attempt:
+    reason: authorized_destination_directory_did_not_exist
+    payload_downloaded: false
+    resolution: created_exact_empty_authorized_destination_and_retried
+identity:
+  patient_id: TCGA-BH-A0BG
+  slide_id: TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+  filename: TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+  gdc_file_uuid: c5331e5e-10b4-4979-958b-d4592a2805de
+  path: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B02.incoming/c5331e5e-10b4-4979-958b-d4592a2805de/TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+  size_bytes: 724114911
+  md5: a8c6e730df401ff67e1a1e52a6cb6307
+  sha256: df85b3c048b18ae0a5b9414e7e220110d98891f73f28189849e6e602d1743741
+  regular_non_symlink: true
+  partial_or_incomplete_files_absent: true
+download_tree:
+  exact_payload_files: 2
+  entries:
+    - c5331e5e-10b4-4979-958b-d4592a2805de/TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+    - c5331e5e-10b4-4979-958b-d4592a2805de/logs/TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs.parcel
+  parcel_size_bytes: 43630
+  parcel_sha256: 2b4dd949c04d1abcf36770a1c3d8732a1a6ab218ac31cde41db37e6b921966e5
+  total_regular_file_bytes: 724158541
+header:
+  inspection: OPENSLIDE_HEADER_ONLY_NO_PIXEL_ACCESS
+  held_o_nofollow_descriptor: true
+  stable_proc_fd_path: true
+  mpp_x: 0.2505
+  mpp_y: 0.2505
+  level_count: 4
+  levels:
+    - {level: 0, dimensions: [89291, 72971], downsample: 1.0}
+    - {level: 1, dimensions: [22322, 18242], downsample: 4.0001494261056205}
+    - {level: 2, dimensions: [5580, 4560], downsample: 16.002191803433313}
+    - {level: 3, dimensions: [2790, 2280], downsample: 32.004383606866625}
+  read_region_calls: 0
+  thumbnail_calls: 0
+  associated_image_accesses: 0
+omic:
+  source_row_index: "472"
+  exact_case_and_full_slide_match: true
+  rna: {shape: [1, 1, 1558], dtype: float32, content_sha256: 847d90fa8906823f41a8336b159206e9970f18543b8a0335e3e04d3cb3069d88}
+  mutation: {shape: [1, 1, 21], dtype: float32, content_sha256: d7bb1ba8c5b5435372e52a9439f4436829a871306d043fb14c1bdda0d5c4c3bc}
+  cnv: {shape: [1, 1, 1333], dtype: float32, content_sha256: 45ede6ed9da509b7410d37c980d1fdb873a28a1dd831fe8cdf50de23dd0c36a7}
+storage:
+  available_bytes_before_download: 345380155392
+  available_bytes_after_download: 344655613952
+  available_bytes_delta: -724541440
+  raw_wsi_retained: true
+postconditions:
+  official_healnet_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  official_healnet_clean: true
+  pixel_reads: 0
+  coordinate_generations: 0
+  feature_extractions: 0
+  gpu_or_cuda_operations: 0
+  b03_b06_operations: 0
+  deletions: 0
+  drive_operations: 0
+  cohort_expansions: 0
+  training_runs: 0
+required_stop: B02_EXACT_FILE_OMIC_AND_HEADER_METADATA_REPORT
+required_stop_reached: true
+next_gate: USER_REVIEW_REQUIRED_BEFORE_ANY_B02_PIXEL_ACCESS_OR_SCALE_POLICY
