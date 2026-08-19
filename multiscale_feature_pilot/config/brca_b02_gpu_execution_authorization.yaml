@@ -1,0 +1,43 @@
+schema_version: 1
+status: B02_GPU_FEATURE_PILOT_AUTHORIZED
+executable: true
+cohort: TCGA-BRCA
+candidate: B02
+execution_mode: DETERMINISTIC_TESLA_T4_FLOAT32
+authorization_statement: >-
+  I authorize the exact B02-only GPU feature pilot using the frozen verified
+  B02 coordinates: 7,158 scale-2× and 1,862 scale-4× patch reads; float32
+  ResNet50 ImageNet1K V2 feature extraction; natural row concatenation into
+  [9020,2048]; atomic compact artifact publication; and synthetic plus
+  real-feature four-modality HEALNet numerical smoke tests. No training,
+  backward pass, optimizer step, AMP, TF32, CPU fallback, coordinate
+  regeneration, B03–B06 processing, Q25/Q50/Q75/B01 or BLCA changes, Drive
+  operations, deletion, cohort expansion, or official HEALNet modification.
+  Stop after artifact validation and reporting.
+authorization_statement_sha256: 8f769df11703e623608e49626f80cc0e5f56ee60c1d6ee7d2dbc9900a9fcf084
+scope:
+  patient_id: TCGA-BH-A0BG
+  gdc_file_uuid: c5331e5e-10b4-4979-958b-d4592a2805de
+  scale_2x_patch_reads: 7158
+  scale_4x_patch_reads: 1862
+  combined_shape: [9020, 2048]
+  dtype: float32
+  encoder: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+  compact_publication: true
+  synthetic_healnet_smoke: true
+  real_feature_healnet_smoke: true
+prohibited:
+  training: true
+  backward_pass: true
+  optimizer_step: true
+  automatic_mixed_precision: true
+  tf32: true
+  cpu_fallback: true
+  coordinate_regeneration: true
+  b03_b06_processing: true
+  q25_q50_q75_b01_or_blca_changes: true
+  drive_operations: true
+  deletion: true
+  cohort_expansion: true
+  official_healnet_modification: true
+required_stop: B02_COMPACT_ARTIFACT_VALIDATION_AND_REPORTING
