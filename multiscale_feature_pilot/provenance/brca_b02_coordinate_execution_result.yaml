@@ -1,0 +1,95 @@
+schema_version: 1
+status: BRCA_B02_COORDINATES_VERIFIED
+cohort: TCGA-BRCA
+batch_label: B02
+recorded_at_utc: "2026-08-19T20:53:27Z"
+execution:
+  mode: CPU_ONLY_EXACT_SINGLE_LEVEL2_MASK_READ_AND_COORDINATE_PUBLICATION
+  source_commit: ec04855972dc910ca60b2f4e4bf40e16f4b7a124
+  authorization_path: multiscale_feature_pilot/config/brca_b02_coordinate_execution_authorization.yaml
+  authorization_sha256: 377d032f267dda049933e14569a53d0ae8185d94dde6e6d023cee309e16e43fd
+  total_wall_seconds: 18.967207042
+identity:
+  patient_id: TCGA-BH-A0BG
+  slide_id: TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+  gdc_file_uuid: c5331e5e-10b4-4979-958b-d4592a2805de
+  wsi_size_bytes: 724114911
+  wsi_md5: a8c6e730df401ff67e1a1e52a6cb6307
+  wsi_sha256: df85b3c048b18ae0a5b9414e7e220110d98891f73f28189849e6e602d1743741
+mask_read:
+  openslide_open_count: 1
+  read_region_count: 1
+  level_0_location: [0, 0]
+  level: 2
+  size_at_level: [5580, 4560]
+  shape: [4560, 5580, 4]
+  dtype: uint8
+  channel_order: RGBA
+  raw_bytes_sha256: 900382a4c56fe89894846bcd88004a7a2be8f8ea1ae8ee609bb5f6945a16d658
+  contour_count: 1
+  retained_hole_count: 4
+  retained_after_execution: false
+coordinates:
+  directory: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B02.coordinates
+  schema: BRCA_COORDINATE_ARTIFACT_SET_V1
+  exact_file_count: 4
+  total_file_bytes: 168736
+  atomic_no_overwrite_publication: true
+  validated_after_publication: true
+  manifest:
+    size_bytes: 4981
+    sha256: 2b3e5dd754ebb4ca4ec26f3e017e21548b0115dc2d0517ae83146d8f7ec52ba2
+  manifest_sidecar:
+    size_bytes: 91
+    sha256: ce3de3e10d32f9d9cadb9b8147c3b5d10be8bbf1a29e86f62fa28ef2dd83960c
+  scale_2x:
+    shape: [7158, 2]
+    dtype: int64
+    file_size_bytes: 124200
+    file_sha256: c0e9c110dc10109b2c039a7c4c20d469237ffea31eb198c7d7154ce75be5dfdf
+    coordinates_sha256: 5c5d4c27ac4f5306e87b5bdaac3e786a49793291dd423933134be8f2c56ab4e7
+    unique_count: 7158
+    source_level: 0
+    level_0_footprint: [512, 512]
+    level_0_step: [512, 512]
+    effective_mpp: [0.501, 0.501]
+    min_xy: [3584, 4608]
+    max_xy: [77312, 71680]
+  scale_4x:
+    shape: [1862, 2]
+    dtype: int64
+    file_size_bytes: 39464
+    file_sha256: 681b5ee3dc687338e9fcae040b6734b6d2ec74a93c426a523200320dfbf06d78
+    coordinates_sha256: 973a02ab767c3a22073b8e1fbc5869b2e8a5ef979b3e5b44e944553d68aa26c0
+    unique_count: 1862
+    source_level: 1
+    level_0_footprint: [1024, 1024]
+    level_0_step: [1024, 1024]
+    effective_mpp: [1.002037431239458, 1.002037431239458]
+    min_xy: [4096, 5120]
+    max_xy: [76800, 70656]
+  total_coordinate_count: 9020
+validations:
+  exact_one_mask_read: PASS
+  exact_wsi_identity_and_final_hash_recheck: PASS
+  exact_omic_row_472_cpu_rematch: PASS
+  manifest_and_sidecar: PASS
+  hdf5_schema_dtype_attributes: PASS
+  nonempty_unique_row_major_lattice_and_bounds: PASS
+  exact_output_file_set: PASS
+operations_not_performed:
+  patch_reads: 0
+  feature_extractions: 0
+  resnet50_operations: 0
+  healnet_operations: 0
+  gpu_or_cuda_operations: 0
+  b03_b06_operations: 0
+  q25_q50_q75_b01_or_blca_changes: 0
+  drive_operations: 0
+  deletions: 0
+  cohort_expansions: 0
+  training_runs: 0
+required_stop: B02_COORDINATE_VALIDATION_AND_REPORTING
+required_stop_reached: true
+scientific_interpretation: COORDINATE_ARTIFACTS_ONLY_NO_FEATURES_OR_MODEL_OUTPUT
+next_gate: SEPARATE_REVIEW_AND_AUTHORIZATION_REQUIRED_BEFORE_B02_PATCH_READS_OR_GPU_FEATURE_EXTRACTION
