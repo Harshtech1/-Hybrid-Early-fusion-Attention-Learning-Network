@@ -1,0 +1,131 @@
+schema_version: 1
+phase: BRCA_Q75_ACQUISITION_AND_HEADER_METADATA_GATE
+status: BRCA_Q75_LOCAL_GDC_ACQUISITION_READY
+cohort: TCGA-BRCA
+candidate: Q75
+execution_mode: CPU_LOGIC_ONLY_CUDA_NOT_REQUIRED
+
+approval_evidence:
+  source: DIRECT_USER_AUTHORIZATION
+  authorization_config_sha256: 335e6d36aac1c21cc1cd52f8a14e5d2ecfde1f3a6f398d796bf842baaca35979
+  exact_user_statement_sha256: b43031fe0a9df8e5c44f35f9666567b202e4eb80ecb816386679a856a013bf01
+
+frozen_predecessors:
+  cpu_review_commit: 69d89a5df986b129fd0b9dc4dcc1e8534627093e
+  cpu_review_provenance_sha256: fc6784c891938c8213ec6e6468ca24d949fc0de4adcde62da6a5fbf48afe7a45
+  cpu_review_report_sha256: b9ad7c8cd271e769f1365a53c6b5e5ba3db951748e2e14b0d36f01e802a3a927
+  q25_result_status: BRCA_Q25_GPU_FEATURE_PILOT_SUCCESS
+  q25_result_sha256: 76df862c438f4d94e34342b54c80c0866a440af0574be9003444075d7073c6e4
+  q50_result_status: BRCA_Q50_GPU_FEATURE_PILOT_SUCCESS
+  q50_result_sha256: 904ad3c7bef859f89fef6151014f9eb4b37b5af5d6668972feb19b0e656d263b
+  q25_q50_rerun_authorized: false
+
+authorized_object:
+  patient_id: TCGA-E2-A154
+  uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  filename: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  declared_bytes: 1360743825
+  expected_md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+  state: released
+  exact_singleton_case_and_slide_match: true
+  omic_source_index: 771
+  omic_physical_csv_line: 773
+  omic_shapes:
+    rna: [1, 1, 1558]
+    mutation: [1, 1, 21]
+    cnv: [1, 1, 1333]
+
+authorized_manifest:
+  path: >-
+    multiscale_feature_pilot/provenance/brca_phase2_q75_authorized/Q75_TCGA-E2-A154_25aec062-60d1-446e-a1c6-0c79cc74a770.AUTHORIZED_Q75_ONLY.gdc.tsv
+  sha256: 8e2a17e21c6dafbae384ea729ed24b7c769df7510df0b318ee6ce15e2169553a
+  rows: 1
+  combined_manifest_present: false
+  authorization_record_path: >-
+    multiscale_feature_pilot/provenance/brca_phase2_q75_authorized/MANIFEST_SET.AUTHORIZED_Q75.yaml
+  authorization_record_sha256: 2330c4bc66c73c8e150be2d028aefb2a84916b18e4b5076d95fc28cf869d7050
+
+source_bindings:
+  request_sha256: ee2c5147c0900c524daf8a7d8af468f5c71a536d1fc6d4f31e8e32ae6bb66c3c
+  proposal_sha256: b1bbeb06bb200813122e0b1a88a3d0258660eaff067d35f1d8de1dd6d79badb2
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  filtered_gdc_manifest_sha256: ac1b4d591ce255a7d4e6bde3778a041b107576693657ee296fe6eb36c4e79a92
+  guarded_q75_manifest_sha256: 8e2a17e21c6dafbae384ea729ed24b7c769df7510df0b318ee6ce15e2169553a
+  clean_omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+
+gdc_client:
+  path: /teamspace/studios/this_studio/tools/gdc-client/2.3.0/gdc-client
+  version_output: "2.3"
+  size_bytes: 22168960
+  sha256: 1df9281cbacbb53413607a4b9b682947dcb48b6ac7fade6527748bc025ae8c96
+  one_manifest_row: true
+  one_active_client_process: true
+  internal_transfer_processes: CLIENT_SUPPORTED_DEFAULT_MINIMUM_3
+  pass_n_processes_1: false
+
+storage_preflight:
+  local_destination: /teamspace/studios/this_studio/brca_pilot_data/Q75.incoming
+  local_destination_state: ABSENT
+  coordinate_destination_state: ABSENT
+  feature_destination_state: ABSENT
+  existing_brca_pilot_data_bytes: 1954756342
+  filesystem_available_bytes_observed: 349292040192
+  declared_q75_wsi_bytes: 1360743825
+  google_drive_required: false
+  google_drive_operations_authorized: false
+  raw_wsi_deletion_authorized: false
+
+authorization_boundary:
+  current_executable_scope: Q75_DOWNLOAD_AND_HEADER_ONLY
+  metadata_after_all_exact_file_checks: OPENSLIDE_HEADER_ONLY
+  allowed_header_fields: [mpp_x, mpp_y, level_count, level_dimensions, level_downsamples]
+  pixel_or_region_reads: NOT_AUTHORIZED
+  tissue_mask_generation: NOT_AUTHORIZED
+  coordinate_generation: NOT_AUTHORIZED
+  patch_extraction: NOT_AUTHORIZED
+  resnet50_inference: NOT_AUTHORIZED
+  feature_generation: NOT_AUTHORIZED
+  healnet_execution: NOT_AUTHORIZED
+  automatic_scale_policy: NOT_AUTHORIZED
+  full_cohort_processing: NOT_AUTHORIZED
+  training: NOT_AUTHORIZED
+  use_cuda: false
+  stop_after: Q75_EXACT_FILE_VERIFICATION_AND_HEADER_METADATA_REPORT
+
+transition_execution:
+  network_requests: 0
+  wsi_downloads: 0
+  wsi_opens: 0
+  pixel_or_region_reads: 0
+  gpu_operations: 0
+  google_drive_operations: 0
+  raw_wsi_deletions: 0
+  training_runs: 0
+
+validation:
+  focused_test_command: >-
+    python -m pytest -q multiscale_feature_pilot/tests/test_brca_q75_authorized_manifest.py
+  focused_tests_passed: 21
+  failed: 0
+  manifest_builder_ran: true
+  builder_network_requests: 0
+  builder_downloads: 0
+  builder_wsi_opens: 0
+  secure_source_reads:
+    flags: [O_RDONLY, O_NOFOLLOW, O_CLOEXEC]
+    descriptor_fstat_regular_and_size_gate: true
+    initial_final_descriptor_token_match_required: true
+    final_path_token_match_required: true
+    symlink_source_regressions: PASS
+    path_swap_regression: PASS
+
+implementation_identity:
+  multiscale_feature_pilot/config/brca_q75_acquisition_authorization.yaml: 335e6d36aac1c21cc1cd52f8a14e5d2ecfde1f3a6f398d796bf842baaca35979
+  multiscale_feature_pilot/src/brca_q75_authorized_manifest.py: 6caedfc164617fcf99bb17b99da975ebd8a89d5daec4827826cad8f016ff0afa
+  multiscale_feature_pilot/tests/test_brca_q75_authorized_manifest.py: be43cde02abc5b9ec58c519b672a80d786bff5447c7f8b35c02f18793d332fb9
+  scripts/build_brca_q75_authorized_manifest.py: da1db53900c84eed40cce9ef45f9a4eab535f5b03478443fcc6d64cf53724b4c
+
+required_stop:
+  reached_by_transition: true
+  next_action: RUN_EXACT_Q75_DOWNLOAD_AND_HEADER_GATE_THEN_WAIT_FOR_USER_REVIEW
+  later_work_authorized: false

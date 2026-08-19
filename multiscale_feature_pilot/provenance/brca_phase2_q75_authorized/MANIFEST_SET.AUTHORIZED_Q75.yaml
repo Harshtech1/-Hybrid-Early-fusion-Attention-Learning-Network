@@ -1,0 +1,56 @@
+schema_version: 1
+policy_label: BRCA_Q75_SEQUENTIAL_ACQUISITION_V1
+status: AUTHORIZED_Q75_ONLY
+download_authorized: true
+authorized_label: Q75
+current_executable_scope: Q75_DOWNLOAD_AND_HEADER_ONLY
+patient_concurrency: 1
+active_gdc_client_processes: 1
+gdc_internal_transfer_processes: CLIENT_SUPPORTED_DEFAULT_MINIMUM_3
+pass_n_processes_1: false
+q25_status: SUCCESS_FROZEN_NO_RERUN
+q50_status: SUCCESS_FROZEN_NO_RERUN
+metadata_opening: Q75_HEADER_ONLY_AFTER_ALL_EXACT_FILE_CHECKS
+openslide_construction_authorized: true
+pixel_or_region_reads_authorized: false
+tissue_mask_generation_authorized: false
+coordinate_generation_authorized: false
+patch_extraction_authorized: false
+resnet50_inference_authorized: false
+healnet_execution_authorized: false
+feature_generation_authorized: false
+training_authorized: false
+google_drive_required: false
+google_drive_operations_authorized: false
+raw_wsi_deletion_authorized: false
+full_cohort_processing_authorized: false
+automatic_scale_policy_authorized: false
+use_cuda: false
+stop_after: Q75_EXACT_FILE_VERIFICATION_AND_HEADER_METADATA_REPORT
+approval_binding:
+  authorization_config_sha256: 335e6d36aac1c21cc1cd52f8a14e5d2ecfde1f3a6f398d796bf842baaca35979
+  approval_statement_sha256: b43031fe0a9df8e5c44f35f9666567b202e4eb80ecb816386679a856a013bf01
+  review_commit: 69d89a5df986b129fd0b9dc4dcc1e8534627093e
+  review_provenance_sha256: fc6784c891938c8213ec6e6468ca24d949fc0de4adcde62da6a5fbf48afe7a45
+  q25_result_sha256: 76df862c438f4d94e34342b54c80c0866a440af0574be9003444075d7073c6e4
+  q50_result_sha256: 904ad3c7bef859f89fef6151014f9eb4b37b5af5d6668972feb19b0e656d263b
+source_hashes:
+  proposal_sha256: b1bbeb06bb200813122e0b1a88a3d0258660eaff067d35f1d8de1dd6d79badb2
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  filtered_gdc_manifest_sha256: ac1b4d591ce255a7d4e6bde3778a041b107576693657ee296fe6eb36c4e79a92
+  guarded_q75_manifest_sha256: 8e2a17e21c6dafbae384ea729ed24b7c769df7510df0b318ee6ce15e2169553a
+  clean_omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+manifest_count: 1
+combined_manifest_present: false
+entry:
+  label: Q75
+  patient_id: TCGA-E2-A154
+  basename: Q75_TCGA-E2-A154_25aec062-60d1-446e-a1c6-0c79cc74a770.AUTHORIZED_Q75_ONLY.gdc.tsv
+  status: AUTHORIZED_Q75_ONLY
+  rows: 1
+  sha256: 8e2a17e21c6dafbae384ea729ed24b7c769df7510df0b318ee6ce15e2169553a
+  id: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  filename: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+  size: '1360743825'
+  state: released
