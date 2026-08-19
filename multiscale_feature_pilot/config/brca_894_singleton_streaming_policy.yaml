@@ -1,0 +1,52 @@
+schema_version: 1
+status: CPU_DESIGN_ONLY_EXECUTION_NOT_AUTHORIZED
+cohort: TCGA-BRCA
+population:
+  singleton_patients: 894
+  ambiguous_multi_wsi_patients_excluded: 62
+  exact_join_key: [case_id, slide_id]
+execution_contract:
+  patient_concurrency: 1
+  download_concurrency: 1
+  gpu_extraction_concurrency: 1
+  healnet_batch_size: 1
+  padding: false
+  attention_mask: false
+  raw_wsi_retention_count: 1
+  compact_retention_only: true
+  patch_images_retained: false
+storage:
+  lightning_quota_bytes: 200000000000
+  mandatory_safety_floor_bytes: 20000000000
+  singleton_raw_inventory_bytes: 918532189383
+  smallest_raw_wsi_bytes: 25565706
+  median_raw_wsi_bytes: 974485171
+  largest_raw_wsi_bytes: 3401266790
+pilot_evidence:
+  q25: {patches: 9322, gpu_seconds: 155.79171268499977, artifacts_bytes: 153208853}
+  q50: {patches: 10793, gpu_seconds: 171.42871093199983, artifacts_bytes: 177402321}
+  q75: {patches: 16945, gpu_seconds: 245.15734978399996, artifacts_bytes: 278525034}
+estimates_not_guarantees:
+  patch_count_per_patient_observed: {min: 9322, mean: 12353.333333333334, max: 16945}
+  projected_gpu_hours: {min_rate: 38.68827531677495, mean_rate: 47.380160131527184, max_rate: 60.88074186302666}
+  complete_duplicate_artifact_bytes: {min_rate: 136968714582, mean_rate: 181522589984, max_rate: 249001380396}
+state_order:
+  - PLANNED
+  - ACQUISITION_AUTHORIZED
+  - RAW_VERIFIED
+  - HEADER_POLICY_VERIFIED
+  - COORDINATES_VERIFIED
+  - GPU_AUTHORIZED
+  - FEATURES_VERIFIED
+  - TERMINAL_RECORDED
+authorization:
+  current_cpu_design_only: true
+  downloads: false
+  wsi_open_or_pixel_access: false
+  coordinate_generation: false
+  gpu_or_cuda: false
+  feature_extraction: false
+  cohort_processing: false
+  raw_wsi_deletion: false
+  drive_operations: false
+  training: false

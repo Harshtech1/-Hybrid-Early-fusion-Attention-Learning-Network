@@ -1,0 +1,59 @@
+schema_version: 1
+status: BRCA_894_SINGLETON_STREAMING_DESIGN_CPU_VERIFIED
+cohort: TCGA-BRCA
+scope: NON_EXECUTABLE_CPU_POLICY_AND_SYNTHETIC_STATE_MACHINE
+recorded_at_utc: "2026-08-19"
+authorization:
+  user_statement: ok I authorised you
+  bounded_interpretation: >-
+    CPU-only Q25/Q50/Q75 consolidation, extraction-policy freeze, and
+    non-executable 894-patient singleton streaming design with synthetic tests
+  does_not_authorize_execution: true
+evidence:
+  q25_gpu_result_sha256: 76df862c438f4d94e34342b54c80c0866a440af0574be9003444075d7073c6e4
+  q50_gpu_result_sha256: 904ad3c7bef859f89fef6151014f9eb4b37b5af5d6668972feb19b0e656d263b
+  q75_gpu_result_sha256: 2ecf8fc558ad295fc3cbdc2780f7fb9a7c9e93fa452fb70b833e7f1f6dc30460
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  download_plan_sha256: ef32418e6551ded13bab3e7d1f5c2760d628b348c59c394ebdd6865e60372a82
+verified_policy:
+  physical_targets_mpp: [0.5, 1.0]
+  scale_2x: level_0_512_to_256_lanczos_when_native_mpp_is_approximately_0_25
+  scale_4x: native_level_nearest_approximately_1_0_mpp_with_frozen_tolerance
+  encoder: torchvision_resnet50_imagenet1k_v2_fc_identity
+  feature_width: 2048
+  branch_combination: torch_cat_dim_0_2x_then_4x
+  natural_wsi_shape: "[1,P_i,2048]"
+  omic_shapes: ["[1,1,1558]", "[1,1,21]", "[1,1,1333]"]
+  one_patient_batch_without_padding_or_mask: true
+design_guards:
+  exact_singleton_identity_only: true
+  concurrency_one: true
+  next_patient_blocked_until_terminal_record: true
+  complete_duplicate_artifact_retention_for_894_rejected: true
+  compact_retention_schema_requires_separate_review: true
+operations_performed:
+  metadata_reads: true
+  synthetic_policy_tests: true
+  downloads: 0
+  wsi_opens: 0
+  pixel_reads: 0
+  coordinate_generations: 0
+  gpu_operations: 0
+  feature_extractions: 0
+  drive_operations: 0
+  deletions: 0
+  training_runs: 0
+implementation:
+  config_sha256: 9172449122f11cb17ef196d79911d1e5914125544531dd7b1eeeca6a11ae7b5f
+  policy_source_sha256: 02922d25ec4287b7b3bbf4d54731e6820691f3d1eda75b2a9494c610f8273380
+  policy_tests_sha256: 908a3586b2adb7a3dadedf21c3061965b668f82194c70d35285a71d21e61f258
+  design_report_sha256: c21b19ec1904e845a5ad461d294e8577e5710c6c3feaad68d676c869c5bf22ca
+  multiscale_policy_sha256: 614fbb6911139c5906db74d11d414993ff915d65adc2d97fba27cfca851e64b3
+validation:
+  focused_tests: 12
+  full_repository_tests: 635
+  py_compile: PASS
+  yaml_safe_load: PASS
+  pure_import_scope: PASS
+  git_diff_check: PASS
+next_gate: REVIEW_COMPACT_ARTIFACT_SCHEMA_AND_FAILURE_RECOVERY_BEFORE_ANY_COHORT_EXECUTION
