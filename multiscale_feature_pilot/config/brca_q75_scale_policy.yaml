@@ -1,0 +1,130 @@
+schema_version: 1
+cohort: TCGA-BRCA
+candidate_label: Q75
+policy_status: APPROVED_BRCA_Q75_SCALE_POLICY_V1_EXECUTION_LOCKED
+execution_mode: CPU_ONLY_POLICY_FORMALIZATION
+
+authority:
+  source: DIRECT_USER_CONTINUATION
+  exact_user_statement: OK CONTINUE PLEASE
+  exact_user_statement_sha256: 70e658b86380c6b3c86fd0f980937ecb081e38d51ed3b7056cc534f9cb95e3e3
+  bounded_interpretation: >-
+    Approve only the immediately preceding proposed Q75 mapping: the
+    approximately 0.5-MPP branch uses level 0 with a 512x512 source footprint
+    explicitly resized to 256x256 using PIL Lanczos, and the approximately
+    1.0-MPP branch uses a native 256x256 region from level 1. This transition
+    records the mapping but does not authorize execution.
+  approved_scope: Q75_SCALE_MAPPING_FORMALIZATION_ONLY
+
+header_result_binding:
+  result_path: multiscale_feature_pilot/provenance/brca_q75_header_metadata_result/result.yaml
+  result_sha256: 08a7ed3e67ddf17513ee2dbda2adfd2398333787aaa75fe9eacf911f3c1a3898
+  report_path: multiscale_feature_pilot/provenance/brca_q75_header_metadata_result/report.md
+  report_sha256: 9ed50ecc8464109e0a8ca121082462f8765b1c70663499180cc644cfe604d985
+  header_gate_source_commit: ef6c8921d993567c8178fc932f7315378714ca5a
+  header_result_commit: c7e98f4ce2663556be9b487441fe36494364ff18
+  predecessor_status: BRCA_Q75_FILE_AND_HEADER_METADATA_VERIFIED
+  predecessor_required_stop_reached: true
+  predecessor_scale_policy_approved: false
+  drift_action: reject
+
+wsi_identity:
+  patient_id: TCGA-E2-A154
+  slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  gdc_file_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  size_bytes: 1360743825
+  md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+  sha256: 844eb17d1bf66136b61f0c0e69ae1609e7dc9eca096e8c206e60ddd34332ab37
+  exact_omic_source_row_index: "771"
+  exact_case_and_full_slide_omic_match: true
+  omic_shapes:
+    rna: [1, 1, 1558]
+    mutation: [1, 1, 21]
+    cnv: [1, 1, 1333]
+
+pinned_header_metadata:
+  mpp_x: 0.2468
+  mpp_y: 0.2468
+  level_count: 4
+  level_dimensions:
+    - [108528, 90471]
+    - [27132, 22617]
+    - [6783, 5654]
+    - [3391, 2827]
+  level_downsamples:
+    - 1.0
+    - 4.000066321793341
+    - 16.000619030774672
+    - 32.00359724763015
+
+acceptance:
+  target_mpp_per_axis:
+    scale_2x: 0.5
+    scale_4x: 1.0
+  maximum_relative_error_per_axis: 0.10
+  exact_identity_and_metadata_required: true
+  silent_level_substitution: prohibited
+  silent_resampling: prohibited
+  explicit_declared_resampling: scale_2x_only
+  evidence_or_metadata_drift_action: reject
+
+branches:
+  scale_2x:
+    target_mpp: 0.5
+    source_level: 0
+    source_native_mpp_x: 0.2468
+    source_native_mpp_y: 0.2468
+    source_footprint: [512, 512]
+    output_patch: [256, 256]
+    operation: EXPLICIT_LINEAR_DOWNSAMPLE
+    linear_downsample_factor: 2.0
+    interpolation: PIL.Image.Resampling.LANCZOS
+    effective_mpp_x: 0.4936
+    effective_mpp_y: 0.4936
+    relative_error_x: 0.0128
+    relative_error_y: 0.0128
+    result: PASS_APPROVED_EXPLICIT_DECLARED_2X
+  scale_4x:
+    target_mpp: 1.0
+    source_level: 1
+    source_native_mpp_x: 0.9872163682185965
+    source_native_mpp_y: 0.9872163682185965
+    source_footprint: [256, 256]
+    output_patch: [256, 256]
+    operation: NATIVE_LEVEL
+    linear_downsample_factor: 1.0
+    interpolation: none
+    effective_mpp_x: 0.9872163682185965
+    effective_mpp_y: 0.9872163682185965
+    relative_error_x: 0.012783631781403515
+    relative_error_y: 0.012783631781403515
+    result: PASS_APPROVED_NATIVE
+
+execution_boundary:
+  scale_mapping_resolved: true
+  pure_policy_evaluation_only: true
+  wsi_open_authorized: false
+  real_pixel_or_region_access_authorized: false
+  resampling_execution_authorized: false
+  tissue_mask_generation_authorized: false
+  coordinate_generation_authorized: false
+  patch_extraction_authorized: false
+  resnet50_inference_authorized: false
+  feature_generation_authorized: false
+  healnet_execution_authorized: false
+  gpu_work_authorized: false
+  raw_wsi_deletion_authorized: false
+  google_drive_operations_authorized: false
+  full_cohort_processing_authorized: false
+  q25_q50_modification_or_rerun_authorized: false
+  blca_modification_authorized: false
+  official_healnet_modification_authorized: false
+  training_authorized: false
+  next_gate: SEPARATE_Q75_COORDINATE_POLICY_REVIEW_REQUIRED
+
+supersession:
+  scope: >-
+    Supersedes only the header result's deliberately unresolved Q75 scale-policy
+    decision for this exact WSI. The header result and all prior evidence remain
+    immutable historical records.
+  historical_artifacts_must_not_be_rewritten: true
