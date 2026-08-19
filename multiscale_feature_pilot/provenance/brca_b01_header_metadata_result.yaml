@@ -1,0 +1,112 @@
+schema_version: 1
+status: BRCA_B01_FILE_OMIC_AND_HEADER_METADATA_VERIFIED
+cohort: TCGA-BRCA
+batch_label: B01
+recorded_at_utc: "2026-08-19T19:49:39Z"
+execution:
+  mode: CPU_ONLY_SINGLE_PATIENT_ACQUISITION_AND_HEADER_ONLY
+  source_commit: 96719d0535510b3ce86058d1cf50739a675b33d7
+  authorization_path: multiscale_feature_pilot/config/brca_b01_acquisition_header_authorization.yaml
+  authorization_sha256: 54b0ca0f41b64c3dad76d0797e9346014be7b7f0d7ddd75c1df310810f3a059a
+  authorized_manifest_sha256: 7f1236c48bb76baf76904234433edd63f5e5643f6cb1de3110baa15d1c1c8b92
+  gdc_client_invocations: 2
+  pretransfer_failures: 1
+  successful_downloads: 1
+  pretransfer_failure_detail: destination directory initially absent; client exited before network transfer or payload creation
+identity:
+  patient_id: TCGA-GI-A2C8
+  slide_id: TCGA-GI-A2C8-01Z-00-DX1.09BD8AC9-645A-4C8B-9B36-77D833BDBA09.svs
+  gdc_uuid: 0a886f18-c44c-4b5e-b243-6df6e27f426a
+  local_path: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B01.incoming/0a886f18-c44c-4b5e-b243-6df6e27f426a/TCGA-GI-A2C8-01Z-00-DX1.09BD8AC9-645A-4C8B-9B36-77D833BDBA09.svs
+  size_bytes: 408704377
+  md5: a9f830d456b4a1fe0e9bb5b5b99f4b7e
+  sha256: b3c27e220c5c3961600782af42e91a52ea0b85a710d8d4aa722831ea00f9ad5f
+  regular_file: true
+  symlink: false
+  exact_uuid_filename_size_and_md5: true
+  partial_or_incomplete_files_found: false
+  retained: true
+download_tree:
+  exact_payload_file_count: 1
+  parcel_path: 0a886f18-c44c-4b5e-b243-6df6e27f426a/logs/TCGA-GI-A2C8-01Z-00-DX1.09BD8AC9-645A-4C8B-9B36-77D833BDBA09.svs.parcel
+  parcel_size_bytes: 24856
+  parcel_sha256: 5fc7078041b779d989d5c2e0339bedbf8338f524868897646310a7b0a02b68f0
+omic:
+  archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  source_row_index: "924"
+  exact_case_and_full_slide_match: true
+  modalities:
+    rna:
+      shape: [1, 1, 1558]
+      dtype: float32
+      device: cpu
+      all_finite: true
+      content_sha256: d72596e4ae25e65fbe04b6b3cd8495f03e66540ba922350b4a69fa5d680609a3
+    mutation:
+      shape: [1, 1, 21]
+      dtype: float32
+      device: cpu
+      all_finite: true
+      content_sha256: c9f84365e4c7b97b8505e8ef37fa8a67c7fd42da0eb83d005fd9e6ea06368e07
+    cnv:
+      shape: [1, 1, 1333]
+      dtype: float32
+      device: cpu
+      all_finite: true
+      content_sha256: 94edccdb52ed772d44188749dee9ae792ecb618fb2f954b3f6cce42a8ba5f9cd
+openslide_header:
+  held_o_nofollow_descriptor_used: true
+  stable_proc_fd_path_used: true
+  read_region_monkeypatch_blocked: true
+  read_region_calls: 0
+  mpp_x: 0.2468
+  mpp_y: 0.2468
+  level_count: 3
+  levels:
+    - level: 0
+      dimensions: [63784, 39311]
+      downsample: 1.0
+    - level: 1
+      dimensions: [15946, 9827]
+      downsample: 4.00015264068383
+    - level: 2
+      dimensions: [3986, 2456]
+      downsample: 16.004057258221366
+  scale_policy_inferred_or_approved: false
+storage:
+  before_download:
+    total_bytes: 395184570368
+    used_bytes: 35548372992
+    available_bytes: 339486973952
+    percent_used: 10
+  after_header:
+    total_bytes: 395184570368
+    used_bytes: 35957641216
+    available_bytes: 339077705728
+    percent_used: 10
+  used_bytes_delta: 409268224
+operations:
+  authorized:
+    b01_successful_downloads: 1
+    openslide_header_opens: 1
+    omic_exact_matches: 1
+  prohibited_and_not_performed:
+    read_region_or_pixel_access: 0
+    mask_or_coordinate_generation: 0
+    feature_extraction_or_model_execution: 0
+    gpu_or_cuda: 0
+    deletion: 0
+    google_drive: 0
+    additional_patient_processing: 0
+    cohort_expansion: 0
+    training: 0
+validations:
+  exact_manifest_identity_and_hash: PASS
+  exact_file_size_md5_and_independent_sha256: PASS
+  regular_non_symlink_and_complete_tree: PASS
+  exact_omic_row_and_full_slide_match: PASS
+  openslide_header_only_and_zero_read_region: PASS
+  final_md5_and_sha256_recheck_after_header: PASS
+required_stop: B01_EXACT_FILE_OMIC_AND_HEADER_METADATA_REPORT
+required_stop_reached: true
+next_gate: USER_REVIEW_REQUIRED_BEFORE_ANY_B01_PIXEL_ACCESS_OR_B02_ACQUISITION
