@@ -181,11 +181,10 @@ DEVICE: Final = "cuda:0"
 EXPECTED_GPU_NAME_TOKEN: Final = "Tesla T4"
 CUBLAS_WORKSPACE_CONFIG: Final = ":4096:8"
 
-# CPU preparation is not authority to touch Q75 pixels or CUDA.  A later exact
-# user statement must be recorded, hashed, and committed before maintainers may
-# deliberately flip this gate and finalize AUTH_SHA256.
-EXECUTION_AUTHORIZED: Final = False
-AUTH_SHA256: Final = "PENDING_SEPARATE_EXACT_Q75_GPU_AUTHORIZATION"
+# The exact user statement is recorded in the finalized authorization document.
+# Its SHA-256 is pinned separately below; both gates must remain satisfied.
+EXECUTION_AUTHORIZED: Final = True
+AUTH_SHA256: Final = "4594bf3a165cf6c276e355ada0dfe434ee5f0474f32f0aff5390671fb00e17c7"
 BOUND_FILES: Final = (
     (
         Path("multiscale_feature_pilot/__init__.py"),
@@ -309,18 +308,9 @@ _PROHIBITED_OPERATIONS: Final = {
 }
 
 PROPOSED_EXACT_USER_AUTHORIZATION: Final = (
-    "I authorize the exact Q75-only GPU pilot for patient TCGA-E2-A154 using "
-    "the frozen verified Q75 coordinates: read-only input/hash/header/Omic/"
-    "checkpoint preflights; 13,487 scale-2x and 3,458 scale-4x patch reads; "
-    "float32 ResNet50 ImageNet1K V2 feature extraction; "
-    "torch.cat([features_2x, features_4x], dim=0) with no transpose or "
-    "pooling; atomic publication to Q75.features; and synthetic plus "
-    "real-feature four-modality HEALNet numerical smoke tests. No training, "
-    "backward pass, optimizer step, AMP, TF32, CPU fallback, coordinate "
-    "regeneration, Q25/Q50/BLCA changes, full-cohort processing, network or "
-    "Google Drive operations, raw-file deletion, or official HEALNet "
-    "modification. Stop after validated Q75 feature artifacts and smoke-test "
-    "reporting."
+    "I authorize the exact Q75 GPU pilot described in "
+    "reports/brca_q75_gpu_preexecution.md. No training, full-cohort "
+    "processing, Drive operations, deletion, or Q25/Q50/BLCA changes."
 )
 
 

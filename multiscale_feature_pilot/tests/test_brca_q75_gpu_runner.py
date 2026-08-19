@@ -119,18 +119,28 @@ def test_bound_sources_include_the_complete_local_package_import_chain() -> None
     } <= bound_paths
 
 
-def test_preexecution_runner_is_locked_without_finalized_authorization() -> None:
+def test_execution_authorization_is_finalized_checked_in_and_semantically_exact() -> None:
     paths = runner.PilotPaths()
-    assert runner.EXECUTION_AUTHORIZED is False
-    assert runner.AUTH_SHA256 == "PENDING_SEPARATE_EXACT_Q75_GPU_AUTHORIZATION"
-    with pytest.raises(runner.Q75GpuPilotError, match="locked pending separate"):
-        runner._validate_bound_sources(paths)
+    assert runner.EXECUTION_AUTHORIZED is True
+    assert runner.AUTH_SHA256 == (
+        "4594bf3a165cf6c276e355ada0dfe434ee5f0474f32f0aff5390671fb00e17c7"
+    )
+    assert hashlib.sha256(paths.auth.read_bytes()).hexdigest() == runner.AUTH_SHA256
+    document = yaml.safe_load(paths.auth.read_text(encoding="utf-8"))
+    runner._validate_authorization_semantics(document, paths)
+    observed = runner._validate_bound_sources(paths)
+    assert observed[runner.AUTH_RELATIVE_PATH.as_posix()] == runner.AUTH_SHA256
 
 
 def test_pending_authorization_digest_is_an_independent_second_lock(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setattr(runner, "EXECUTION_AUTHORIZED", True)
+    monkeypatch.setattr(
+        runner,
+        "AUTH_SHA256",
+        "PENDING_SEPARATE_EXACT_Q75_GPU_AUTHORIZATION",
+    )
     with pytest.raises(runner.Q75GpuPilotError, match="has not been finalized"):
         runner._validate_bound_sources(runner.PilotPaths())
 
@@ -158,6 +168,7 @@ def test_top_level_lock_precedes_paths_dependencies_gpu_and_pixel_dataset(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     events: list[str] = []
+    monkeypatch.setattr(runner, "EXECUTION_AUTHORIZED", False)
     monkeypatch.setattr(
         runner,
         "_validate_paths",
@@ -180,6 +191,7 @@ def test_top_level_lock_precedes_default_dependency_construction(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     events: list[str] = []
+    monkeypatch.setattr(runner, "EXECUTION_AUTHORIZED", False)
     monkeypatch.setattr(
         runner,
         "_default_dependencies",

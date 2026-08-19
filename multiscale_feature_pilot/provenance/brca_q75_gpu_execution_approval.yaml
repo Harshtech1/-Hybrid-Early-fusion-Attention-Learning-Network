@@ -1,0 +1,109 @@
+schema_version: 1
+status: BRCA_Q75_GPU_EXECUTION_AUTHORIZED_NOT_YET_RUN
+cohort: TCGA-BRCA
+candidate: Q75
+recorded_at_utc: "2026-08-19T18:19:04Z"
+
+approval:
+  user_statement: >-
+    I authorize the exact Q75 GPU pilot described in
+    reports/brca_q75_gpu_preexecution.md. No training, full-cohort processing,
+    Drive operations, deletion, or Q25/Q50/BLCA changes.
+  user_statement_sha256: 23aae783e0064e4629662584533f5191a1435ea3411ba0a39733c2bcab3dc880
+  supervisor_cohort_statement: Go with brca, blca
+  authorization_config:
+    path: multiscale_feature_pilot/config/brca_q75_gpu_execution_authorization.yaml
+    sha256: 4594bf3a165cf6c276e355ada0dfe434ee5f0474f32f0aff5390671fb00e17c7
+  referenced_preexecution_report:
+    path: reports/brca_q75_gpu_preexecution.md
+    sha256: 2980c98bf215e3dea061e6a45ca9bfb78d83ca23b9efc27065a597946dc5f922
+  referenced_preexecution_provenance:
+    path: multiscale_feature_pilot/provenance/brca_q75_gpu_preexecution.yaml
+    sha256: a2b40678363b92a4920f7a9e4f6ca26743a7c7ae14f5d200fa0405d384297a25
+  bounded_scope: >-
+    Process only the frozen Q75 slide and verified coordinate bags; extract
+    deterministic float32 ImageNet1K V2 ResNet50 features in sequential
+    2x-then-4x order; concatenate the two CPU feature matrices without pooling
+    or transposition; run the full-size synthetic and real-feature
+    four-modality HEALNet numerical smoke tests; atomically publish validated
+    Q75 feature artifacts outside Git; then stop without training.
+
+q75_contract:
+  patient_id: TCGA-E2-A154
+  slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  gdc_file_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  wsi_sha256: 844eb17d1bf66136b61f0c0e69ae1609e7dc9eca096e8c206e60ddd34332ab37
+  coordinate_result_sha256: 1b583b9366a5308c26ee74de3686f080992f9381dc93b8b2d8f6729854e4be17
+  coordinate_manifest_sha256: 438165ce6b3be9d26d66c65cd70793e29cc92208cfb6a78bf68043bc4b4a4e90
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  omic_source_row_index: "771"
+  branch_order: [scale_2x, scale_4x]
+  scale_2x_shape: [13487, 2048]
+  scale_4x_shape: [3458, 2048]
+  combined_shape: [16945, 2048]
+  model_wsi_shape: [1, 16945, 2048]
+  pooling: prohibited
+  wsi_transpose: prohibited
+  omic_shapes:
+    rna: [1, 1, 1558]
+    mutation: [1, 1, 21]
+    cnv: [1, 1, 1333]
+  expected_interface_output: [1, 4]
+  output_interpretation: random_weight_interface_and_numerical_smoke_not_prediction
+
+execution_contract:
+  launch_environment:
+    CUBLAS_WORKSPACE_CONFIG: ":4096:8"
+  device: cuda:0
+  gpu: Tesla T4
+  batch_size: 32
+  num_workers: 2
+  dtype: float32
+  automatic_mixed_precision: false
+  tf32: false
+  cpu_fallback: false
+  torch_deterministic_algorithms: true
+  branch_execution: sequential_scale_2x_then_scale_4x
+  pre_pixel_synthetic_full_size_smoke: required
+  real_feature_smoke_before_publication: required
+  external_atomic_no_overwrite_publication: required
+
+still_locked:
+  - q75_operations_outside_bound_patient
+  - q75_tissue_mask_or_coordinate_regeneration
+  - q25_q50_rerun_or_modification
+  - blca_modification
+  - full_brca_cohort
+  - model_training
+  - optimizer_or_backward_execution
+  - any_wsi_download_or_network_operation
+  - google_drive_operations
+  - raw_wsi_or_existing_artifact_deletion
+  - official_healnet_modification
+
+verification_at_record_time:
+  q75_coordinate_gate: passed
+  q75_patch_reads_in_authorization_transition: 0
+  q75_feature_artifacts: 0
+  healnet_smoke_executions: 0
+  cuda_operations: 0
+  training: false
+  authorization_semantics: passed
+  source_hash_finalization: passed
+  q75_focused_suite: 59 passed
+  full_synthetic_suite: 623 passed
+  source_only_commit: pending
+
+implementation_identity:
+  base_commit_before_authorization: 8364391dcfa29490eb17980612eeb4afe222458b
+  authorization_sha256: 4594bf3a165cf6c276e355ada0dfe434ee5f0474f32f0aff5390671fb00e17c7
+  files:
+    scripts/run_brca_q75_gpu_pilot.py: 151ad4f5ba9b04119d6113eb4e26162854e05be4670e89207da2fd6876838a78
+    multiscale_feature_pilot/src/brca_q75_feature_extraction.py: 5b2c3c426eab17b9312cdd692e81c35c4dac552d47e0f9cddd07a05df1e2abd1
+    multiscale_feature_pilot/src/brca_q75_feature_artifacts.py: df927ba75f8cfa1865f69b31073b1fab36f7480ad652c1ecc7c2e81488e8a280
+    multiscale_feature_pilot/tests/test_brca_q75_gpu_runner.py: 4bef06424236bccfae48430cf9e2e88e4900fc2ef173e2cdf8dbb0327235e395
+
+required_stop:
+  after: VALIDATED_Q75_FEATURE_ARTIFACTS_AND_HEALNET_SMOKE
+  training_authorized: false
