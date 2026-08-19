@@ -75,7 +75,7 @@ CRITICAL = (
     Path("multiscale_feature_pilot/src/brca_omic.py"),
 )
 ALLOWED_STATUS = {
-    " M reports/blca_one_patient_multiscale_pilot.md",
+    "M reports/blca_one_patient_multiscale_pilot.md",
     " M reports/brca_compact_artifact_and_recovery_design.md",
     "?? reports/brca_supervisor_progress_report.html",
 }
