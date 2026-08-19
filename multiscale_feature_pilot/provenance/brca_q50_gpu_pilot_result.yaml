@@ -1,0 +1,255 @@
+schema_version: 1
+status: BRCA_Q50_GPU_FEATURE_PILOT_SUCCESS
+cohort: TCGA-BRCA
+candidate: Q50
+patient_id: TCGA-AR-A1AW
+slide_id: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+gdc_file_uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+recorded_at_utc: "2026-08-19T01:17:31Z"
+
+execution:
+  attempt: 1
+  started_at_utc: "2026-08-19T01:12:52.254613+00:00"
+  finished_at_utc: "2026-08-19T01:15:43.683340+00:00"
+  total_seconds: 171.42871093199983
+  source_commit: 6e2d5511eab60aa0ab515ca6bb875d7c9fcc2190
+  authorization_sha256: 2bfe61f7e17668ec50aeb6f3d2b214e0a3dd91e4f47692610880bec8afb2b080
+  process_environment:
+    CUBLAS_WORKSPACE_CONFIG: ":4096:8"
+  seed: 0
+  torch_deterministic_algorithms: true
+  cudnn_deterministic: true
+  cudnn_benchmark: false
+  tf32: false
+  automatic_mixed_precision: false
+  cpu_fallback: false
+  batch_size: 32
+  num_workers: 2
+  device: cuda:0
+  dtype: float32
+  branch_order: [scale_2x, scale_4x]
+  timings_seconds:
+    wsi_identity_and_hash: 5.46209107
+    coordinate_validation: 0.120990284
+    omic_validation: 0.656650842
+    pre_extraction_synthetic_healnet: 0.641421918
+    sequential_resnet_extraction: 148.39458222
+    real_feature_healnet: 0.19592683
+
+inputs:
+  wsi:
+    filename: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+    size_bytes: 975626387
+    md5: 304509e03f26cbecc9aee4ea691c8e5a
+    sha256: 6b960db7e6e5772f4f626daa7b023ffbb5e3b20f9f6ff5c7d52f4554cf33399b
+    level_0_dimensions: [99960, 65334]
+    level_0_pixel_count: 6530786640
+    mpp_x: 0.2468
+    mpp_y: 0.2468
+    identity_and_hash_rechecked_before_publication: true
+  coordinates:
+    manifest_sha256: a79179e7fe3a0cf6bdda5089da11910c0db6b1f4bcab9a15c6d5b8e7ec43e485
+    manifest_size_bytes: 6558
+    scale_2x_hdf5_sha256: f412b3e04e11c7e2dbfd2db3da70c5eda45a1634e7a48aa322796f007c5b1050
+    scale_2x_content_sha256: 9775ccdb9aec661021b26e2a2e005ccd5d9bbf528578bbebd1fc5b8aa303084f
+    scale_2x_count: 8580
+    scale_4x_hdf5_sha256: f4032dd245359694e59bff8356cb4f0b673f2e71c44fac7f19f1873da9685479
+    scale_4x_content_sha256: 8bb20dbd7bb876f339b1ba85beed95922d732c36c037273f22f68f46069b0b7b
+    scale_4x_count: 2213
+    revalidated_before_publication: true
+  omic:
+    archive_filename: tcga_brca_all_clean.csv.zip
+    archive_size_bytes: 4081277
+    archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+    member_filename: ./tcga_brca_all_clean.csv.zip
+    member_size_bytes: 15021018
+    member_sha256: 052637f2a69c515812796d9638566cb75299b6a3571dbdc5363496f12665027d
+    source_row_index: "370"
+    exact_case_and_full_slide_match: true
+    rna_shape: [1, 1, 1558]
+    mutation_shape: [1, 1, 21]
+    cnv_shape: [1, 1, 1333]
+    kept_as_three_separate_healnet_modalities: true
+    concatenated_with_wsi: false
+    identity_and_hash_rechecked_before_publication: true
+  checkpoint:
+    identity: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+    filename: resnet50-11ad3fa6.pth
+    size_bytes: 102540417
+    sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+    identity_and_hash_rechecked_before_publication: true
+
+feature_extraction:
+  branch_order: [scale_2x, scale_4x]
+  scale_2x:
+    source_level: 0
+    source_patch_shape: [512, 512]
+    output_patch_shape: [256, 256]
+    interpolation: PIL.Image.Resampling.LANCZOS
+    effective_mpp: [0.4936, 0.4936]
+    shape: [8580, 2048]
+    dtype: float32
+    all_finite: true
+    streaming_seconds: 124.72181307
+    model_forward_seconds: 24.0247815323
+    peak_gpu_memory_bytes: 481334784
+  scale_4x:
+    source_level: 1
+    source_patch_shape: [256, 256]
+    output_patch_shape: [256, 256]
+    interpolation: none
+    effective_mpp: [0.9872151105124595, 0.9872151105124595]
+    shape: [2213, 2048]
+    dtype: float32
+    all_finite: true
+    streaming_seconds: 22.166922364
+    model_forward_seconds: 6.33044137955
+    peak_gpu_memory_bytes: 481334784
+  combined:
+    operation: torch.cat
+    dim: 0
+    shape: [10793, 2048]
+    dtype: float32
+    all_finite: true
+    scale_2x_prefix_exact: true
+    scale_4x_suffix_exact: true
+    row_provenance_count: 10793
+    pooling_performed: false
+    transpose_performed: false
+    natural_model_shape: [1, 10793, 2048]
+
+healnet_contracts:
+  channel_dims: [2048, 1558, 21, 1333]
+  mask_supplied: false
+  padding_supplied: false
+  pre_extraction_synthetic:
+    ran_before_pixel_capable_dataset: true
+    synthetic_zero_inputs: true
+    input_shapes:
+      - [1, 10793, 2048]
+      - [1, 1, 1558]
+      - [1, 1, 21]
+      - [1, 1, 1333]
+    output_shape: [1, 4]
+    output_dtype: float32
+    attention_shapes:
+      - [1, 2, 10793]
+      - [1, 2, 1]
+      - [1, 2, 1]
+      - [1, 2, 1]
+    output_and_attention_finite: true
+    interface_seconds: 0.641421918
+    peak_gpu_memory_bytes: 301068288
+    random_initialized: true
+    evaluation_inference_mode: true
+    training: false
+    scientific_prediction: false
+  real_features:
+    input_shapes:
+      - [1, 10793, 2048]
+      - [1, 1, 1558]
+      - [1, 1, 21]
+      - [1, 1, 1333]
+    output_shape: [1, 4]
+    output_dtype: float32
+    attention_shapes:
+      - [1, 2, 10793]
+      - [1, 2, 1]
+      - [1, 2, 1]
+      - [1, 2, 1]
+    output_and_attention_finite: true
+    interface_seconds: 0.19592683
+    peak_gpu_memory_bytes: 301068288
+    random_initialized: true
+    evaluation_inference_mode: true
+    training: false
+    scientific_prediction: false
+
+artifacts:
+  directory: /teamspace/studios/this_studio/brca_pilot_data/Q50.features
+  total_file_bytes: 177402321
+  atomic_no_overwrite_publication: true
+  validated_after_publication: true
+  external_to_git_repository: true
+  git_tracked: false
+  exact_file_count: 6
+  manifest:
+    filename: feature_manifest.json
+    size_bytes: 7941
+    sha256: 1111f4bfd4ad1183896321c0121d4c92b830c5e327a58c2408ae19267292dae0
+  manifest_sidecar:
+    filename: feature_manifest.json.sha256
+    size_bytes: 88
+    sha256: 54bfc5b6092aa0a6451c745336933cfbe9e70c1ba54df6a0302d5f9f13e1d0b2
+    referenced_manifest_sha256: 1111f4bfd4ad1183896321c0121d4c92b830c5e327a58c2408ae19267292dae0
+  scale_2x_features:
+    filename: scale_2x_features.pt
+    size_bytes: 70288937
+    sha256: b654895cfedec9099c893ef7a25f8646bf2656454937dfd006c038315cd37e3b
+    tensor_content_sha256: 607f1e67c76f2ea44f899b518fbb9da28ec1bf18a8f6ed5bb368cb23b65c94ce
+  scale_4x_features:
+    filename: scale_4x_features.pt
+    size_bytes: 18130473
+    sha256: 969b1857be95dab78055e45cf4073e9cef4b824b5795279dfc71297f5ae006f7
+    tensor_content_sha256: 4053a416f787a95435775d6015eb3d497de7d9adb083460d0158bd78f52559a5
+  combined_features:
+    filename: combined_features.pt
+    size_bytes: 88417833
+    sha256: 52a2213de662385569d27a32ff82d9edc2de028f0cfa483a56abe1687cdb2999
+    tensor_content_sha256: 5c3f37b406451eb10de4bf1b294c8fd018bb21e2685752182e8220dd0beee511
+  row_provenance:
+    filename: row_provenance.csv
+    size_bytes: 557049
+    sha256: fb69eb75ed18dbab43746b1eae2a832d511f3b455cceb335734e19a6da515e87
+    row_count: 10793
+  independent_recording_audit:
+    every_file_sha256_recomputed: true
+    manifest_sidecar_matches_manifest: true
+    no_wsi_or_model_rerun: true
+
+runtime:
+  gpu: Tesla T4
+  gpu_uuid: GPU-5bbb9171-b00f-f9ed-2a37-fcfa2c8e8ac8
+  gpu_compute_capability: [7, 5]
+  nvidia_driver: 580.173.02
+  nvidia_memory_total_mib: 15360
+  nvidia_memory_free_mib_at_preflight: 14789
+  python_executable: /home/zeus/miniconda3/envs/cloudspace/bin/python
+  python: 3.12.11
+  torch: 2.8.0+cu128
+  torchvision: 0.23.0+cu128
+  torch_cuda_build: 12.8
+  cudnn: 91002
+  numpy: 1.26.4
+  h5py: 3.16.0
+  openslide_python: 1.4.6
+  openslide_library: 3.4.1
+  pillow: 12.2.0
+  post_run_observation:
+    gpu_memory_used_mib: 0
+    gpu_utilization_percent: 0
+
+postconditions:
+  official_healnet_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  official_healnet_loaded_read_only: true
+  frozen_blca_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+  repositories_unchanged_during_execution: true
+  protected_blca_report_touched_by_execution_or_recording: false
+  protected_blca_existing_user_modification_preserved: true
+  patients_processed: 1
+  scale_2x_patch_reads: 8580
+  scale_4x_patch_reads: 2213
+  resnet50_feature_rows: 10793
+  healnet_interface_smokes: 2
+  training_runs: 0
+  backward_passes: 0
+  optimizer_steps: 0
+  q75_operations: 0
+  full_cohort_operations: 0
+  kirp_operations: 0
+  google_drive_operations: 0
+  raw_wsi_deletions: 0
+  required_stop_reached: true
+
+scientific_interpretation: NOT_A_TRAINED_SURVIVAL_PREDICTION
+next_gate: SEPARATE_REVIEW_REQUIRED_BEFORE_TRAINING_Q75_OR_FULL_COHORT
