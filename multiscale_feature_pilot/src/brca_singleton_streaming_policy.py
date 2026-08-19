@@ -111,6 +111,35 @@ def validate_static_plan(
         raise StreamingPolicyError("complete duplicate feature retention exceeds the quota")
 
 
+def validate_storage_headroom(
+    *,
+    available_bytes: int,
+    raw_wsi_bytes: int,
+    staging_bytes: int,
+    final_artifact_bytes: int,
+    safety_floor_bytes: int = 20_000_000_000,
+) -> int:
+    """Fail closed unless one transaction and the safety floor fit."""
+
+    values = {
+        "available_bytes": available_bytes,
+        "raw_wsi_bytes": raw_wsi_bytes,
+        "staging_bytes": staging_bytes,
+        "final_artifact_bytes": final_artifact_bytes,
+        "safety_floor_bytes": safety_floor_bytes,
+    }
+    if any(isinstance(value, bool) or not isinstance(value, int) or value < 0 for value in values.values()):
+        raise StreamingPolicyError("storage values must be non-negative integers")
+    if safety_floor_bytes < 20_000_000_000:
+        raise StreamingPolicyError("storage safety floor must remain at least 20 GB")
+    required = raw_wsi_bytes + staging_bytes + final_artifact_bytes + safety_floor_bytes
+    if available_bytes < required:
+        raise StreamingPolicyError(
+            f"insufficient storage headroom: require {required}, have {available_bytes}"
+        )
+    return required
+
+
 def estimate_from_pilots(
     observations: Iterable[PilotObservation], *, patient_count: int = 894
 ) -> CohortEstimate:
@@ -154,4 +183,5 @@ __all__ = [
     "advance_stage",
     "estimate_from_pilots",
     "validate_static_plan",
+    "validate_storage_headroom",
 ]

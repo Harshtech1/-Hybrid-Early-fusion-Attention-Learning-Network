@@ -7,6 +7,7 @@ from multiscale_feature_pilot.src.brca_singleton_streaming_policy import (
     advance_stage,
     estimate_from_pilots,
     validate_static_plan,
+    validate_storage_headroom,
 )
 
 
@@ -110,3 +111,20 @@ def test_three_pilot_estimate_is_exact_and_labelled_as_estimate() -> None:
 def test_estimate_rejects_missing_or_reordered_pilot() -> None:
     with pytest.raises(StreamingPolicyError, match="ordered Q25"):
         estimate_from_pilots(tuple(reversed(PILOTS)))
+
+
+def test_storage_headroom_exact_boundary_and_low_space_failure() -> None:
+    required = validate_storage_headroom(
+        available_bytes=25_000_000_000,
+        raw_wsi_bytes=3_000_000_000,
+        staging_bytes=1_000_000_000,
+        final_artifact_bytes=1_000_000_000,
+    )
+    assert required == 25_000_000_000
+    with pytest.raises(StreamingPolicyError, match="insufficient storage"):
+        validate_storage_headroom(
+            available_bytes=24_999_999_999,
+            raw_wsi_bytes=3_000_000_000,
+            staging_bytes=1_000_000_000,
+            final_artifact_bytes=1_000_000_000,
+        )

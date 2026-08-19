@@ -1,0 +1,60 @@
+schema_version: 1
+status: CPU_IMPLEMENTED_SYNTHETICALLY_VERIFIED_REAL_COHORT_NOT_AUTHORIZED
+cohort: TCGA-BRCA
+artifact_schema: BRCA_COMPACT_FEATURE_ARTIFACT_SET_V1
+exact_files:
+  - combined_features.pt
+  - row_provenance.csv
+  - compact_manifest.json
+  - compact_manifest.json.sha256
+tensor_contract:
+  dtype: float32
+  device_at_publication: cpu
+  shape: "[P_i,2048]"
+  natural_model_shape: "[1,P_i,2048]"
+  contiguous: true
+  finite: true
+  requires_grad: false
+  branch_order: [scale_2x, scale_4x]
+  pooling: false
+  transpose: false
+retention:
+  canonical_combined_tensor_count: 1
+  separate_branch_tensor_files: false
+  patch_images: false
+  row_provenance: true
+publication:
+  sibling_staging: true
+  validate_before_commit: true
+  atomic_rename_noreplace: true
+  overwrite_or_resume_existing_destination: false
+  transaction_owned_staging_cleanup_only: true
+ledger:
+  storage: immutable_numbered_json_records
+  first_sequence: 1
+  filename_format: eight_digit_zero_padded_json
+  sha256_hash_chain: true
+  genesis_previous_hash: sixty_four_zeroes
+  patient_and_slide_fixed_per_ledger: true
+  stage_skipping: false
+  unexpected_or_partial_files: fail_closed
+  overwrite_existing_record: false
+storage_projection_from_pilots:
+  q25_compact_bytes: 76839875
+  q50_compact_bytes: 88982911
+  q75_compact_bytes: 139708440
+  projected_894_min_bytes: 68694848250
+  projected_894_mean_bytes: 91048305348
+  projected_894_max_bytes: 124899345360
+  estimates_not_guarantees: true
+authorization:
+  source_and_synthetic_tests: true
+  real_feature_migration: false
+  downloads: false
+  wsi_access: false
+  coordinates: false
+  gpu: false
+  cohort_execution: false
+  deletion: false
+  drive: false
+  training: false

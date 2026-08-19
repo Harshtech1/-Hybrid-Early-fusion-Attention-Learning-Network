@@ -1,0 +1,55 @@
+schema_version: 1
+status: BRCA_COMPACT_ARTIFACT_AND_LEDGER_CPU_VERIFIED
+cohort: TCGA-BRCA
+scope: SOURCE_IMPLEMENTATION_AND_SYNTHETIC_TESTS_ONLY
+authorization:
+  user_statement: ok continue the work now remaining !!
+  bounded_interpretation: >-
+    Continue the previously described CPU-only compact artifact schema,
+    append-only recovery ledger, and synthetic validation milestone
+  real_data_or_cohort_execution_authorized: false
+schema:
+  name: BRCA_COMPACT_FEATURE_ARTIFACT_SET_V1
+  exact_file_count: 4
+  canonical_tensor_count: 1
+  branch_order: [scale_2x, scale_4x]
+  natural_wsi_shape: "[1,P_i,2048]"
+ledger:
+  immutable_numbered_records: true
+  hash_chain: sha256
+  exact_stage_order: true
+  no_overwrite: true
+storage_projection_bytes:
+  minimum: 68694848250
+  mean: 91048305348
+  maximum: 124899345360
+  estimates_not_guarantees: true
+operations:
+  synthetic_tensor_publications: test_temporary_directories_only
+  real_pilot_artifact_reads: 0
+  real_artifact_migrations: 0
+  downloads: 0
+  wsi_opens: 0
+  pixel_reads: 0
+  gpu_operations: 0
+  feature_extractions: 0
+  deletions_of_preexisting_data: 0
+  drive_operations: 0
+  training_runs: 0
+implementation:
+  config_sha256: 59d4b1168108052ba5b18d8c4b5f5aa6de83c36ab234907892bf374ee9f712b4
+  compact_artifact_source_sha256: 102ac9a5273620e78e0d0510cadc9ea6113781a8b36814608a56ccf3a9840029
+  streaming_ledger_source_sha256: ddf55fd4dd7b411b4bd3df1bc4f6c2a44ced0dba48232f512cf6f6dd75553a5d
+  streaming_policy_source_sha256: 7bace651ec207448604d29cb5dad2ef55d0fc111726272a8e0e54f8b0d3005b2
+  compact_artifact_tests_sha256: 7c405bb1a6fda7f0d9ca765e65ff1d4cfb4879ac4dc62e2a6be6c18b6ebbfa64
+  streaming_ledger_tests_sha256: beecfe530bb8542a54501edb5015c7f0cdbabd7d9f67f55cc5ab9cb1be4694a0
+  streaming_policy_tests_sha256: a168730c45a60904e3e4175b762a409fca1b34e8d38585e37a6f529f45353dbf
+  report_sha256: 57998704013ac60a751018a28f40dd2765fe25d8ad8eee9b15f7ff7691e67dee
+validation:
+  focused_tests: 24
+  full_repository_tests: 647
+  py_compile: PASS
+  yaml_safe_load: PASS
+  static_scope_scan: PASS
+  git_diff_check: PASS
+next_gate: CPU_MIGRATION_COMPATIBILITY_REVIEW_THEN_EXACT_SMALL_BATCH_PROPOSAL
