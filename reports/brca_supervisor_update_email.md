@@ -44,10 +44,18 @@ artifact layout that projects to approximately 69–125 GB, together with an
 append-only recovery ledger. No cohort extraction, raw deletion, or model
 training has been performed.
 
+Since the previous update, we accepted a six-patient validation batch spanning
+the WSI-size distribution. The first patient, B01 (`TCGA-GI-A2C8`), has now
+passed exact download, checksum, WSI–Omic identity, and header-only validation.
+Its native resolution is 0.2468 µm/px with a three-level pyramid. No pixels
+were read during that inspection. We have completed the CPU-only scale and
+coordinate-policy review, but coordinate execution and GPU feature extraction
+remain separately gated.
+
 I would appreciate your guidance on the following points:
 
-1. Should we run a small validation batch before proceeding to the full 894
-   patients?
+1. Do you approve completing the accepted six-patient validation batch before
+   proceeding to the full 894 patients?
 2. Should we reserve one continuous GPU window or use restartable GPU batches?
 3. Is retaining one canonical combined WSI tensor, with 2x/4x branch ranges and
    complete row provenance, acceptable for the cohort?
@@ -58,9 +66,9 @@ I would appreciate your guidance on the following points:
 6. Which train/validation/test split and survival-evaluation protocol would you
    like us to freeze before training?
 
-The immediate remaining compatibility and small-batch design work is CPU-only.
-We will need the GPU again only after the next extraction batch is explicitly
-approved.
+The immediate next step is one bounded CPU coordinate run for B01, subject to
+separate authorization. We will need the GPU again only after B01 coordinates
+are independently validated and feature extraction is explicitly approved.
 
 I have attached the updated progress report with the architecture, measured
 matrix, timing, storage projections, and remaining milestones.

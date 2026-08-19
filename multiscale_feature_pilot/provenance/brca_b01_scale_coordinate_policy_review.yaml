@@ -1,0 +1,27 @@
+schema_version: 1
+status: BRCA_B01_SCALE_AND_COORDINATE_POLICY_REVIEWED_EXECUTION_LOCKED
+cohort: TCGA-BRCA
+batch_label: B01
+source_commit: 9d8ee8001ad2d39ae4c52d33cd503ef063a39cb9
+inputs:
+  header_result_sha256: 359ff41ce95bd7fe55f73daee13cb4f644f59d668de46ad9020d137ced0daa99
+  q75_reviewed_policy_sha256: 58f15a9e39fcd3469ec656ef98c72ad6e42b8a3eab16fcbc24c4345cc4337d88
+outputs:
+  policy_path: multiscale_feature_pilot/config/brca_b01_scale_coordinate_policy.yaml
+  policy_sha256: 9a98a0edad90f1e82ad28025b9164c136c39041ad27fb5342251bdb8d062cb60
+  report_path: reports/brca_b01_scale_coordinate_policy_review.md
+  report_sha256: 041e831c1c816997d802f1d589af2c1f589e5a4a25a1fc4cfdc4814ac25a4f0b
+review:
+  metadata_only: true
+  scale_mapping_resolved: true
+  coordinate_geometry_resolved: true
+  mask_level_resolved: true
+  real_wsi_opened: false
+  pixels_read: 0
+  coordinates_generated: 0
+  artifacts_published: 0
+  gpu_operations: 0
+  training_runs: 0
+required_stop: B01_CPU_ONLY_SCALE_AND_COORDINATE_POLICY_REVIEW
+required_stop_reached: true
+next_gate: EXPLICIT_B01_SINGLE_MASK_READ_AND_COORDINATE_PUBLICATION_AUTHORIZATION_OR_DECLINE

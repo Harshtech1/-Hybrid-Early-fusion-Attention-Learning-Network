@@ -2,8 +2,9 @@
 
 **Date:** 19 August 2026
 
-**Project stage:** Multiscale engineering pilots completed; cohort execution
-and model training not started
+**Project stage:** Multiscale engineering pilots completed; six-patient
+validation batch accepted; B01 acquisition/header gate completed; cohort
+extraction and model training not started
 
 **Current compute requirement:** CPU
 
@@ -182,23 +183,30 @@ have also been implemented. No real pilot artifacts were modified or migrated.
 - Four-modality HEALNet synthetic and real-feature numerical smoke tests.
 - Atomic artifact publication, checksums, and row-level provenance.
 - Compact cohort artifact schema and append-only recovery ledger.
-- 647 passing repository tests.
+- CPU-only compatibility rehearsal against the frozen Q25/Q50/Q75 artifacts.
+- Deterministic six-patient validation-batch selection and guarded manifests.
+- B01 exact download, checksum verification, Omic row-924 match, and
+  header-only pyramid inspection with zero pixel reads.
+- B01 CPU-only scale/coordinate policy design using its verified three-level
+  pyramid; execution remains locked.
 
 ## 9. Work remaining
 
-1. CPU-only compatibility rehearsal of the compact format against the frozen
-   Q25/Q50/Q75 artifacts.
-2. Define an exact small-batch cohort manifest and stopping rules.
-3. Obtain authorization for acquisition, pixel access, GPU extraction, and raw
-   data lifecycle for that batch.
-4. Execute and audit the small batch before considering all 894 patients.
+1. Obtain separate authorization for one B01 level-2 mask read and coordinate
+   publication, then stop for audit.
+2. Obtain a later, separate B01 GPU-feature authorization and validate the
+   compact retained artifact and recovery ledger on real data.
+3. Advance B02–B06 sequentially through independent header, coordinate, and
+   feature gates; never advance automatically.
+4. Review the six-patient batch before considering all 894 patients.
 5. Perform full-cohort feature extraction if approved.
 6. Complete patient-level quality control and leakage-safe data splitting.
 7. Freeze the outcome, censoring, loss, training, and evaluation protocol.
 8. Obtain separate training authorization, then train and evaluate HEALNet.
 
-GPU is not needed for item 1 or the small-batch design. It becomes necessary
-again only for authorized ResNet50 extraction and later HEALNet training.
+GPU is not needed for the next B01 coordinate stage. It becomes necessary
+again only for separately authorized ResNet50 extraction and later HEALNet
+training.
 
 ## 10. Guidance requested
 
