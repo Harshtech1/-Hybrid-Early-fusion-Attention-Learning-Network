@@ -1,0 +1,54 @@
+schema_version: 1
+status: AUTHORIZED_B01_SINGLE_MASK_READ_AND_COORDINATE_PUBLICATION
+execution_mode: CPU_ONLY
+approval:
+  exact_statement: >-
+    I authorize one B01-only CPU coordinate execution: exactly one OpenSlide
+    level-2 mask read at (0,0), size (3986,2456), using the frozen B01 scale
+    and coordinate policy, followed by tissue segmentation and atomic
+    publication of the 2× and 4× coordinate bags. No patch reads, feature
+    extraction, ResNet50, HEALNet, GPU/CUDA, B02–B06 processing, Q25/Q50/Q75
+    or BLCA changes, Drive operations, deletion, cohort expansion, or
+    training. Stop after coordinate validation and reporting.
+  exact_statement_sha256: 954900d95e41c1fd14456123010e9b7e20dbf52ab95da30dd2fe93756d2006f8
+identity:
+  patient_id: TCGA-GI-A2C8
+  slide_id: TCGA-GI-A2C8-01Z-00-DX1.09BD8AC9-645A-4C8B-9B36-77D833BDBA09.svs
+  gdc_uuid: 0a886f18-c44c-4b5e-b243-6df6e27f426a
+  size_bytes: 408704377
+  md5: a9f830d456b4a1fe0e9bb5b5b99f4b7e
+  sha256: b3c27e220c5c3961600782af42e91a52ea0b85a710d8d4aa722831ea00f9ad5f
+  omic_source_row_index: "924"
+authorized_operation:
+  openslide_open_count: 1
+  read_region_count: 1
+  location_level_0: [0, 0]
+  level: 2
+  size_at_level: [3986, 2456]
+  in_memory_tissue_masks: 1
+  coordinate_branches: [scale_2x, scale_4x]
+  output_directory: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B01.coordinates
+  publication: unique_same_filesystem_staging_then_RENAME_NOREPLACE
+  deletion_semantics: >-
+    No unlink or recursive cleanup is permitted. Successful atomic rename
+    moves the unique staging directory into its final name. Any failure before
+    publication preserves its uniquely named diagnostic staging directory.
+prohibited:
+  patch_reads: true
+  feature_extraction: true
+  resnet50: true
+  healnet: true
+  gpu_or_cuda: true
+  b02_b06_processing: true
+  q25_q50_q75_or_blca_changes: true
+  drive_operations: true
+  deletion: true
+  cohort_expansion: true
+  training: true
+bindings:
+  policy_path: multiscale_feature_pilot/config/brca_b01_scale_coordinate_policy.yaml
+  policy_sha256: 9a98a0edad90f1e82ad28025b9164c136c39041ad27fb5342251bdb8d062cb60
+  header_result_sha256: 359ff41ce95bd7fe55f73daee13cb4f644f59d668de46ad9020d137ced0daa99
+  coordinate_algorithm_sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+  coordinate_artifact_schema_sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+required_stop: B01_COORDINATE_ARTIFACT_VALIDATION_AND_REPORT
