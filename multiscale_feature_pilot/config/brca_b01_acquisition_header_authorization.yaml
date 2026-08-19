@@ -1,0 +1,73 @@
+schema_version: 1
+status: AUTHORIZED_B01_ACQUISITION_AND_HEADER_ONLY
+executable: true
+cohort: TCGA-BRCA
+batch_label: B01
+execution_mode: CPU_ONLY_NO_CUDA
+approval:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: >-
+    I authorize downloading only BRCA validation-batch patient B01, UUID
+    0a886f18-c44c-4b5e-b243-6df6e27f426a (408,704,377 bytes), from GDC to
+    local persistent staging at concurrency one using its exact one-row
+    manifest. After download, perform only exact UUID/filename/size/MD5
+    verification, independent SHA256 calculation, partial/incomplete checks,
+    regular non-symlink SVS confirmation, exact Omic rematch, and OpenSlide
+    header-only inspection of MPP and every pyramid level. Do not call
+    read_region or access pixels; do not generate masks, coordinates, or
+    features; do not use GPU/CUDA, Drive, deletion, additional-patient
+    processing, cohort expansion, or training. Stop after the B01 metadata
+    report and wait for my review
+  exact_statement_sha256: 98320e82b754497dc581d7a05c1a6f905a6badf2f40d8c3605b2ed916ee77dd4
+identity:
+  patient_id: TCGA-GI-A2C8
+  slide_id: TCGA-GI-A2C8-01Z-00-DX1.09BD8AC9-645A-4C8B-9B36-77D833BDBA09.svs
+  filename: TCGA-GI-A2C8-01Z-00-DX1.09BD8AC9-645A-4C8B-9B36-77D833BDBA09.svs
+  gdc_uuid: 0a886f18-c44c-4b5e-b243-6df6e27f426a
+  declared_size_bytes: 408704377
+  expected_md5: a9f830d456b4a1fe0e9bb5b5b99f4b7e
+  state: released
+  omic_source_row_id: "924"
+  exact_case_and_full_slide_match: true
+execution:
+  source: NCI_GDC
+  manifest_rows: 1
+  patient_concurrency: 1
+  active_gdc_clients: 1
+  destination: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B01.incoming
+  exact_checks_before_openslide:
+    - uuid
+    - filename
+    - byte_size
+    - md5
+    - independent_sha256
+    - partial_or_incomplete_absent
+    - regular_non_symlink_svs
+    - exact_omic_rematch
+  openslide_header_fields:
+    - mpp_x
+    - mpp_y
+    - level_count
+    - level_dimensions
+    - level_downsamples
+  stop_after: B01_EXACT_FILE_OMIC_AND_HEADER_METADATA_REPORT
+authority:
+  download_b01: true
+  openslide_header_only: true
+  read_region_or_pixel_access: false
+  masks_or_coordinates: false
+  features_or_models: false
+  gpu_or_cuda: false
+  deletion: false
+  google_drive: false
+  additional_patient_processing: false
+  cohort_expansion: false
+  training: false
+source_bindings:
+  planning_commit: a8ee6037eaafbe43eb692a8e81bc6aec7dddf0f2
+  guarded_manifest_sha256: 7f1236c48bb76baf76904234433edd63f5e5643f6cb1de3110baa15d1c1c8b92
+  proposal_sha256: 6133920baaccb73805d58daf53b8ffe93c30c49468a4a3e96a53bd8b960455d2
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  filtered_gdc_manifest_sha256: ac1b4d591ce255a7d4e6bde3778a041b107576693657ee296fe6eb36c4e79a92
+  omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+
