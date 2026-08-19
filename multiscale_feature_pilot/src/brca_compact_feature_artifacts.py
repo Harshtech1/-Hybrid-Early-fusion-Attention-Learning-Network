@@ -170,6 +170,7 @@ def publish_compact_feature_artifacts(
     combined_features: torch.Tensor,
     row_provenance: Sequence[PatchProvenance],
     metadata: CompactFeatureMetadata,
+    preserve_failed_staging: bool = False,
 ) -> dict[str, object]:
     """Atomically publish the exact four-file compact layout."""
 
@@ -249,7 +250,7 @@ def publish_compact_feature_artifacts(
             destination, expected_manifest_sha256=manifest_sha
         )
     finally:
-        if stage.exists():
+        if stage.exists() and not preserve_failed_staging:
             shutil.rmtree(stage)
 
 
