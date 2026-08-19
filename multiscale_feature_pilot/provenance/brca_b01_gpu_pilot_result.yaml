@@ -1,0 +1,113 @@
+schema_version: 1
+status: BRCA_BATCH_B01_GPU_FEATURE_PILOT_SUCCESS
+cohort: TCGA-BRCA
+candidate: B01
+recorded_at_utc: "2026-08-19T20:32:57Z"
+execution:
+  successful_attempt: 3
+  started_at_utc: "2026-08-19T20:31:43.816467+00:00"
+  finished_at_utc: "2026-08-19T20:32:57.278379+00:00"
+  total_seconds: 73.46194821200015
+  source_commit: c1f1214f13c2be0f4a07f97ce15085e003e04127
+  authorization_sha256: 4afc085250cb969d9d63c6db60ace06ac834769f2c64c239e017cf6ff861f902
+  device: cuda:0
+  gpu: Tesla T4
+  dtype: float32
+  batch_size: 32
+  num_workers: 2
+  deterministic_algorithms: true
+  cudnn_deterministic: true
+  cudnn_benchmark: false
+  tf32: false
+  automatic_mixed_precision: false
+  cpu_fallback: false
+  prior_fail_closed_attempts:
+    - reason: protected_git_status_leading_space_parser
+      patch_reads: 0
+      feature_rows: 0
+      artifacts_published: 0
+    - reason: healnet_keyword_only_call_signature
+      patch_reads: 0
+      feature_rows: 0
+      artifacts_published: 0
+identity:
+  patient_id: TCGA-GI-A2C8
+  slide_id: TCGA-GI-A2C8-01Z-00-DX1.09BD8AC9-645A-4C8B-9B36-77D833BDBA09.svs
+  gdc_file_uuid: 0a886f18-c44c-4b5e-b243-6df6e27f426a
+  wsi_size_bytes: 408704377
+  wsi_md5: a9f830d456b4a1fe0e9bb5b5b99f4b7e
+  wsi_sha256: b3c27e220c5c3961600782af42e91a52ea0b85a710d8d4aa722831ea00f9ad5f
+coordinates:
+  manifest_sha256: ff1eebc9fa51128cdda6294fa48cf34008b203db236acf59e8570725b3fc4c8b
+  scale_2x_count: 3773
+  scale_4x_count: 969
+  total_count: 4742
+feature_extraction:
+  encoder: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  branch_order: [scale_2x, scale_4x]
+  scale_2x:
+    shape: [3773, 2048]
+    source_level: 0
+    source_patch_shape: [512, 512]
+    output_patch_shape: [256, 256]
+    interpolation: PIL.Image.Resampling.LANCZOS
+    effective_mpp: [0.4936, 0.4936]
+    seconds: 56.23576313700005
+  scale_4x:
+    shape: [969, 2048]
+    source_level: 1
+    source_patch_shape: [256, 256]
+    output_patch_shape: [256, 256]
+    interpolation: none
+    effective_mpp: [0.9872376717207693, 0.9872376717207693]
+    seconds: 10.014232717999903
+  combined:
+    operation: torch.cat
+    dim: 0
+    shape: [4742, 2048]
+    natural_model_shape: [1, 4742, 2048]
+    pooling_performed: false
+    transpose_performed: false
+  peak_gpu_memory_bytes: 481334784
+healnet_smokes:
+  synthetic_and_real_both_passed: true
+  channel_dims: [2048, 1558, 21, 1333]
+  input_shapes: [[1, 4742, 2048], [1, 1, 1558], [1, 1, 21], [1, 1, 1333]]
+  output_shape: [1, 4]
+  attention_shapes: [[1, 2, 4742], [1, 2, 1], [1, 2, 1], [1, 2, 1]]
+  output_and_attention_finite: true
+  random_initialized: true
+  evaluation_inference_only: true
+artifacts:
+  schema: BRCA_COMPACT_FEATURE_ARTIFACT_SET_V1
+  directory: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B01.features
+  exact_file_count: 4
+  total_file_bytes: 39092076
+  manifest_sha256: f20556d3e64185879d6bc9a5f837dafc72ebb88835506fbc90fd4e5c61c2a90f
+  combined_features:
+    size_bytes: 38848041
+    file_sha256: b23b2c1a028103223bc509a889adabcdd2d4bcb89e54a3aed800e6be842a1e34
+    tensor_content_sha256: db4ca27eac04293bb878b4255044479bf8c3965fb250e4b1ae826cfd3ef12d01
+  row_provenance:
+    size_bytes: 242219
+    sha256: 47d21aec67a47ba84ae3e6381124db1ad06eb1a029e09789779ecabdb5ebe340
+    row_count: 4742
+  manifest_sidecar_sha256: f1893e51e1dd13ae2507cb5294d6195de92bbb6b82c597ef351922c2844acb90
+  atomic_no_overwrite_publication: true
+  independently_validated_after_publication: true
+operations_not_performed:
+  training_runs: 0
+  backward_passes: 0
+  optimizer_steps: 0
+  amp_operations: 0
+  tf32_operations: 0
+  cpu_fallbacks: 0
+  coordinate_regenerations: 0
+  other_patient_operations: 0
+  deletions: 0
+  drive_operations: 0
+  cohort_expansions: 0
+scientific_interpretation: ENGINEERING_FEATURE_AND_INTERFACE_PILOT_NOT_A_TRAINED_PREDICTION
+required_stop_reached: true
+next_gate: SUPERVISOR_REVIEW_REQUIRED_BEFORE_B02_B06_OR_TRAINING
