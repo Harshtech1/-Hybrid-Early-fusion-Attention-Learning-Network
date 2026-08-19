@@ -890,7 +890,14 @@ def _run_download_gate(
         _require(tuple(completed.args) == tuple(command), "executed GDC argv drift")
         _require(isinstance(completed.stdout, str), "GDC stdout was not captured as text")
         _require(isinstance(completed.stderr, str), "GDC stderr was not captured as text")
-        _require(completed.returncode == 0, f"GDC client returned nonzero: {completed.returncode}")
+        _require(
+            completed.returncode == 0,
+            (
+                f"GDC client returned nonzero: {completed.returncode}; "
+                f"stdout={completed.stdout.strip()!r}; "
+                f"stderr={completed.stderr.strip()!r}"
+            ),
+        )
         active_after = tuple(process_scanner(paths.gdc_client))
         _require(not active_after, "GDC client process remained active after subprocess return")
         _require(

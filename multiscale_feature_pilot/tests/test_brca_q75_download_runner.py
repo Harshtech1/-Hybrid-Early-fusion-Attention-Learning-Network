@@ -369,9 +369,10 @@ def test_nonzero_gdc_exit_fails_closed_and_never_publishes_result(tmp_path: Path
         create_tree=True,
     )
 
-    with pytest.raises(runner.Q75DownloadError, match="returned nonzero: 17"):
+    with pytest.raises(runner.Q75DownloadError, match="returned nonzero: 17") as error:
         _run_success(paths, expectation, process)
 
+    assert "synthetic failure" in str(error.value)
     assert paths.incoming_directory.exists()  # partial raw state is never deleted
     assert not paths.result_directory.exists()
     assert not paths.staging_directory.exists()
