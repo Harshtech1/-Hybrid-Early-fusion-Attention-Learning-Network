@@ -1,0 +1,96 @@
+schema_version: 1
+status: BRCA_Q50_GPU_EXECUTION_AUTHORIZED_NOT_YET_RUN
+cohort: TCGA-BRCA
+candidate: Q50
+recorded_at_utc: "2026-08-19T01:06:11Z"
+
+approval:
+  user_statement: >-
+    I authorize Q50-only GPU ResNet50 ImageNet1K V2 feature extraction and the
+    four-modality HEALNet numerical smoke test. No Q75, full-cohort processing,
+    or training.
+  supervisor_cohort_statement: Go with brca, blca
+  authorization_config:
+    path: multiscale_feature_pilot/config/brca_q50_gpu_execution_authorization.yaml
+    sha256: 2bfe61f7e17668ec50aeb6f3d2b214e0a3dd91e4f47692610880bec8afb2b080
+  bounded_scope: >-
+    Process only the already-downloaded and coordinate-approved Q50 slide;
+    extract deterministic float32 ImageNet1K V2 ResNet50 patch embeddings for
+    the two branches in sequential 2x-then-4x order; retain natural
+    [1,10793,2048] WSI layout; run full-size synthetic and real-feature
+    four-modality HEALNet numerical smokes; atomically publish validated
+    external feature artifacts; then stop without training.
+
+q50_contract:
+  patient_id: TCGA-AR-A1AW
+  slide_id: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+  gdc_file_uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+  wsi_sha256: 6b960db7e6e5772f4f626daa7b023ffbb5e3b20f9f6ff5c7d52f4554cf33399b
+  coordinate_manifest_sha256: a79179e7fe3a0cf6bdda5089da11910c0db6b1f4bcab9a15c6d5b8e7ec43e485
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  omic_source_row_index: "370"
+  branch_order: [scale_2x, scale_4x]
+  scale_2x_shape: [8580, 2048]
+  scale_4x_shape: [2213, 2048]
+  combined_shape: [10793, 2048]
+  model_wsi_shape: [1, 10793, 2048]
+  wsi_transpose: prohibited
+  omic_shapes:
+    rna: [1, 1, 1558]
+    mutation: [1, 1, 21]
+    cnv: [1, 1, 1333]
+  expected_interface_output: [1, 4]
+  output_interpretation: random_weight_interface_and_numerical_smoke_not_prediction
+
+execution_contract:
+  launch_environment:
+    CUBLAS_WORKSPACE_CONFIG: ":4096:8"
+  device: cuda:0
+  gpu: Tesla T4
+  batch_size: 32
+  num_workers: 2
+  dtype: float32
+  automatic_mixed_precision: false
+  tf32: false
+  cpu_fallback: false
+  torch_deterministic_algorithms: true
+  branch_execution: sequential_scale_2x_then_scale_4x
+  pre_pixel_synthetic_full_size_smoke: required
+  real_feature_smoke_before_publication: required
+  external_atomic_no_overwrite_publication: required
+
+still_locked:
+  - q50_operations_outside_bound_patient
+  - q75
+  - full_brca_cohort
+  - model_training
+  - optimizer_or_backward_execution
+  - any_wsi_download_or_network_operation
+  - google_drive_operations
+  - raw_wsi_deletion
+  - official_healnet_modification
+  - frozen_blca_modification
+
+verification_at_record_time:
+  q50_coordinate_gate: passed
+  q50_patch_reads: 0
+  q50_feature_artifacts: 0
+  healnet_smoke_executions: 0
+  training: false
+  source_hash_finalization: passed
+  q50_focused_suite: 90 passed
+  full_synthetic_suite: 396 passed
+  source_only_commit: pending
+
+implementation_identity:
+  authorization_sha256: 2bfe61f7e17668ec50aeb6f3d2b214e0a3dd91e4f47692610880bec8afb2b080
+  files:
+    scripts/run_brca_q50_gpu_pilot.py: ada9cf9077573a7d02077182ae1e3e42e0c8fc742aa185a231ad74a8bc0d9a6b
+    multiscale_feature_pilot/src/brca_q50_feature_extraction.py: 7e2b92c672ca7dc0b7b683a66ea4ecf5aa2fdf7ea14811ea7960da08470d7181
+    multiscale_feature_pilot/src/brca_q50_feature_artifacts.py: 369830a2ba4f0bdbf8646599f70cf430e7a439cf87988f80014c54695176b9ac
+    multiscale_feature_pilot/tests/test_brca_q50_gpu_runner.py: 8f416285a38934e8c307587b06c16a246fc662ada4dc47657ada688b4c20f547
+
+required_stop:
+  after: VALIDATED_Q50_FEATURE_ARTIFACTS_AND_HEALNET_SMOKE
+  training_authorized: false
