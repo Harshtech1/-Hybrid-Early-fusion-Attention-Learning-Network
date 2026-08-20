@@ -1,0 +1,168 @@
+schema_version: 1
+status: BRCA_894_PRODUCTION_CONTROL_PLANE_CPU_SYNTHETICALLY_VERIFIED
+cohort: TCGA-BRCA
+recorded_at_utc: "2026-08-20T12:48:45Z"
+scope: CPU_ONLY_CONTROL_PLANE_AND_SYNTHETIC_LEDGER_REHEARSAL
+
+authorization:
+  direct_user_decisions:
+    b06_header_result_accepted: true
+    b06_disposition: SKIP_B06_PIXEL_WORK
+    b06_raw_wsi_retained: true
+    b06_raw_deletion_authorized: false
+  authorized_work:
+    production_adapter_control_plane_design: true
+    frozen_894_patient_identity_binding: true
+    synthetic_end_to_end_stage_rehearsal: true
+    exact_first_eight_canary_proposal: true
+    cpu_only_validation: true
+  explicitly_not_authorized:
+    additional_downloads: true
+    additional_wsi_opens: true
+    pixel_access: true
+    mask_or_coordinate_generation: true
+    gpu_or_cuda: true
+    feature_extraction: true
+    healnet: true
+    google_drive: true
+    raw_deletion: true
+    cohort_patient_processing: true
+    training: true
+
+frozen_cohort:
+  alignment_path: reports/brca_row_level_alignment.csv
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  filter_alignment_status: KEEP
+  filter_alignment_reason: EXACT_SINGLETON_CASE_AND_SLIDE_MATCH
+  sort_key: [case_id, slide_id, id]
+  exact_patients: 894
+  exact_raw_inventory_bytes: 918532189383
+  canonical_order_sha256: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+  exact_unique_fields: [patient_id, slide_id, gdc_uuid]
+  per_patient_bindings:
+    - cohort_index
+    - patient_id
+    - full_slide_id_and_filename
+    - gdc_uuid
+    - omic_source_row_id
+    - md5
+    - size_bytes
+    - release_state
+    - exact_one_row_gdc_manifest_sha256
+
+control_plane_contract:
+  production_operations_callable: false
+  exact_stage_order:
+    - PLANNED
+    - ACQUISITION_AUTHORIZED
+    - RAW_VERIFIED
+    - HEADER_POLICY_VERIFIED
+    - COORDINATES_VERIFIED
+    - GPU_AUTHORIZED
+    - FEATURES_VERIFIED
+    - TERMINAL_RECORDED
+  separate_stage_authorization_sha256: true
+  exact_source_policy_hashes: true
+  exact_input_and_output_hash_maps: true
+  exact_omic_patient_slide_row_rematch: true
+  compact_evidence_bound_to_patient_omic_stage_inputs_and_policies: true
+  compact_validation_record_must_be_ledger_output: true
+  recovery_v2_hash_chain_and_retry_replay: true
+  patient_concurrency: 1
+  next_patient_requires_prior_terminal_success: true
+
+synthetic_rehearsal:
+  exact_cohort_rows: [1, 2, 3, 4, 5, 6, 7, 8]
+  patients: 8
+  stages_per_patient: 8
+  events_per_stage: 2
+  events_per_patient: 16
+  total_events: 128
+  temporary_metadata_ledgers_only: true
+  synthetic_compact_evidence_only: true
+  patient_operations: 0
+  all_patients_reached_terminal_state: true
+  serial_next_index_gate: PASS
+
+first_eight_canary:
+  proposal_id: BRCA_894_CANARY_0001_0008
+  status: PROPOSED_NOT_AUTHORIZED
+  proposal_tsv: reports/brca_first_eight_canary_proposal.tsv
+  proposal_tsv_sha256: 940b8fd1f7d194c2c9b7c69ddae58ffff3c55196b6841ac859c60cbc01095dfd
+  exact_patients: 8
+  exact_raw_bytes: 8297129620
+  smallest_raw_bytes: 349684623
+  largest_raw_bytes: 2057150279
+  t4_gpu_minutes_estimate_not_guaranteed: [20.772228357999968, 32.68764663786666]
+  compact_bytes_estimate_not_guaranteed: [614719000, 1117667520]
+  conservative_available_storage_preflight_bytes: 35220592451
+  execution_concurrency: 1
+  stop_after_each_patient: true
+  formal_review_after_patient_8: true
+
+raw_lifecycle:
+  b06: RETAIN_RAW_NO_PIXEL_WORK_NO_DELETION
+  first_eight_recommendation: RETAIN_ALL_RAW_UNTIL_POST_CANARY_REVIEW
+  first_eight_recommendation_approved: false
+  full_894_local_raw_retention_feasible_under_200gb_quota: false
+  full_cohort_recovery_or_release_policy_approved: false
+  deletion_authorized: false
+  terminal_stage_requires_raw_lifecycle_decision_hash: true
+
+implementation:
+  base_repository_head_before_uncommitted_package: 69a078a67455b48e7351ab68aaa7c01bb86cfa1b
+  files:
+    multiscale_feature_pilot/src/brca_streaming_production_adapter.py: a5021d765ca3ab99eec1f0fc701cea8b5374062afedf59d8f38fc4128123825d
+    multiscale_feature_pilot/tests/test_brca_streaming_production_adapter.py: 1339030851726f2bb2bc60c1ed6be47af5ad09ab2775a5ec334152c64721c75b
+    multiscale_feature_pilot/config/brca_894_production_adapter_policy.yaml: 78c24ea714814c9775b1f6c1268179d3fe47c89c55391485bdb65691f51dddd8
+    multiscale_feature_pilot/config/brca_first_eight_canary_proposal.yaml: bc41efa1c2976810a7d25b8a8300477bed2dd27dbfb67e83707b9197fb253d08
+    multiscale_feature_pilot/provenance/brca_b06_geometry_disposition.yaml: 4a3534447269c02f78f1342724170bd56f8ed3c7593460325760f21dc2bf22a0
+    reports/brca_first_eight_canary_proposal.tsv: 940b8fd1f7d194c2c9b7c69ddae58ffff3c55196b6841ac859c60cbc01095dfd
+    reports/brca_894_production_adapter_validation.md: ef6d555666ca0eb50534d9d15287f39b1cfbda8c09357ce9118c55b54625660e
+  frozen_dependencies:
+    multiscale_feature_pilot/src/brca_streaming_recovery_v2.py: 4986390d37c17307d53843aefe66c105f2abd7d67cd9fb6b70708a52d20b03d6
+    multiscale_feature_pilot/src/brca_streaming_executor_v2.py: bff584b18a9ea3a652b69cc883aecbeeed9ff88401ae6d3217e72565383fcecb
+    multiscale_feature_pilot/config/brca_894_streaming_executor_v2_policy.yaml: 7558dcd296b1c5822ec698ac2458e86f38595748648aba54ca1db567b5c2a7cc
+    multiscale_feature_pilot/config/brca_compact_artifact_policy.yaml: 59d4b1168108052ba5b18d8c4b5f5aa6de83c36ab234907892bf374ee9f712b4
+    multiscale_feature_pilot/config/brca_894_singleton_streaming_policy.yaml: 9172449122f11cb17ef196d79911d1e5914125544531dd7b1eeeca6a11ae7b5f
+    multiscale_feature_pilot/provenance/brca_b06_header_metadata_result/result.yaml: c1728f20868aa1cc5295d927c547b62ce14b9a5c880d496c0138288477d38ef6
+
+validation:
+  py_compile: PASS
+  focused_production_adapter_and_recovery_v2:
+    result: PASS
+    passed: 44
+  full_cpu_repository_suite:
+    result: PASS
+    passed: 734
+    environment: CUDA_VISIBLE_DEVICES_empty
+  exact_894_order_reproduced: PASS
+  exact_first_eight_tsv_reproduced: PASS
+  yaml_and_tsv_contracts: PASS
+  static_ast_real_operation_surface_scan: PASS
+  git_diff_check: PASS
+
+operations_performed:
+  frozen_local_metadata_reads: true
+  synthetic_temporary_ledger_events: 128
+  downloads: 0
+  wsi_opens: 0
+  pixel_reads: 0
+  coordinate_generations: 0
+  gpu_or_cuda_operations: 0
+  feature_extractions: 0
+  healnet_executions: 0
+  google_drive_operations: 0
+  raw_wsi_deletions: 0
+  cohort_patients_processed: 0
+  training_runs: 0
+
+readiness:
+  frozen_cohort_identity_adapter: READY
+  recovery_v2_control_plane_binding: READY
+  synthetic_first_eight_rehearsal: READY
+  first_eight_live_release: NOT_AUTHORIZED
+  raw_wsi_lifecycle: DECISION_REQUIRED
+  gpu: NOT_REQUIRED_UNTIL_SEPARATELY_AUTHORIZED_FEATURE_STAGE
+
+next_gate: REVIEW_FIRST_EIGHT_CANARY_RAW_LIFECYCLE_AND_SEPARATE_STAGE_AUTHORIZATIONS
