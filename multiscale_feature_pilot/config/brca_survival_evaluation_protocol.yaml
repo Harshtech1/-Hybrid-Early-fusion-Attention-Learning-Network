@@ -1,0 +1,107 @@
+schema_version: 1
+status: FINALIZED_EXECUTION_NOT_AUTHORIZED
+protocol_id: BRCA_HEALNET_IMAGENET1K_V2_SINGLE_SPLIT_V1
+cohort: TCGA-BRCA
+study_track:
+  name: supervisor_aligned_engineering_implementation
+  encoder: ResNet50_Weights.IMAGENET1K_V2
+  encoder_checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  encoder_frozen: true
+  exact_paper_reproduction_claim_allowed: false
+  disclosed_difference: paper_describes_Kather100K_pretraining
+
+endpoint:
+  name: source_defined_time_to_event
+  source_time_column: survival_months
+  time_unit: months
+  source_censorship_column: censorship
+  event_indicator: 1-censorship
+  censorship_values: {0: observed_event, 1: right_censored}
+  label_as_overall_survival_without_source_confirmation: prohibited
+
+split:
+  manifest: multiscale_feature_pilot/provenance/brca_894_survival_split.tsv
+  manifest_sha256: 3e519a26eaa24852862bf368a48cceffaf26783c73e80007737134ae6ed626ad
+  grouping_unit: patient_id
+  seed: 20260820
+  outer_partition: {source_column: train, development_value: 1, locked_test_value: 0}
+  inner_partition: deterministic_sha256_rank_within_censorship_strata_85_15
+  counts:
+    training: {patients: 660, observed_events: 79, right_censored: 581}
+    validation: {patients: 116, observed_events: 14, right_censored: 102}
+    locked_test: {patients: 118, observed_events: 33, right_censored: 85}
+  locked_test_use: exactly_once_after_checkpoint_selection
+  test_driven_preprocessing_selection_or_early_stopping: prohibited
+
+discretization:
+  artifact: multiscale_feature_pilot/provenance/brca_894_survival_cutpoints.json
+  artifact_sha256: 77b514098387f883a7bc5205ef191ff321aff94e6c874442f7ccc65ff9059d6d
+  output_bins: 4
+  fit_population: observed_event_patients_in_training_partition_only
+  quantile_method: Hyndman_Fan_type_7_linear
+  internal_cutpoints_months: [22.505, 44.84, 67.940]
+  intervals: ['[-inf,b1)', '[b1,b2)', '[b2,b3)', '[b3,+inf]']
+  training_event_bin_counts: [20, 19, 20, 20]
+  validation_or_test_dependent_cutpoints: prohibited
+
+model:
+  architecture: HEALNet
+  official_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  official_model_source_sha256: 78e9c2b10455f6ad43a88ed4e0a646cbf6304bf52cac06a5140f49dbc4796820
+  official_loss_source_sha256: 63dcd4c83169dcddea68a3c623ba3486d4263956e14d1a3db9480304470fdd2f
+  modalities: [wsi, rna, mutation, cnv]
+  channel_dims: [2048, 1558, 21, 1333]
+  spatial_axes: [1, 1, 1, 1]
+  patient_batch_size: 1
+  output_bins: 4
+  hyperparameters:
+    num_freq_bands: 2
+    depth: 2
+    max_freq: 2.0
+    num_latents: 17
+    latent_dim: 126
+    cross_dim_head: 63
+    latent_dim_head: 20
+    cross_heads: 1
+    latent_heads: 8
+    attention_dropout: 0.45526926537716805
+    feedforward_dropout: 0.364741344399059
+    fourier_encode_data: true
+    self_per_cross_attention: 0
+    weight_tie_layers: false
+    snn: true
+
+training:
+  loss: official_v0.1.0_discrete_time_nll
+  loss_alpha: 0.4
+  loss_epsilon: 1.0e-7
+  survival_bin_weighting: none
+  optimizer: Adam
+  learning_rate: 0.007765016508403882
+  scheduler: OneCycleLR
+  maximum_learning_rate: 0.008
+  l1_coefficient: 0.00000682386175773137
+  maximum_epochs: 50
+  true_gradient_accumulation_patients: 16
+  optimizer_steps_per_full_epoch: 42
+  early_stopping: {monitor: validation_nll, mode: min, patience_epochs: 5, restore_best: true}
+  precision: float32
+  amp: false
+  tf32: false
+  cpu_fallback: false
+  deterministic_seed: 20260820
+
+evaluation:
+  risk: negative_sum_discrete_survival
+  primary_metric: Harrell_concordance_index
+  tied_tolerance: 1.0e-8
+  required_locked_test_outputs: [c_index, nll, patient_bootstrap_95_percent_ci]
+  checkpoint_selection_metric: validation_nll
+
+authorization:
+  feature_loading: false
+  model_execution: false
+  cuda: false
+  training: false
+  locked_test_evaluation: false
+next_gate: COMPLETE_894_COMPACT_FEATURE_REGISTRY_AND_SEPARATE_TRAINING_EXECUTION_AUTHORIZATION
