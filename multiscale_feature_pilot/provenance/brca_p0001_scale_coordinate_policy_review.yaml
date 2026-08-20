@@ -1,0 +1,58 @@
+schema_version: 1
+status: BRCA_PRODUCTION_P0001_SCALE_AND_COORDINATE_POLICY_REVIEWED_EXECUTION_LOCKED
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+cohort_index: 1
+patient_label: P0001
+recorded_at_utc: "2026-08-20T22:23:47Z"
+source_commit: a8fc70eaa61d7e0e999601b01f842c7bc969b776
+authority:
+  exact_user_statement_sha256: 808c0ed338cc84e08002e23d059c918692ae25fc84702828f3961627b948d2ec
+inputs:
+  header_result_sha256: 6c7faa0c4e80f4649d784140b907280c1f5b889f5153b4550da9e3e2f198efb3
+  header_report_sha256: 2164da0a14e8df3d5d2630313e914f24dab7bef0defc676e0281367c161e2c5c
+  b01_reviewed_policy_sha256: 9a98a0edad90f1e82ad28025b9164c136c39041ad27fb5342251bdb8d062cb60
+  b02_reviewed_policy_sha256: 8f903489da7a653665fd7be8aced250c7656350fa0bd6370b168eb3e5baa0953
+  b03_reviewed_policy_sha256: 58de5cedb887a3d0faf12c68e8629d26cae4cf7ff8a867e20742d395890a522c
+  q75_coordinate_policy_sha256: 58f15a9e39fcd3469ec656ef98c72ad6e42b8a3eab16fcbc24c4345cc4337d88
+  segmentation_source_sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+  artifact_schema_source_sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+outputs:
+  policy_path: multiscale_feature_pilot/config/brca_p0001_scale_coordinate_policy.yaml
+  policy_sha256: d5ddfdf38f98a921a0876e71ed57fbf196407cf8bbf234433f3c0c0a46513cd4
+  report_path: reports/brca_p0001_scale_coordinate_policy_review.md
+  report_sha256: f7e50001e91f85bb6c30e6cf8c597e9ad54e77135f362ac8c1d66d251f36757f
+  test_path: multiscale_feature_pilot/tests/test_brca_p0001_scale_coordinate_policy.py
+  test_sha256: 1b27e79ccce5bb46f3e5c952417ad6c7abee2ad5e11bb0afc61e16ef9ceb77bf
+resolved_policy:
+  scale_2x_effective_mpp: [0.5, 0.5]
+  scale_2x_relative_target_error: [0.0, 0.0]
+  scale_4x_effective_mpp: [1.0, 1.0]
+  scale_4x_relative_target_error: [0.0, 0.0]
+  shared_mask_level: 2
+  shared_mask_dimensions: [5968, 5120]
+  coordinate_geometry_scale_xy: [16.0, 16.0]
+  scale_2x_theoretical_sites_before_tissue_filter: 29760
+  scale_4x_theoretical_sites_before_tissue_filter: 7440
+  theoretical_total_sites_before_tissue_filter: 37200
+  actual_tissue_selected_counts: UNKNOWN_UNTIL_SEPARATELY_AUTHORIZED_EXECUTION
+review:
+  metadata_only: true
+  scale_mapping_resolved: true
+  coordinate_geometry_resolved: true
+  mask_level_resolved: true
+  real_wsi_opened: false
+  pixels_read: 0
+  masks_generated: 0
+  coordinates_generated: 0
+  artifacts_published: 0
+  gpu_operations: 0
+  feature_extractions: 0
+  p0002_p0008_operations: 0
+  deletion_operations: 0
+  drive_operations: 0
+  cohort_expansions: 0
+  training_runs: 0
+required_stop: P0001_CPU_ONLY_SCALE_AND_COORDINATE_POLICY_REVIEW
+required_stop_reached: true
+next_gate: EXPLICIT_P0001_SINGLE_MASK_READ_AND_COORDINATE_PUBLICATION_AUTHORIZATION_OR_DECLINE
