@@ -1,6 +1,6 @@
 # P0001 recovery prefix and first-eight CPU phase barrier
 
-Status: **package validated; real P0001 ledger publication waits for the committed source identity**.
+Status: **P0001 ledger prefix published and independently verified; first-eight CPU phase barrier active**.
 
 ## P0001 recovery prefix
 
@@ -62,14 +62,24 @@ replay-tip validation, atomic complete-directory publication in a temporary
 fixture, no-overwrite rejection, exact eight-manifest binding, CPU worker
 limits, serial download enforcement, and rejection of pixel-stage scheduling.
 Symlink-parent publication was also rejected without creating a ledger.
-Python compilation passed. The real external P0001 recovery ledger was
-not created during package preparation.
+Python compilation passed. The package-preparation tests did not create the
+real external ledger.
+
+## P0001 execution result
+
+The committed bootstrap runner executed once on CPU at source commit
+`228aaa62fee2f04a9afe09b519bb4ebc7662402b`. It atomically published exactly
+10 event files to the external recovery-v2 directory. Independent read-only
+validation matched the complete frozen derived prefix, verified the hash chain,
+and reproduced replay action `ADVANCE_STAGE`, durable stage
+`COORDINATES_VERIFIED`, next stage `GPU_AUTHORIZED`, and tip
+`45077a18d10205a04c9ef3a80479be7af4079501a11891ca1b9cc8701a8347b6`.
+No bootstrap staging path remained. No WSI, pixel, coordinate, CUDA, feature,
+HEALNet, deletion, Drive, or training operation was performed.
 
 ## Required execution order
 
-1. Commit this package and bind the runner to that full commit SHA.
-2. Execute the P0001 bootstrap once on CPU and validate the published tip.
-3. Continue the authorized P0002–P0008 serial acquisition/header workflow with
-   no more than two CPU patient workers.
-4. Stop before any coordinate mask read and request the combined exact
+1. Validate the seven P0002–P0008 serial acquisition/header results.
+2. Freeze their exact scale and coordinate policies from metadata only.
+3. Stop before any coordinate mask read and request the combined exact
    coordinate-execution authorization.

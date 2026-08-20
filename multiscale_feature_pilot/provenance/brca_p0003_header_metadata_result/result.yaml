@@ -1,0 +1,123 @@
+schema_version: 1
+status: BRCA_PRODUCTION_P0003_HEADER_METADATA_VERIFIED
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+cohort_index: 3
+patient_label: P0003
+recorded_at_utc: '2026-08-20T23:50:52.792457+00:00'
+execution:
+  mode: CPU_ONLY_ACQUISITION_INTEGRITY_AND_HEADER_ONLY
+  source_commit: 3354b3d988d472cf29a1031386d892ea16f3ee14
+  authorization_sha256: ec70da619537db9c395fa33ed16594a8e363a4981132154fa70d5100cb2732dd
+  authorization_statement_sha256: 3ada92434dfc6f78bbf29e7d127fe2dd199e8fa11a7ea9356bbcea92e85f88fc
+  authorized_manifest_sha256: 339b2d52fb8948c088cd4ddc79ebb2cbaadeabdee98d03ac44b5702ff90bf982
+  download_concurrency: 1
+  maximum_cpu_patient_workers: 2
+  download:
+    seconds: 7.676958988000024
+    argv:
+    - /teamspace/studios/this_studio/tools/gdc-client/2.3.0/gdc-client
+    - download
+    - --no-related-files
+    - --no-annotations
+    - -m
+    - /teamspace/studios/this_studio/healnet_pilot/multiscale_feature_pilot/provenance/brca_p0002_p0008_authorized_manifests/P0003_b3780253-78fe-4907-9f5a-230b2bb4b24e.AUTHORIZED.gdc.tsv
+    - -d
+    - /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_P0003.incoming
+    returncode: 0
+    stdout_tail: "#####################                  ] ETA:   0:00:01  83.5 MiB/s\n\
+      \ 62% [###########################                 ] ETA:   0:00:01  84.4 MiB/s\n\
+      \ 64% [############################                ] ETA:   0:00:01  85.6 MiB/s\n\
+      \ 67% [#############################               ] ETA:   0:00:01  86.2 MiB/s\n\
+      \ 69% [##############################              ] ETA:   0:00:01  86.9 MiB/s\n\
+      \ 72% [###############################             ] ETA:   0:00:01  87.9 MiB/s\n\
+      \ 74% [################################            ] ETA:   0:00:00  88.8 MiB/s\n\
+      \ 77% [##################################          ] ETA:   0:00:00  89.6 MiB/s\n\
+      \ 79% [###################################         ] ETA:   0:00:00  90.0 MiB/s\n\
+      \ 82% [####################################        ] ETA:   0:00:00  90.8 MiB/s\n\
+      \ 84% [#####################################       ] ETA:   0:00:00  91.4 MiB/s\n\
+      \ 87% [######################################      ] ETA:   0:00:00  92.0 MiB/s\n\
+      \ 89% [#######################################     ] ETA:   0:00:00  92.6 MiB/s\n\
+      \ 91% [########################################    ] ETA:   0:00:00  91.4 MiB/s\n\
+      \ 92% [########################################    ] ETA:   0:00:00  90.7 MiB/s\n\
+      \ 93% [#########################################   ] ETA:   0:00:00  88.3 MiB/s\n\
+      \ 94% [#########################################   ] ETA:   0:00:00  85.9 MiB/s\n\
+      \ 95% [#########################################   ] ETA:   0:00:00  84.5 MiB/s\n\
+      \ 95% [##########################################  ] ETA:   0:00:00  82.6 MiB/s\n\
+      \ 96% [##########################################  ] ETA:   0:00:00  80.7 MiB/s\n\
+      \ 97% [##########################################  ] ETA:   0:00:00  79.5 MiB/s\n\
+      \ 98% [########################################### ] ETA:   0:00:00  77.7 MiB/s\n\
+      \ 98% [########################################### ] ETA:   0:00:00  76.7 MiB/s\n\
+      \ 99% [########################################### ] ETA:   0:00:00  75.1 MiB/s\n\
+      100% [############################################] Time:  0:00:04  74.8 MiB/s\n\
+      ?[32mSuccessfully downloaded?[0m: 1\n"
+    stderr_tail: ''
+identity:
+  patient_id: TCGA-5L-AAT0
+  slide_id: TCGA-5L-AAT0-01Z-00-DX1.5E171263-30BF-4C6B-88A1-E8EA0522A861.svs
+  gdc_uuid: b3780253-78fe-4907-9f5a-230b2bb4b24e
+  path: /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_P0003.incoming/b3780253-78fe-4907-9f5a-230b2bb4b24e/TCGA-5L-AAT0-01Z-00-DX1.5E171263-30BF-4C6B-88A1-E8EA0522A861.svs
+  size_bytes: 349684623
+  md5: b03df56d20c11c51b8ad6c3e132a78de
+  sha256: 95367f274e5a0d8523eb580c3966d0232cb07e450efc752214e6fe1219e20d4e
+  regular_non_symlink: true
+  partial_or_incomplete_absent: true
+download_tree:
+  directories:
+  - b3780253-78fe-4907-9f5a-230b2bb4b24e
+  - b3780253-78fe-4907-9f5a-230b2bb4b24e/logs
+  files:
+  - b3780253-78fe-4907-9f5a-230b2bb4b24e/TCGA-5L-AAT0-01Z-00-DX1.5E171263-30BF-4C6B-88A1-E8EA0522A861.svs
+  - b3780253-78fe-4907-9f5a-230b2bb4b24e/logs/TCGA-5L-AAT0-01Z-00-DX1.5E171263-30BF-4C6B-88A1-E8EA0522A861.svs.parcel
+  partial_or_incomplete_absent: true
+  parcel_sha256: 729993a1814188e726f8a15934eb01692ed4f325e1d0774da533736a50641535
+omic:
+  source_row_index: '6'
+  archive_size_bytes: 4081277
+  archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  content_sha256:
+    rna: e18d67f8c2b18539e14c03d33aaa0f68fa8772464f2c7ad555c93bf48f54b33b
+    mutation: c12dfaa5c18591f07ece9ea8de2bbc374d65ebb77d683a075279b663d6a2e6ee
+    cnv: dc25c9765f3117dc7d0b13a5fb7d5628e32a082aab3058bba58a0776e2cad9c1
+  held_o_nofollow_descriptor: true
+  pathname_rechecked: true
+header:
+  inspection: OPENSLIDE_HEADER_ONLY_NO_PIXEL_ACCESS
+  mpp_x: 0.2525
+  mpp_y: 0.2525
+  level_count: 4
+  levels:
+  - level: 0
+    dimensions:
+    - 61752
+    - 59840
+    downsample: 1.0
+  - level: 1
+    dimensions:
+    - 15438
+    - 14960
+    downsample: 4.0
+  - level: 2
+    dimensions:
+    - 3859
+    - 3740
+    downsample: 16.001036537963202
+  - level: 3
+    dimensions:
+    - 1929
+    - 1870
+    downsample: 32.00622083981337
+  read_region_calls: 0
+  thumbnail_calls: 0
+  associated_image_accesses: 0
+operations:
+  read_region_or_pixel_calls: 0
+  mask_or_coordinate_generations: 0
+  patch_or_feature_extractions: 0
+  healnet_executions: 0
+  gpu_or_cuda_operations: 0
+  deletions: 0
+  drive_operations: 0
+  training_runs: 0
+required_stop_reached: true
+next_gate: PREPARE_P0003_SCALE_AND_COORDINATE_POLICY_FROM_FROZEN_METADATA
