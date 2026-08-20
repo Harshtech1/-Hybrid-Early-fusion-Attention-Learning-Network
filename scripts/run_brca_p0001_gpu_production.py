@@ -245,7 +245,14 @@ def _tensor_sha256(tensor: object) -> str:
 def _validate_repository(commit: str) -> None:
     if len(commit) != 40 or git("rev-parse", "HEAD") != commit:
         raise RuntimeError("source commit drift")
-    status = set(filter(None, git("status", "--short").splitlines()))
+    status_output = subprocess.run(
+        ("git", "status", "--short"),
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    ).stdout
+    status = set(filter(None, status_output.splitlines()))
     if status - ALLOWED_STATUS:
         raise RuntimeError(f"unexpected Git status {status - ALLOWED_STATUS}")
     for relative in BOUND:

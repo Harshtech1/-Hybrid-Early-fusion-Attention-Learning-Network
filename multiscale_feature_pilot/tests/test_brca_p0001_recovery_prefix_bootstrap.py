@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import hashlib
 from pathlib import Path
+import subprocess
 
 import pytest
 import yaml
@@ -132,3 +133,10 @@ def test_runner_has_no_forbidden_import_or_process_surface() -> None:
     assert "shutil.rmtree" not in text
     assert "os.remove" not in text
     assert "unlink(" not in text
+
+
+def test_runner_preserves_git_porcelain_status_columns() -> None:
+    text = RUNNER.read_text(encoding="utf-8")
+    assert 'status_output = subprocess.run(' in text
+    assert 'status_output.splitlines()' in text
+    assert '_git("status", "--short").splitlines()' not in text

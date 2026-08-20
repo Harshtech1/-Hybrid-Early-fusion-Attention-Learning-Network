@@ -58,7 +58,14 @@ def _git(*arguments: str) -> str:
 def _validate_repository(expected_commit: str) -> None:
     if len(expected_commit) != 40 or _git("rev-parse", "HEAD") != expected_commit:
         raise RuntimeError("source commit drift")
-    status = set(filter(None, _git("status", "--short").splitlines()))
+    status_output = subprocess.run(
+        ("git", "status", "--short"),
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    ).stdout
+    status = set(filter(None, status_output.splitlines()))
     if status - ALLOWED_DIRTY:
         raise RuntimeError(f"unexpected Git status: {status - ALLOWED_DIRTY}")
     for relative in BOUND:

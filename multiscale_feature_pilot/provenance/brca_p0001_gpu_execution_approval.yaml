@@ -11,7 +11,7 @@ authorization:
 implementation:
   base_commit: e7d0b4983de9d24330cab06106a8d6cfee4f3e16
   runner_path: scripts/run_brca_p0001_gpu_production.py
-  runner_sha256: 5f87fe9df77ac24804a6ad7f6f00a4f1048a0d5b9dc68f96669d57784e1f2a93
+  runner_sha256: eb0299b259feb7e44fb9aef477511aa9802a0a99e73d01e1158e53838cba4d67
   test_path: multiscale_feature_pilot/tests/test_brca_p0001_gpu_preexecution.py
   test_sha256: 9a2f7a0919347c3611eca38e10277d632dd26c3a9b5871e073766f2476b30731
 security_contract:
