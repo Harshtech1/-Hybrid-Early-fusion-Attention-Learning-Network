@@ -123,7 +123,7 @@ def test_runner_source_closure_and_no_training_surface() -> None:
     assert required.issubset(set(runner.BOUND))
 
 
-def test_executable_authorization_is_exact_and_feature_output_is_absent() -> None:
+def test_executable_authorization_is_exact_and_any_feature_output_is_final() -> None:
     assert AUTHORIZATION.is_file()
     assert not AUTHORIZATION.is_symlink()
     authorization = yaml.safe_load(AUTHORIZATION.read_text(encoding="utf-8"))
@@ -132,5 +132,17 @@ def test_executable_authorization_is_exact_and_feature_output_is_absent() -> Non
     assert authorization["scope"]["scale_2x_patch_reads"] == 8875
     assert authorization["scope"]["scale_4x_patch_reads"] == 2257
     assert all(authorization["prohibited"].values())
-    assert not OUTPUT.exists()
     assert not OUTPUT.is_symlink()
+    if OUTPUT.exists():
+        assert OUTPUT.is_dir()
+        assert {path.name for path in OUTPUT.iterdir()} == {
+            "combined_features.pt",
+            "row_provenance.csv",
+            "compact_manifest.json",
+            "compact_manifest.json.sha256",
+        }
+        assert all(path.is_file() and not path.is_symlink() for path in OUTPUT.iterdir())
+        manifest = OUTPUT / "compact_manifest.json"
+        assert hashlib.sha256(manifest.read_bytes()).hexdigest() == (
+            "3e1e3651604f7fe51540446a3a7836ded3ba74d5c6bf17b3a2a152cfebab004e"
+        )
