@@ -123,6 +123,31 @@ def test_preflight_fails_closed_if_destination_exists(
         gate.preflight()
 
 
+def test_owned_incoming_is_exclusive_mode_0700_and_identity_bound(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    incoming = tmp_path / "B06.incoming"
+    monkeypatch.setattr(gate, "INCOMING", incoming)
+    identity = gate._create_owned_incoming()
+    assert identity == (incoming.lstat().st_dev, incoming.lstat().st_ino)
+    assert incoming.stat().st_mode & 0o777 == 0o700
+    gate._require_owned_incoming(identity)
+    with pytest.raises(gate.B06HeaderGateError, match="appeared"):
+        gate._create_owned_incoming()
+
+
+def test_owned_incoming_rejects_directory_swap(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    incoming = tmp_path / "B06.incoming"
+    monkeypatch.setattr(gate, "INCOMING", incoming)
+    identity = gate._create_owned_incoming()
+    incoming.rename(tmp_path / "original")
+    incoming.mkdir(mode=0o700)
+    with pytest.raises(gate.B06HeaderGateError, match="identity changed"):
+        gate._require_owned_incoming(identity)
+
+
 def test_download_failure_reports_sanitized_capped_client_diagnostics(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -175,10 +200,15 @@ def test_orchestrator_publishes_only_after_all_checks(
         "filesystem_before_download": {"total_bytes": 10, "used_bytes": 1, "available_bytes": 9},
         "gdc_client_version": "2.3",
     })
-    monkeypatch.setattr(gate, "download", lambda: {
-        "seconds": 1.0, "returncode": 0,
-        "argv": ["gdc-client", "download"], "timeout_seconds": 10_800,
-    })
+    def completed_download() -> dict[str, object]:
+        assert incoming.is_dir()
+        assert incoming.stat().st_mode & 0o777 == 0o700
+        return {
+            "seconds": 1.0, "returncode": 0,
+            "argv": ["gdc-client", "download"], "timeout_seconds": 10_800,
+        }
+
+    monkeypatch.setattr(gate, "download", completed_download)
     tree = {"entries": ["x"], "parcel_size_bytes": 1, "parcel_sha256": "d" * 64, "total_regular_file_bytes": 2}
     monkeypatch.setattr(gate, "validate_tree", lambda: tree)
     omic = {
@@ -202,3 +232,30 @@ def test_orchestrator_publishes_only_after_all_checks(
     assert not lock_path.exists()
     assert yaml.safe_load((bundle_path / "result.yaml").read_text(encoding="utf-8"))["required_stop_reached"] is True
     assert "No pixel API was called" in (bundle_path / "report.md").read_text(encoding="utf-8")
+
+
+def test_orchestrator_preserves_owned_incoming_on_client_failure(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    incoming = tmp_path / "incoming"
+    lock = tmp_path / "lock"
+    monkeypatch.setattr(gate, "INCOMING", incoming)
+    monkeypatch.setattr(gate, "LOCK", lock)
+    monkeypatch.setattr(gate, "validate_source", lambda commit: {"source_commit": commit, "critical_file_sha256": {}})
+    monkeypatch.setattr(gate, "validate_authorization", lambda: {"path": "auth", "sha256": "a" * 64, "statement_sha256": "b" * 64})
+    monkeypatch.setattr(gate, "validate_manifest", lambda: "c" * 64)
+    monkeypatch.setattr(gate, "preflight", lambda: {
+        "filesystem_before_download": {"total_bytes": 10, "used_bytes": 1, "available_bytes": 9},
+        "gdc_client_version": "2.3",
+    })
+
+    def failure() -> dict[str, object]:
+        assert incoming.is_dir()
+        raise gate.B06HeaderGateError("synthetic client failure")
+
+    monkeypatch.setattr(gate, "download", failure)
+    with pytest.raises(gate.B06HeaderGateError, match="synthetic client failure"):
+        gate.run(expected_source_commit="f" * 40)
+    assert incoming.is_dir()
+    assert incoming.stat().st_mode & 0o777 == 0o700
+    assert not lock.exists()

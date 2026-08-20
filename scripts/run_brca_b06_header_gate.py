@@ -292,6 +292,28 @@ def _create_lock() -> tuple[int, tuple[int, int, int, int, int, int]]:
     return descriptor, _token(os.fstat(descriptor))
 
 
+def _create_owned_incoming() -> tuple[int, int]:
+    require(not INCOMING.exists() and not INCOMING.is_symlink(), "B06 incoming appeared after preflight")
+    _directory_non_symlink(INCOMING.parent)
+    os.mkdir(INCOMING, 0o700)
+    details = INCOMING.lstat()
+    require(stat.S_ISDIR(details.st_mode) and not stat.S_ISLNK(details.st_mode), "owned B06 incoming is unsafe")
+    require(stat.S_IMODE(details.st_mode) == 0o700, "owned B06 incoming mode must be 0700")
+    identity = (details.st_dev, details.st_ino)
+    _fsync_directory(INCOMING.parent)
+    return identity
+
+
+def _require_owned_incoming(identity: tuple[int, int]) -> None:
+    try:
+        details = INCOMING.lstat()
+    except FileNotFoundError as exc:
+        raise B06HeaderGateError("owned B06 incoming disappeared") from exc
+    require(stat.S_ISDIR(details.st_mode) and not stat.S_ISLNK(details.st_mode), "owned B06 incoming is unsafe")
+    require((details.st_dev, details.st_ino) == identity, "owned B06 incoming identity changed")
+    require(stat.S_IMODE(details.st_mode) == 0o700, "owned B06 incoming mode changed")
+
+
 def _diagnostic_tail(value: str, *, limit: int = 2000) -> str:
     sanitized = "".join(
         character if character in "\n\t" or ord(character) >= 32 else "?"
@@ -563,15 +585,22 @@ def run(*, expected_source_commit: str, slide_factory: Callable[[str], Any] = op
     manifest_sha256 = validate_manifest()
     before = preflight()
     lock_descriptor, lock_token = _create_lock()
+    incoming_identity: tuple[int, int] | None = None
     try:
+        incoming_identity = _create_owned_incoming()
+        _require_owned_incoming(incoming_identity)
         transfer = download()
+        _require_owned_incoming(incoming_identity)
         tree = validate_tree()
+        _require_owned_incoming(incoming_identity)
         omic_first = load_omic()
         header, wsi_sha256 = collect_header(slide_factory)
+        _require_owned_incoming(incoming_identity)
         omic_second = load_omic()
         require(omic_second == omic_first, "exact Omic rematch changed after header")
         tree_second = validate_tree()
         require(tree_second == tree, "download tree changed during inspection")
+        _require_owned_incoming(incoming_identity)
     finally:
         _release_owned_lock(lock_descriptor, lock_token)
     after = _disk(INCOMING.parent)
@@ -643,7 +672,10 @@ def run(*, expected_source_commit: str, slide_factory: Callable[[str], Any] = op
     }
     yaml_payload = yaml.safe_dump(record, sort_keys=False).encode("utf-8")
     report_payload = _report(record).encode("utf-8")
+    require(incoming_identity is not None, "owned B06 incoming identity was not established")
+    _require_owned_incoming(incoming_identity)
     publish_result_set(yaml_payload, report_payload)
+    _require_owned_incoming(incoming_identity)
     return record
 
 
