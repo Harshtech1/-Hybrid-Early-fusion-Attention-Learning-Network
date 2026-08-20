@@ -1,11 +1,15 @@
-# B02 GPU pilot CPU preflight
+# B02 GPU feature-pilot pre-execution package
 
-Status: **ready; waiting for a GPU machine**.
+Status: **CPU preparation complete; GPU execution locked**.
 
-All CPU-side requirements have passed. The runner is committed and bound to the exact B02 WSI, verified coordinate manifest, 7,158 2× rows, 1,862 4× rows, Omic row 472, ImageNet1K V2 ResNet50 checkpoint, and compact artifact schema. The output destination is absent.
+The package binds B02 patient `TCGA-BH-A0BG`, the verified coordinate manifest `2b3e5dd7…52ba2`, 7,158 scale-2× rows, 1,862 scale-4× rows, Omic row 472, the ImageNet1K V2 ResNet50 checkpoint, and natural combined layout `[9020,2048]` / HEALNet input `[1,9020,2048]`.
 
-The expected feature matrix is `[9020,2048]`, exposed to HEALNet only as `[1,9020,2048]` with RNA `[1,1,1558]`, mutation `[1,1,21]`, and CNV `[1,1,1333]`. Publication will retain one canonical combined tensor plus row provenance, manifest, and sidecar. Expected storage is approximately 74.5 MB.
+The future process is deterministic float32 on one Tesla T4 with batch size 32, two workers, no AMP, no TF32, no CPU fallback, sequential 2× then 4× extraction, one canonical combined tensor, row provenance, and synthetic plus real-feature four-modality HEALNet numerical smokes.
 
-Focused checks passed 14/14 and the complete repository suite passed 660/660. The real CPU preflight revalidated the WSI hashes/header, coordinate artifacts, Omic identity, checkpoint, source commit, official HEALNet checkout, protected Git status, and absent output without reading a patch or initializing CUDA.
+The frozen completed B02 result already records **124.94 seconds** on a Tesla T4, a **74,342,370-byte** compact artifact, and **483,956,224 bytes** peak GPU allocation. A future controlled rerun would therefore be budgeted at approximately **120–140 seconds** and 74.4 MB. The raw combined tensor is 73,891,840 bytes.
 
-The current CPU machine cannot execute the authorized feature extraction. Switch the Studio to a Tesla T4, then run the already-authorized committed gate. Estimated GPU wall time is approximately 2–3 minutes. No additional scientific authorization is needed unless the execution scope changes.
+The runner's first operational gate is `EXECUTION_AUTHORIZED=False`. A historical authorization and validated B02 artifact exist from the completed run, but the current CPU-only instruction does not authorize a rerun. Accidental invocation therefore stops before input checks, WSI access, OpenSlide, CUDA, model construction, or output publication; the existing artifact is also protected by no-overwrite output checks.
+
+## Exact authorization required later
+
+> I authorize the exact B02-only GPU feature pilot using the frozen verified B02 coordinates: 7,158 scale-2x and 1,862 scale-4x patch reads; float32 ResNet50 ImageNet1K V2 feature extraction; natural row concatenation into `[9020,2048]`; atomic compact artifact publication; and synthetic plus real-feature four-modality HEALNet numerical smoke tests. No training, backward pass, optimizer step, AMP, TF32, CPU fallback, coordinate regeneration, B03–B06 processing, Q25/Q50/Q75/B01 or BLCA changes, Drive operations, deletion, cohort expansion, or official HEALNet modification. Stop after artifact validation and reporting.

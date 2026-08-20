@@ -1,0 +1,74 @@
+schema_version: 1
+status: B02_GPU_PREEXECUTION_PREPARATION_AUTHORIZED_EXECUTION_LOCKED
+executable: false
+cohort: TCGA-BRCA
+batch_label: B02
+preparation_authority:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: >-
+    I authorize CPU-only preparation and validation of the B02 GPU
+    feature-pilot package using the frozen verified B02 coordinates and
+    metadata. Do not open the B02 WSI or read patches, use GPU/CUDA, extract
+    features, run HEALNet, publish feature artifacts, process B03–B06, modify
+    Q25/Q50/Q75/B01 or BLCA, access Drive, delete files, expand the cohort, or
+    train a model. Prepare the fail-closed execution package, run CPU-only
+    tests, estimate runtime and storage, and stop before GPU execution.
+  exact_statement_sha256: 2814f897abbd86d74d3d79df9db668085f087a2dbc4137a1fddcac489cce636f
+execution_lock:
+  runner_execution_authorized: false
+  gpu_or_cuda: false
+  wsi_open_or_patch_read: false
+  feature_extraction: false
+  healnet: false
+  artifact_publication: false
+inputs:
+  patient_id: TCGA-BH-A0BG
+  slide_id: TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+  gdc_uuid: c5331e5e-10b4-4979-958b-d4592a2805de
+  coordinate_result_sha256: 492343550197ed06ece8ecd94bd56bbed3f959af6c864b100e9845c0f3e6f103
+  coordinate_manifest_sha256: 2b3e5dd754ebb4ca4ec26f3e017e21548b0115dc2d0517ae83146d8f7ec52ba2
+  scale_2x_rows: 7158
+  scale_4x_rows: 1862
+  combined_shape: [9020, 2048]
+  omic_row: "472"
+  omic_shapes: [[1, 1, 1558], [1, 1, 21], [1, 1, 1333]]
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+future_execution_contract:
+  device: cuda:0
+  gpu: Tesla T4
+  dtype: float32
+  batch_size: 32
+  num_workers: 2
+  deterministic_algorithms: true
+  cublas_workspace_config: ":4096:8"
+  cudnn_deterministic: true
+  cudnn_benchmark: false
+  tf32: false
+  automatic_mixed_precision: false
+  cpu_fallback: false
+  branch_order: [scale_2x, scale_4x]
+  compact_output: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B02.features
+estimates_not_measurements:
+  controlled_rerun_wall_seconds_range: [120, 140]
+  raw_combined_tensor_bytes: 73891840
+  compact_artifact_bytes_approximate: 74400000
+  peak_gpu_memory_bytes_approximate: 482000000
+historical_completed_result_read_only_reference:
+  result_sha256: 62fcf0b5a9971939ae87f380f90e8fd6e196034226c715279071ff31908d3640
+  total_seconds: 124.93960884400008
+  compact_artifact_bytes: 74342370
+  peak_gpu_memory_bytes: 483956224
+  existing_artifact_preserved: true
+  rerun_authorized_by_current_instruction: false
+future_exact_authorization_text: >-
+  I authorize the exact B02-only GPU feature pilot using the frozen verified
+  B02 coordinates: 7,158 scale-2x and 1,862 scale-4x patch reads; float32
+  ResNet50 ImageNet1K V2 feature extraction; natural row concatenation into
+  [9020,2048]; atomic compact artifact publication; and synthetic plus
+  real-feature four-modality HEALNet numerical smoke tests. No training,
+  backward pass, optimizer step, AMP, TF32, CPU fallback, coordinate
+  regeneration, B03–B06 processing, Q25/Q50/Q75/B01 or BLCA changes, Drive
+  operations, deletion, cohort expansion, or official HEALNet modification.
+  Stop after artifact validation and reporting.
+future_exact_authorization_text_sha256: 2127e1b5f3b1f9d5e766a2b2109ee5cc7f601bc5d33a9833bfa638392b0071cd
+next_gate: SEPARATE_EXACT_B02_GPU_EXECUTION_AUTHORIZATION_OR_DECLINE
