@@ -59,37 +59,36 @@ def test_exact_b03_tensor_checkpoint_and_estimate_contract() -> None:
     )
 
 
-def test_runner_first_runtime_gate_blocks_before_execute(monkeypatch) -> None:
+def test_runner_authorization_gate_allows_only_the_pinned_package(monkeypatch) -> None:
     runner = load_runner()
-    called: list[bool] = []
-    monkeypatch.setattr(runner, "_execute", lambda _: called.append(True))
-    try:
-        runner.run("0" * 40)
-    except runner.ExecutionLocked:
-        pass
-    else:
-        raise AssertionError("runner did not stop at its execution lock")
-    assert called == []
-    assert runner.EXECUTION_AUTHORIZED is False
-    assert runner.EXECUTION_AUTH_SHA256.startswith("PENDING_")
+    monkeypatch.setattr(runner, "_execute", lambda commit: {"commit": commit})
+    assert runner.run("0" * 40) == {"commit": "0" * 40}
+    assert runner.EXECUTION_AUTHORIZED is True
+    assert runner.EXECUTION_AUTH_SHA256 == hashlib.sha256(
+        AUTHORIZATION.read_bytes()
+    ).hexdigest()
 
 
-def test_locked_cli_stops_without_torch_or_cuda_import() -> None:
-    environment = os.environ.copy()
-    environment["CUDA_VISIBLE_DEVICES"] = ""
+def test_importing_authorized_runner_does_not_initialize_cuda() -> None:
     completed = subprocess.run(
-        [sys.executable, str(RUNNER), "--expected-source-commit", "0" * 40],
+        [
+            sys.executable,
+            "-c",
+            (
+                "import importlib.util,sys;"
+                f"p={str(RUNNER)!r};"
+                "s=importlib.util.spec_from_file_location('b03_import',p);"
+                "m=importlib.util.module_from_spec(s);s.loader.exec_module(m);"
+                "assert 'torch' not in sys.modules"
+            ),
+        ],
         cwd=ROOT,
-        env=environment,
+        env={**os.environ, "CUDA_VISIBLE_DEVICES": ""},
         text=True,
         capture_output=True,
         check=False,
     )
-    assert completed.returncode == 1
-    payload = json.loads(completed.stdout)
-    assert payload["status"] == "BLOCKED"
-    assert "ExecutionLocked" in payload["error"]
-    assert "torch" not in completed.stderr.lower()
+    assert completed.returncode == 0, completed.stderr
 
 
 def test_runner_source_closure_and_no_training_surface() -> None:
@@ -124,8 +123,14 @@ def test_runner_source_closure_and_no_training_surface() -> None:
     assert required.issubset(set(runner.BOUND))
 
 
-def test_executable_authorization_and_feature_output_are_absent() -> None:
-    assert not AUTHORIZATION.exists()
+def test_executable_authorization_is_exact_and_feature_output_is_absent() -> None:
+    assert AUTHORIZATION.is_file()
     assert not AUTHORIZATION.is_symlink()
+    authorization = yaml.safe_load(AUTHORIZATION.read_text(encoding="utf-8"))
+    assert authorization["status"] == "B03_GPU_FEATURE_PILOT_AUTHORIZED"
+    assert authorization["scope"]["combined_shape"] == [11132, 2048]
+    assert authorization["scope"]["scale_2x_patch_reads"] == 8875
+    assert authorization["scope"]["scale_4x_patch_reads"] == 2257
+    assert all(authorization["prohibited"].values())
     assert not OUTPUT.exists()
     assert not OUTPUT.is_symlink()

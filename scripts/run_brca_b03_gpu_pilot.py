@@ -16,8 +16,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXECUTION_AUTHORIZED = False
-EXECUTION_AUTH_SHA256 = "PENDING_SEPARATE_EXACT_B03_GPU_AUTHORIZATION"
+EXECUTION_AUTHORIZED = True
+EXECUTION_AUTH_SHA256 = "30e440b93c202ec1d445312ef27dd21b2bc8a6678913f9ecc264581d83be2fac"
 AUTH = ROOT / "multiscale_feature_pilot/config/brca_b03_gpu_execution_authorization.yaml"
 PATIENT = "TCGA-AR-A1AY"
 SLIDE = "TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs"
