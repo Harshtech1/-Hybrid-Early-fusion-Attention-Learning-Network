@@ -133,6 +133,7 @@ def test_preflight_rejects_any_later_patient_start(
     later = tmp_path / "BRCA_PRODUCTION_P0002.incoming"
     later.mkdir()
     monkeypatch.setattr(gate, "INCOMING", incoming)
+    monkeypatch.setattr(gate, "RESULT_BUNDLE", tmp_path / "p0001-result")
     with pytest.raises(gate.P0001HeaderGateError, match="later patient already started: P0002"):
         gate.preflight()
 
