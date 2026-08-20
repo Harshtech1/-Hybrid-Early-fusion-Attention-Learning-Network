@@ -30,6 +30,9 @@ from multiscale_feature_pilot.src.brca_streaming_recovery_v2 import (
 ROOT = Path(__file__).resolve().parents[2]
 RUNNER = ROOT / "scripts/run_brca_p0001_gpu_production.py"
 PREEXECUTION = ROOT / "multiscale_feature_pilot/config/brca_p0001_gpu_preexecution.yaml"
+AUTHORIZATION = (
+    ROOT / "multiscale_feature_pilot/config/brca_p0001_gpu_execution_authorization.yaml"
+)
 ALIGNMENT = ROOT / "reports/brca_row_level_alignment.csv"
 CHECKPOINT = Path("/home/zeus/.cache/torch/hub/checkpoints/resnet50-11ad3fa6.pth")
 COORDINATES = Path(
@@ -104,6 +107,63 @@ def test_future_authorization_text_is_exact_and_scoped() -> None:
     assert "No training" in statement
 
 
+def test_received_execution_authorization_exactly_matches_frozen_request() -> None:
+    preexecution = yaml.safe_load(PREEXECUTION.read_text(encoding="utf-8"))
+    authorization = yaml.safe_load(AUTHORIZATION.read_text(encoding="utf-8"))
+    assert authorization["status"] == (
+        "P0001_PRODUCTION_GPU_FEATURE_EXECUTION_AUTHORIZED"
+    )
+    assert authorization["executable"] is True
+    statement = authorization["authorization"]["exact_statement"]
+    assert statement == preexecution["future_exact_authorization_text"]
+    assert hashlib.sha256(statement.encode()).hexdigest() == (
+        FUTURE_GPU_AUTHORIZATION_STATEMENT_SHA256
+    )
+    assert authorization["authorization"]["exact_statement_sha256"] == (
+        FUTURE_GPU_AUTHORIZATION_STATEMENT_SHA256
+    )
+    scope = authorization["scope"]
+    assert scope["scale_2x_patch_reads"] == SCALE_2X_ROWS
+    assert scope["scale_4x_patch_reads"] == SCALE_4X_ROWS
+    assert scope["total_patch_reads"] == TOTAL_ROWS
+    assert scope["combined_shape"] == [TOTAL_ROWS, 2048]
+    assert scope["natural_healnet_wsi_shape"] == [1, TOTAL_ROWS, 2048]
+    assert scope["row_ranges"] == {
+        "scale_2x": [0, SCALE_2X_ROWS],
+        "scale_4x": [SCALE_2X_ROWS, TOTAL_ROWS],
+    }
+    assert scope["recovery_v2"] == {
+        "required": True,
+        "authorized_stage_successes": ["GPU_AUTHORIZED", "FEATURES_VERIFIED"],
+        "required_preexisting_prefix": {
+            "exact_events": 10,
+            "terminal_stage": "COORDINATES_VERIFIED",
+            "bootstrap_authorized_by_this_statement": False,
+        },
+    }
+    assert authorization["determinism"]["num_workers"] == 0
+    assert authorization["permitted_cleanup"] == {
+        "runner_created_ephemeral_recovery_staging_only": True,
+        "preexisting_or_final_paths": False,
+    }
+    assert set(authorization["prohibited"]) == {
+        "training",
+        "backward_pass",
+        "optimizer_step",
+        "automatic_mixed_precision",
+        "tf32",
+        "cpu_fallback",
+        "coordinate_regeneration",
+        "p0002_p0008_processing",
+        "q25_q50_q75_b01_b02_b03_b06_or_blca_changes",
+        "drive_operations",
+        "cohort_expansion",
+        "raw_preexisting_user_project_or_final_artifact_deletion",
+        "official_healnet_modification",
+    }
+    assert all(authorization["prohibited"].values())
+
+
 def test_synthetic_recovery_rehearsal_reaches_terminal_in_exact_order() -> None:
     result = rehearse_p0001_feature_transaction(ALIGNMENT)
     assert len(result.events) == 16
@@ -165,20 +225,56 @@ def test_runner_first_operation_is_lock_and_import_does_not_load_torch() -> None
     assert completed.returncode == 0, completed.stderr
 
 
-def test_runner_is_locked_before_dependency_or_operational_work(monkeypatch) -> None:
+def test_runner_authorization_gate_forwards_only_for_the_pinned_package(monkeypatch) -> None:
     runner = _load_runner()
-    assert runner.EXECUTION_AUTHORIZED is False
-    assert not (ROOT / "multiscale_feature_pilot/config/brca_p0001_gpu_execution_authorization.yaml").exists()
+    assert runner.EXECUTION_AUTHORIZED is True
+    assert runner.EXECUTION_AUTH_SHA256 == hashlib.sha256(
+        AUTHORIZATION.read_bytes()
+    ).hexdigest()
+    assert AUTHORIZATION.relative_to(ROOT) in runner.BOUND
     monkeypatch.setattr(
         runner,
-        "_execute",
-        lambda commit: pytest.fail("locked runner reached operational function"),
+        "_execute", lambda commit: {"expected_source_commit": commit}
     )
-    with pytest.raises(runner.ExecutionLocked, match="locked pending"):
-        runner.run("0" * 40)
+    assert runner.run("0" * 40) == {"expected_source_commit": "0" * 40}
 
 
-def test_real_cli_attempt_fails_before_output_ledger_or_torch_import() -> None:
+def test_held_descriptor_rejects_path_replacement(tmp_path: Path) -> None:
+    runner = _load_runner()
+    source = tmp_path / "source.bin"
+    source.write_bytes(b"exact-source-bytes")
+    expected = hashlib.sha256(source.read_bytes()).hexdigest()
+    held = runner._HeldFileDescriptor(
+        source,
+        expected_size=source.stat().st_size,
+        expected_sha256=expected,
+        label="synthetic input",
+    )
+    try:
+        assert held.stable_path.startswith("/proc/self/fd/")
+        held.validate_identity_and_hashes()
+        replacement = tmp_path / "replacement.bin"
+        replacement.write_bytes(b"other-source-byte")
+        os.replace(replacement, source)
+        with pytest.raises(RuntimeError, match="descriptor/path identity changed"):
+            held.validate_identity_and_hashes()
+    finally:
+        held.close()
+
+
+def test_gpu_runner_requires_separately_authorized_prior_ledger_prefix() -> None:
+    runner = _load_runner()
+    expected = rehearse_p0001_feature_transaction(
+        ALIGNMENT, through_stage=PatientStage.COORDINATES_VERIFIED
+    ).events
+    with pytest.raises(RuntimeError, match="supplemental append-only bootstrap"):
+        runner._validate_prior_recovery_events((), expected, PatientStage)
+    assert runner._validate_prior_recovery_events(
+        expected, expected, PatientStage
+    ) == "GPU_AUTHORIZATION_APPEND_REQUIRED"
+
+
+def test_uncommitted_source_cli_attempt_fails_before_output_or_ledger() -> None:
     assert not os.path.lexists(OUTPUT)
     assert not os.path.lexists(LEDGER)
     completed = subprocess.run(
@@ -192,7 +288,7 @@ def test_real_cli_attempt_fails_before_output_ledger_or_torch_import() -> None:
     assert completed.returncode == 1
     payload = yaml.safe_load(completed.stdout)
     assert payload["status"] == "BLOCKED"
-    assert "ExecutionLocked" in payload["error"]
+    assert "source commit drift" in payload["error"]
     assert not os.path.lexists(OUTPUT)
     assert not os.path.lexists(LEDGER)
 
@@ -210,8 +306,15 @@ def test_runner_binds_production_adapter_compact_publisher_and_recovery_v2() -> 
         "preserve_failed_staging=True",
         'torch.device("cuda:0")',
         "CUBLAS_WORKSPACE_CONFIG",
-        "authorization_statement_sha256",
+        "exact_statement_sha256",
         "not all(authorization[\"prohibited\"].values())",
+        "held_wsi.stable_path",
+        "held_checkpoint.stable_path",
+        "held_omic.stable_path",
+        "num_workers=0",
+        "patch read tuple/order drift",
+        "scale_2x_read_region_calls",
+        "scale_4x_read_region_calls",
     ):
         assert token in source
     assert "COUNTS = (13_372, 3_444)" in source
