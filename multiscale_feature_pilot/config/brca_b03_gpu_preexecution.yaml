@@ -1,0 +1,81 @@
+schema_version: 1
+status: B03_GPU_PREEXECUTION_PREPARATION_AUTHORIZED_EXECUTION_LOCKED
+executable: false
+cohort: TCGA-BRCA
+batch_label: B03
+preparation_authority:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: >-
+    I authorize CPU-only preparation and validation of the B03 GPU
+    feature-pilot package using the frozen verified B03 coordinates and the
+    ResNet50 ImageNet1K V2 checkpoint. Do not open the B03 WSI, read patches,
+    use GPU/CUDA, extract features, run HEALNet, publish feature artifacts,
+    process B04–B06, delete files, access Drive, expand the cohort, or train a
+    model. Stop after the fail-closed package, tests, runtime estimate, and
+    storage estimate are ready for review.
+  exact_statement_sha256: b5093856973405fcd4546bd7d7ae8ec54a320c0e9165f1f44620936f339f2a68
+  transport_normalization: TRAILING_HTML_SPACE_ENTITY_IGNORED
+execution_lock:
+  runner_execution_authorized: false
+  gpu_or_cuda: false
+  wsi_open_or_patch_read: false
+  feature_extraction: false
+  healnet: false
+  artifact_publication: false
+inputs:
+  patient_id: TCGA-AR-A1AY
+  slide_id: TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs
+  gdc_uuid: 266c3852-f5d0-4815-94d9-dac5b0ff8276
+  coordinate_result_sha256: 06782acd34b83dbb8cd58e25c1a73dacaf752864826e6b32548cdfab1ce4c371
+  coordinate_manifest_sha256: cced78f863415ee12d57b905131e60758ba849645196c0a14309e9ab8d4e1ae5
+  scale_2x_rows: 8875
+  scale_4x_rows: 2257
+  combined_shape: [11132, 2048]
+  natural_healnet_wsi_shape: [1, 11132, 2048]
+  omic_row: "372"
+  omic_shapes: [[1, 1, 1558], [1, 1, 21], [1, 1, 1333]]
+  omic_content_sha256:
+    rna: 463b056072b280c951cf2626f6ca80e5d30014133c486f8d51423695f9869dfa
+    mutation: 7a67b8d094d93c2f5998b5384fdc07f07b46acc587e059aea33c60b7e9bd3afd
+    cnv: 21fdf23ebbe236f295337f497620bd522df309a81b071395a09b22800c7285b3
+  encoder: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+  checkpoint_filename: resnet50-11ad3fa6.pth
+  checkpoint_size_bytes: 102540417
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  paper_encoder_difference: paper_describes_Kather100K_pretraining
+  engineering_checkpoint_decision: IMAGENET1K_V2_FROZEN_BY_USER
+future_execution_contract:
+  device: cuda:0
+  gpu: Tesla T4
+  dtype: float32
+  batch_size: 32
+  num_workers: 2
+  deterministic_algorithms: true
+  cublas_workspace_config: ":4096:8"
+  cudnn_deterministic: true
+  cudnn_benchmark: false
+  tf32: false
+  automatic_mixed_precision: false
+  cpu_fallback: false
+  branch_order: [scale_2x, scale_4x]
+  concatenation: torch.cat_dim_0_no_pooling_no_transpose
+  compact_output: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B03.features
+  compact_schema: BRCA_COMPACT_FEATURE_ARTIFACT_SET_V1
+estimates_not_measurements:
+  gpu_wall_seconds_range: [160, 200]
+  raw_combined_tensor_bytes: 91193344
+  compact_artifact_bytes_range: [91600000, 91800000]
+  peak_gpu_memory_bytes_range: [481000000, 485000000]
+  basis: linear_patch_count_scaling_from_completed_B01_B02_Q25_Q50_Q75_T4_pilots
+future_exact_authorization_text: >-
+  I authorize the exact B03-only GPU feature pilot using the frozen verified
+  B03 coordinates: 8,875 scale-2x and 2,257 scale-4x patch reads; float32
+  ResNet50 ImageNet1K V2 feature extraction; natural row concatenation into
+  [11132,2048]; atomic compact artifact publication; and synthetic plus
+  real-feature four-modality HEALNet numerical smoke tests. No training,
+  backward pass, optimizer step, AMP, TF32, CPU fallback, coordinate
+  regeneration, B04–B06 processing, Q25/Q50/Q75/B01/B02 or BLCA changes,
+  Drive operations, deletion, cohort expansion, or official HEALNet
+  modification. Stop after artifact validation and reporting.
+future_exact_authorization_text_sha256: cd5655fd930baff34450553c503b3401b65e3722a7beb153499d073c81343b96
+next_gate: SEPARATE_EXACT_B03_GPU_EXECUTION_AUTHORIZATION_OR_DECLINE
