@@ -1,0 +1,62 @@
+schema_version: 1
+status: AUTHORIZED_B06_ACQUISITION_AND_HEADER_ONLY
+executable: true
+cohort: TCGA-BRCA
+batch_label: B06
+execution_mode: CPU_ONLY_NO_CUDA
+approval:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: |-
+    I authorize two parallel CPU workstreams:
+
+    1. Download only BRCA validation-batch patient B06, UUID `00e926c5-d65d-42e5-8ba4-afaab66db47c` (`1,691,494,753` bytes), from GDC to local persistent staging at concurrency one using its exact one-row manifest. After download, perform only exact UUID/filename/size/MD5 verification, independent SHA256 calculation, partial/incomplete checks, regular non-symlink SVS confirmation, exact Omic rematch, and OpenSlide header-only inspection of MPP and every pyramid level. Do not call `read_region` or access pixels. Stop after the B06 metadata report.
+    2. In parallel, implement and synthetically validate the CPU-only generic 894-patient streaming executor and recovery-ledger upgrade. Include fail-closed stage transitions, run IDs, attempt numbers, failure records, retry/replay decisions, and input/output hash bindings. Use synthetic fixtures and existing frozen metadata only.
+
+    Do not perform B06 pixel access, mask or coordinate generation, patch reads, feature extraction, HEALNet execution, GPU/CUDA work, cohort-patient downloads or processing beyond B06, Google Drive operations, raw-WSI deletion, Q25/Q50/Q75/B01/B02/B03 or BLCA modification, or training.
+
+    Stop after the B06 header report and the CPU-only executor/recovery package have been validated, and report the next decisions required from me.
+
+    No GPU switch is needed for this phase.
+  exact_statement_sha256: ad53ad4399ce7c7abe96651da9db68348427a0f7c37e537c24664cd541925f35
+identity:
+  patient_id: TCGA-EW-A1OY
+  slide_id: TCGA-EW-A1OY-01Z-00-DX1.42AF5C9A-A90F-4A58-B5D4-B615F8CD4333.svs
+  filename: TCGA-EW-A1OY-01Z-00-DX1.42AF5C9A-A90F-4A58-B5D4-B615F8CD4333.svs
+  gdc_uuid: 00e926c5-d65d-42e5-8ba4-afaab66db47c
+  declared_size_bytes: 1691494753
+  expected_md5: dbb9edd8528f25bbcaaee907b1b1ab68
+  state: released
+  omic_source_row_index: "897"
+execution:
+  gdc_client: /teamspace/studios/this_studio/tools/gdc-client/2.3.0/gdc-client
+  gdc_client_version: "2.3"
+  gdc_client_sha256: 1df9281cbacbb53413607a4b9b682947dcb48b6ac7fade6527748bc025ae8c96
+  active_patient_concurrency: 1
+  active_gdc_clients: 1
+  destination: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B06.incoming
+  authorized_manifest: multiscale_feature_pilot/provenance/brca_six_patient_batch_authorized/B06_TCGA-EW-A1OY_00e926c5-d65d-42e5-8ba4-afaab66db47c.AUTHORIZED_HEADER_ONLY.gdc.tsv
+  authorized_manifest_sha256: 2616a09f26ee75460ca19dd1529c12b37981943256edbcf1f175dd50dfb3b3bb
+  openslide_header_fields: [mpp_x, mpp_y, level_count, level_dimensions, level_downsamples]
+  conservative_required_available_bytes: 23382989506
+  fresh_preflight_required: true
+source_bindings:
+  preparation_commit: ee4ea455fbf3bc9de55bc4f667657c04b0d2caca
+  request_sha256: b80416857b416a41cf070e2b21a2c75285953e5e652656869371e7eb64849251
+  guarded_manifest_sha256: 2616a09f26ee75460ca19dd1529c12b37981943256edbcf1f175dd50dfb3b3bb
+  staged_plan_sha256: 18249363bcd0505f18260c9c7144683c407c2a0ab95435960899d5aef7b455b2
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  download_plan_sha256: ef32418e6551ded13bab3e7d1f5c2760d628b348c59c394ebdd6865e60372a82
+  omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+authority:
+  download_b06: true
+  openslide_header_only: true
+  read_region_or_pixel_access: false
+  masks_or_coordinates: false
+  features_or_models: false
+  gpu_or_cuda: false
+  deletion: false
+  google_drive: false
+  other_patient_processing: false
+  cohort_expansion: false
+  training: false
+required_stop: B06_EXACT_FILE_OMIC_AND_HEADER_METADATA_REPORT
