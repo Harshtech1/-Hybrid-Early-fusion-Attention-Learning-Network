@@ -162,6 +162,25 @@ def test_process_audit_detects_executable_comm_and_argv_basename(tmp_path: Path)
     assert package._active_gdc_clients(tmp_path) == [101, 102, 103]
 
 
+def test_process_audit_tolerates_only_unreadable_executable_link(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    entry = tmp_path / "101"
+    entry.mkdir()
+    (entry / "cmdline").write_bytes(b"/opt/gdc-client\0download\0")
+    (entry / "comm").write_text("python\n", encoding="utf-8")
+    (entry / "exe").symlink_to(tmp_path / "python")
+    original_resolve = Path.resolve
+
+    def resolve(path: Path, *args: object, **kwargs: object) -> Path:
+        if path == entry / "exe":
+            raise PermissionError("container proc restriction")
+        return original_resolve(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "resolve", resolve)
+    assert package._active_gdc_clients(tmp_path) == [101]
+
+
 def test_exclusive_incoming_identity_rejects_swap(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:

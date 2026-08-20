@@ -205,7 +205,11 @@ def _active_gdc_clients(proc_root: Path = Path("/proc")) -> list[int]:
             comm = (entry / "comm").read_text(encoding="utf-8").strip()
             try:
                 executable = (entry / "exe").resolve(strict=True)
-            except FileNotFoundError:
+            except (FileNotFoundError, PermissionError):
+                # Container runtimes may deliberately hide another process's
+                # executable link even when its comm and cmdline remain
+                # readable.  Continue auditing those two independent names;
+                # unreadable comm/cmdline data still fails closed below.
                 executable = None
         except (FileNotFoundError, ProcessLookupError):
             continue

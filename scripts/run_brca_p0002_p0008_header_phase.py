@@ -3,6 +3,12 @@
 
 import argparse
 import json
+from pathlib import Path
+import sys
+
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from multiscale_feature_pilot.src.brca_p0002_p0008_header_package import run
 
