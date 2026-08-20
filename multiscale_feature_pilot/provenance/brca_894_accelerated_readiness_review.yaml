@@ -1,0 +1,261 @@
+schema_version: 1
+status: BRCA_894_ACCELERATED_READINESS_CPU_REVIEW_COMPLETE
+cohort: TCGA-BRCA
+recorded_at_utc: "2026-08-20T11:53:10Z"
+scope: CPU_ONLY_READ_ONLY_DESIGN_AND_PILOT_EVIDENCE_AUDIT
+
+authorization:
+  accelerated_plan:
+    complete_b03: true
+    skip_b04: true
+    skip_b05: true
+    inspect_b06_header_before_any_pixel_decision: true
+    encoder: torchvision_resnet50_imagenet1k_v2_fc_identity
+    move_to_894_streaming_only_after_readiness_gates: true
+  operations_authorized_by_this_review:
+    local_metadata_and_text_reads: true
+    append_only_review_files: true
+  operations_not_authorized:
+    downloads: false
+    wsi_or_openslide_access: false
+    pixel_reads: false
+    coordinate_generation: false
+    gpu_or_cuda: false
+    feature_extraction: false
+    drive_operations: false
+    deletion: false
+    cohort_execution: false
+    training: false
+
+evidence:
+  audit_source_commit: ecd6f555d7fe121f26570bc95162b69cc90caa64
+  streaming_policy:
+    path: multiscale_feature_pilot/config/brca_894_singleton_streaming_policy.yaml
+    sha256: 9172449122f11cb17ef196d79911d1e5914125544531dd7b1eeeca6a11ae7b5f
+  streaming_design_provenance:
+    path: multiscale_feature_pilot/provenance/brca_894_singleton_streaming_design.yaml
+    sha256: 155572d58930260d38da9347418382f68faed075fd3e2575dd9fcfda9092c3de
+  compact_policy:
+    path: multiscale_feature_pilot/config/brca_compact_artifact_policy.yaml
+    sha256: 59d4b1168108052ba5b18d8c4b5f5aa6de83c36ab234907892bf374ee9f712b4
+  compact_design_provenance:
+    path: multiscale_feature_pilot/provenance/brca_compact_artifact_design.yaml
+    sha256: 16966eb903489607a5d56a96ccbd63b9a6bb7d681ea1de535df2ccc3c1cd71e1
+  compatibility_rehearsal:
+    path: multiscale_feature_pilot/provenance/brca_compact_compatibility_rehearsal.yaml
+    sha256: c0063fb6293c16329e961299cae46baa6c4374f165745e780fd10d0fa84e19fb
+  small_batch_proposal:
+    path: multiscale_feature_pilot/config/brca_small_batch_proposal.yaml
+    sha256: 104bca7d69886a6579ea794be168cd67969ee8f41a601172a68bda2f7c3072e6
+  compact_pilot_results:
+    b01_sha256: c4eb80a03ab36999ec29f495a565fdc90ca4dee9c507f8619bef5f5c703ddc57
+    b02_sha256: 62fcf0b5a9971939ae87f380f90e8fd6e196034226c715279071ff31908d3640
+    b03_sha256: 843d34ac4f3b1839cf705c423f525a54ba3cf88c6bf55614503ed42d974c9437
+  implementation:
+    streaming_policy_source_sha256: 7bace651ec207448604d29cb5dad2ef55d0fc111726272a8e0e54f8b0d3005b2
+    streaming_ledger_source_sha256: ddf55fd4dd7b411b4bd3df1bc4f6c2a44ced0dba48232f512cf6f6dd75553a5d
+  evidence_caveat:
+    path: reports/brca_compact_artifact_and_recovery_design.md
+    working_copy_sha256: a55c577c218f03d0340df44433260a46262289c3cb04a221d7450fdb3bc2ab25
+    tracked_working_copy_modified_before_review: true
+    contains_pasted_instruction_text: true
+    used_as_authoritative_evidence: false
+    authoritative_substitutes: [compact_policy, compact_design_provenance, implementation]
+
+verified_completed_facts:
+  cohort_alignment:
+    exact_singleton_patients: 894
+    ambiguous_multi_wsi_patients_excluded: 62
+    exact_join_key: [case_id, slide_id]
+    declared_raw_inventory_bytes: 918532189383
+    raw_wsi_size_bytes: {minimum: 25565706, median: 974485171, maximum: 3401266790}
+  frozen_feature_contract:
+    physical_targets_mpp: [0.5, 1.0]
+    branch_order: [scale_2x, scale_4x]
+    encoder: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+    checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+    output_width: 2048
+    combined_shape: "[P_i,2048]"
+    natural_healnet_wsi_shape: "[1,P_i,2048]"
+    omic_shapes: ["[1,1,1558]", "[1,1,21]", "[1,1,1333]"]
+    patient_model_batch_size: 1
+    padding: false
+    attention_mask: false
+    paper_encoder_difference: paper_describes_Kather100K_pretraining
+  compact_schema:
+    name: BRCA_COMPACT_FEATURE_ARTIFACT_SET_V1
+    exact_files: [combined_features.pt, row_provenance.csv, compact_manifest.json, compact_manifest.json.sha256]
+    atomic_no_overwrite_publication: true
+    q25_q50_q75_read_only_lossless_compatibility: PASS
+    frozen_pilot_duplicate_tensor_saving_percent: 49.841887251594805
+  completed_compact_feature_pilots:
+    b01:
+      patches: 4742
+      gpu_seconds: 73.46194821200015
+      artifact_bytes: 39092076
+      healnet_smokes: PASS
+    b02:
+      patches: 9020
+      gpu_seconds: 124.93960884400008
+      artifact_bytes: 74342370
+      healnet_smokes: PASS
+    b03:
+      patches: 11132
+      gpu_seconds: 118.405110648
+      artifact_bytes: 91770745
+      healnet_smokes: PASS
+  validation_batch_disposition:
+    b01: COMPACT_GPU_PILOT_COMPLETE
+    b02: COMPACT_GPU_PILOT_COMPLETE
+    b03: COMPACT_GPU_PILOT_COMPLETE
+    b04: SKIP_BY_ACCELERATED_PLAN
+    b05: SKIP_BY_ACCELERATED_PLAN
+    b06: HEADER_ONLY_INSPECTION_REQUIRED_BEFORE_PIXEL_POLICY_DECISION
+    b06_patient_id: TCGA-EW-A1OY
+    b06_gdc_uuid: 00e926c5-d65d-42e5-8ba4-afaab66db47c
+    b06_declared_size_bytes: 1691494753
+
+recovery_readiness_audit:
+  verified_capabilities:
+    immutable_numbered_json_records: true
+    sha256_hash_chain: true
+    exclusive_no_overwrite_record_creation: true
+    contiguous_stage_and_identity_validation: true
+    unexpected_or_partial_files_fail_closed: true
+    terminal_record_cannot_advance: true
+  frozen_success_stage_order:
+    - PLANNED
+    - ACQUISITION_AUTHORIZED
+    - RAW_VERIFIED
+    - HEADER_POLICY_VERIFIED
+    - COORDINATES_VERIFIED
+    - GPU_AUTHORIZED
+    - FEATURES_VERIFIED
+    - TERMINAL_RECORDED
+  production_gaps:
+    explicit_failure_events: false
+    retry_attempt_numbers: false
+    run_id: false
+    gdc_uuid_stored_directly_in_record: false
+    error_class_and_message: false
+    input_and_output_hash_maps: false
+    replay_to_retry_action: false
+    integrated_894_patient_executor: false
+  conclusion: DESIGN_CORE_VERIFIED_BUT_FAILURE_RETRY_EXECUTOR_NOT_PRODUCTION_READY
+
+recommended_restartable_execution:
+  atomic_patient_transaction_size: 1
+  patient_concurrency: 1
+  download_concurrency: 1
+  gpu_extraction_concurrency: 1
+  active_raw_wsi_retention_count: 1
+  patch_inference_microbatch_size: 32
+  administrative_release_size_after_canary: 8
+  administrative_release_semantics: eight_serial_one_patient_transactions_with_validation_after_each_patient
+  progress_checkpoint_frequency_patients: 8
+  rationale: >-
+    One patient is the only restart-safe unit under the frozen policy. Eight-patient
+    authorization/reporting blocks can reduce supervision overhead without parallel
+    downloads, multiple active raw WSIs, state skipping, or coupled rollback.
+
+estimates_not_guarantees:
+  primary_q25_q50_q75_gpu_hours_for_894:
+    minimum_rate: 38.68827531677495
+    mean_rate: 47.380160131527184
+    maximum_rate: 60.88074186302666
+  six_completed_pilot_descriptive_gpu_hours_if_naively_scaled:
+    minimum_rate: 18.243050472646704
+    mean_rate: 36.8023560346236
+    maximum_rate: 60.88074186302666
+    planning_use: descriptive_only_lower_three_batch_quantiles_are_not_full_cohort_capacity_bounds
+  primary_compact_storage_bytes_for_894:
+    minimum_q25_rate: 68694848250
+    mean_q_rate: 91048305348
+    maximum_q75_rate: 124899345360
+  eight_patient_release_scenario:
+    gpu_minutes_at_q_pilot_minimum_and_maximum_rates: [20.772228357999968, 32.68764663786666]
+    compact_bytes_at_q_pilot_minimum_and_maximum_rates: [614719000, 1117667520]
+  exclusions:
+    b06_patch_load_unknown: true
+    download_and_cpu_coordinate_time_not_in_gpu_hours: true
+    failures_retries_and_session_interruptions_not_included: true
+    manifest_and_ledger_growth_not_material_but_not_exactly_projected: true
+
+blocking_decisions_and_work:
+  - id: B06_GEOMETRY_GATE
+    status: OPEN
+    requirement: acquire_and_verify_only_b06_then_header_only_mpp_and_pyramid_review
+  - id: FAILURE_RETRY_LEDGER_AND_EXECUTOR
+    status: OPEN
+    requirement: implement_and_synthetically_test_explicit_failure_retry_replay_and_generic_patient_executor
+  - id: RAW_WSI_LIFECYCLE
+    status: OPEN
+    requirement: >-
+      approve exact post-verification retention_deletion_or_external_recovery policy;
+      918532189383 raw bytes cannot coexist under the 200000000000 byte quota
+  - id: STORAGE_PREFLIGHT
+    status: OPEN_PER_PATIENT
+    requirement: preserve_20000000000_byte_floor_and_fit_raw_plus_staging_plus_final_before_every_transition
+  - id: SCIENTIFIC_PROTOCOL
+    status: PARTIAL
+    requirement: >-
+      ImageNet1K_V2 is selected for engineering extraction and its Kather100K
+      difference must be disclosed; survival split loss metrics and paper-comparison
+      protocol remain unfrozen before training
+
+exact_next_gates:
+  - gate: 1
+    name: B03_CPU_CONSOLIDATION_AND_B06_HEADER_PACKAGE
+    execution: CPU_ONLY
+    stop: before_b06_download_or_open
+  - gate: 2
+    name: B06_SINGLE_PATIENT_ACQUISITION_AND_HEADER_ONLY_INSPECTION
+    execution: CPU_ONLY_WITH_GDC_DOWNLOAD_AND_NO_PIXEL_READ
+    separate_authorization_required: true
+    stop: after_header_report
+  - gate: 3
+    name: B06_ENGINEERING_COVERAGE_DECISION
+    execution: CPU_ONLY_REVIEW
+    outcomes: [SKIP_B06_PIXEL_WORK, PREPARE_SEPARATE_B06_COORDINATE_GATE]
+  - gate: 4
+    name: GENERIC_EXECUTOR_FAILURE_RETRY_AND_LEDGER_V2
+    execution: CPU_ONLY_IMPLEMENTATION_AND_SYNTHETIC_TESTS
+    stop: before_cohort_download_or_gpu
+  - gate: 5
+    name: RAW_WSI_LIFECYCLE_AND_STORAGE_POLICY_APPROVAL
+    execution: DECISION_ONLY
+    deletion_authorized_by_approval: false
+  - gate: 6
+    name: FIRST_894_COHORT_RELEASE
+    execution: EIGHT_SERIAL_ONE_PATIENT_TRANSACTIONS
+    prerequisites: [B06_GEOMETRY_GATE_CLOSED, EXECUTOR_TESTED, RAW_LIFECYCLE_APPROVED, EXACT_MANIFESTS_AND_AUTHORIZATION]
+    concurrency: 1
+    stop: after_each_patient_and_after_eight_patient_review
+
+readiness_verdict:
+  feature_and_compact_artifact_policy: READY
+  image_encoder_decision: READY_WITH_PAPER_DIFFERENCE_DISCLOSURE
+  three_compact_batch_pilots: READY
+  b06_tail_geometry_coverage: NOT_YET_REVIEWED
+  generic_success_stage_ledger: READY
+  production_failure_retry_recovery: NOT_READY
+  raw_storage_lifecycle_for_894: NOT_READY
+  full_894_execution: NOT_AUTHORIZED_AND_NOT_YET_READY
+
+operations_performed_in_this_review:
+  local_text_and_metadata_reads: true
+  calculations: true
+  new_yaml_files: 1
+  new_markdown_files: 1
+  downloads: 0
+  wsi_opens: 0
+  pixel_reads: 0
+  coordinate_generations: 0
+  gpu_operations: 0
+  feature_extractions: 0
+  drive_operations: 0
+  deletions: 0
+  cohort_patients_processed: 0
+  training_runs: 0
+
+next_decision: AUTHORIZE_B06_HEADER_ONLY_GATE_AND_CPU_ONLY_GENERIC_EXECUTOR_RECOVERY_HARDENING_AS_SEPARATE_TASKS
