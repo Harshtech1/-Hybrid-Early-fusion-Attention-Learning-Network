@@ -4,6 +4,7 @@ import ast
 import hashlib
 import os
 from pathlib import Path
+import subprocess
 
 import pytest
 import torch
@@ -120,6 +121,26 @@ def test_preflight_fails_closed_if_destination_exists(
     monkeypatch.setattr(gate, "INCOMING", incoming)
     with pytest.raises(gate.B06HeaderGateError, match="must be absent"):
         gate.preflight()
+
+
+def test_download_failure_reports_sanitized_capped_client_diagnostics(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def failed(command: list[str], **_kwargs: object) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess(
+            command,
+            1,
+            stdout="prefix" + "x" * 2100 + "\x00PUBLIC_STDOUT",
+            stderr="PUBLIC_STDERR\x01",
+        )
+
+    monkeypatch.setattr(subprocess, "run", failed)
+    with pytest.raises(gate.B06HeaderGateError) as captured:
+        gate.download()
+    message = str(captured.value)
+    assert "PUBLIC_STDOUT" in message and "PUBLIC_STDERR?" in message
+    assert "prefix" not in message
+    assert "\\x00" not in message and "\\x01" not in message
 
 
 def test_atomic_result_set_refuses_overwrite(

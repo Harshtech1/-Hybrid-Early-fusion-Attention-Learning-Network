@@ -292,6 +292,14 @@ def _create_lock() -> tuple[int, tuple[int, int, int, int, int, int]]:
     return descriptor, _token(os.fstat(descriptor))
 
 
+def _diagnostic_tail(value: str, *, limit: int = 2000) -> str:
+    sanitized = "".join(
+        character if character in "\n\t" or ord(character) >= 32 else "?"
+        for character in value
+    )
+    return sanitized[-limit:]
+
+
 def _release_owned_lock(descriptor: int, token: tuple[int, int, int, int, int, int]) -> None:
     os.close(descriptor)
     try:
@@ -321,15 +329,20 @@ def download() -> dict[str, Any]:
     )
     elapsed = time.perf_counter() - started
     require(tuple(completed.args) == tuple(command), "executed GDC argv drift")
-    require(completed.returncode == 0, f"GDC download failed ({completed.returncode}): {completed.stderr[-2000:]}")
+    stdout_tail = _diagnostic_tail(completed.stdout)
+    stderr_tail = _diagnostic_tail(completed.stderr)
+    require(
+        completed.returncode == 0,
+        f"GDC download failed ({completed.returncode}); stdout_tail={stdout_tail!r}; stderr_tail={stderr_tail!r}",
+    )
     require(not _active_gdc_clients(), "gdc-client remained active after transfer")
     _regular_non_symlink(CLIENT)
     require(sha256_path(CLIENT) == CLIENT_SHA256, "gdc-client changed during transfer")
     return {
         "seconds": elapsed,
         "returncode": completed.returncode,
-        "stdout_tail": completed.stdout[-2000:],
-        "stderr_tail": completed.stderr[-2000:],
+        "stdout_tail": stdout_tail,
+        "stderr_tail": stderr_tail,
         "argv": command,
         "timeout_seconds": DOWNLOAD_TIMEOUT_SECONDS,
     }
