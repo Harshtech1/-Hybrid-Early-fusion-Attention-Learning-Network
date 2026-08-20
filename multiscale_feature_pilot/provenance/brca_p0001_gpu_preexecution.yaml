@@ -1,0 +1,149 @@
+schema_version: 1
+status: BRCA_PRODUCTION_P0001_GPU_PACKAGE_CPU_SYNTHETICALLY_VERIFIED_EXECUTION_LOCKED
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+cohort_index: 1
+patient_label: P0001
+recorded_at_utc: "2026-08-20T22:47:34Z"
+scope: CPU_ONLY_PREEXECUTION_PACKAGE_AND_SYNTHETIC_RECOVERY_REHEARSAL
+
+authorization:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement_sha256: 0988b40c965de4a6dfbffde6a29dce11070931340d5ce6cab6c409ccee114976
+  permitted:
+    cpu_package_design: true
+    frozen_local_metadata_validation: true
+    synthetic_tests: true
+    runtime_and_storage_estimation: true
+  not_permitted:
+    wsi_open: true
+    patch_read: true
+    gpu_or_cuda: true
+    feature_extraction: true
+    healnet: true
+    artifact_publication: true
+    real_recovery_ledger_write: true
+    p0002_p0008_processing: true
+    deletion: true
+    google_drive: true
+    cohort_expansion: true
+    training: true
+
+identity_and_inputs:
+  patient_id: TCGA-3C-AALK
+  slide_id: TCGA-3C-AALK-01Z-00-DX1.4E6EB156-BB19-410F-878F-FC0EA7BD0B53.svs
+  gdc_uuid: 93b26333-5723-4fa4-a4de-6124c04ab243
+  omic_source_row_id: "4"
+  frozen_cohort_order_sha256: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+  singleton_identity_sha256: eb1c2d20b35e9a5c0b30548bf06fc12fbb6130cb300e0e7c52bd2cbc6b7e47db
+  coordinate_result_sha256: 687cc3d7515f102666846310ef00fbad4e1df6b77ee3fd1f4689e659fa0f7ef2
+  coordinate_manifest_sha256: f1825acf7d0b96c92bfb66038d60af6e1572ea945490e2245d5e3ec222677d6e
+  coordinate_policy_sha256: d5ddfdf38f98a921a0876e71ed57fbf196407cf8bbf234433f3c0c0a46513cd4
+  checkpoint_size_bytes: 102540417
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  omic_content_sha256:
+    rna: 1894e15a5dbba2559c61e8521394599153a0ada90cf482fd9eb0c45347f5082a
+    mutation: 33767ff31d3c7c11a69ba46c746125f679492e03f5dec7c48f8117aa2a6b3c52
+    cnv: a0ef410e624c698475b78dc0270bf2613e2e320ba4935f8580cb0867d41bfd50
+
+feature_contract:
+  encoder: ResNet50_Weights.IMAGENET1K_V2
+  encoder_frozen: true
+  exact_paper_encoder_claim: false
+  scale_2x_rows: 13372
+  scale_4x_rows: 3444
+  combined_rows: 16816
+  feature_dim: 2048
+  combined_shape: [16816, 2048]
+  natural_healnet_wsi_shape: [1, 16816, 2048]
+  branch_order: [scale_2x, scale_4x]
+  scale_2x_row_range: [0, 13372]
+  scale_4x_row_range: [13372, 16816]
+  pooling: false
+  transpose: false
+  dtype: float32
+  raw_tensor_bytes: 137756672
+  compact_schema: BRCA_COMPACT_FEATURE_ARTIFACT_SET_V1
+  compact_exact_files: 4
+  atomic_no_overwrite_publication: true
+
+recovery_rehearsal:
+  production_adapter_sha256: a5021d765ca3ab99eec1f0fc701cea8b5374062afedf59d8f38fc4128123825d
+  executor_v2_sha256: bff584b18a9ea3a652b69cc883aecbeeed9ff88401ae6d3217e72565383fcecb
+  recovery_v2_sha256: 4986390d37c17307d53843aefe66c105f2abd7d67cd9fb6b70708a52d20b03d6
+  transaction_id: 386116c1-6696-5020-a495-446d6e37b829
+  exact_stages: 8
+  full_synthetic_events: 16
+  full_synthetic_final_action: STOP_TERMINAL
+  feature_tip_events: 14
+  feature_tip_final_action: ADVANCE_STAGE
+  start_before_outcome: PASS
+  immutable_record_hashes: PASS
+  exact_stage_order: PASS
+  exact_patient_and_input_bindings: PASS
+  compact_feature_evidence_binding: PASS
+  real_ledger_writes: 0
+
+estimates_not_measurements:
+  gpu_wall_seconds_range: [180, 260]
+  compact_artifact_bytes_range: [138500000, 139000000]
+  maximum_incremental_disk_bytes_with_staging: 278000000
+  peak_gpu_memory_bytes_range: [481000000, 485000000]
+  basis: completed_B01_B02_B03_Q75_T4_measurements_and_exact_P0001_row_count
+
+implementation:
+  base_repository_head_before_uncommitted_package: 0f1690274f03b5439d767555a6a2b944ea2b01b9
+  files:
+    multiscale_feature_pilot/config/brca_p0001_gpu_preexecution.yaml: 3d28ebf208ec9bbaef3891c5702892cd76d86ab9b8a5743ef2a2ad45199ecd23
+    multiscale_feature_pilot/src/brca_p0001_feature_package.py: d6ff12cd485d82793118dcf89f3d7db4521bb88c8b121be0e675e00687cbfb1e
+    scripts/run_brca_p0001_gpu_production.py: 5787fcdf8491375ab2c4b22cb0327435695b4173122e654586ae4f42c292e6fb
+    multiscale_feature_pilot/tests/test_brca_p0001_gpu_preexecution.py: 9a0eba8a79921e1cbafd77c014945a994d652b1904c5b18934a727dbf8099883
+    reports/brca_p0001_gpu_preexecution.md: bb65705dccd6b491b8c5df591bc090adada2a68ac2b3e45ae89c0ead40ba7681
+  frozen_dependencies:
+    multiscale_feature_pilot/config/brca_compact_artifact_policy.yaml: 59d4b1168108052ba5b18d8c4b5f5aa6de83c36ab234907892bf374ee9f712b4
+    multiscale_feature_pilot/config/brca_894_streaming_executor_v2_policy.yaml: 7558dcd296b1c5822ec698ac2458e86f38595748648aba54ca1db567b5c2a7cc
+    multiscale_feature_pilot/config/brca_894_singleton_streaming_policy.yaml: 9172449122f11cb17ef196d79911d1e5914125544531dd7b1eeeca6a11ae7b5f
+    multiscale_feature_pilot/src/brca_compact_feature_artifacts.py: dcc1a1d2073a3be1b4ee7b54e22d2d379cdba97b6d86dd5192d14b481ea62af3
+
+validation:
+  py_compile: PASS
+  focused_p0001_production_adapter_recovery_and_compact_suite:
+    result: PASS
+    passed: 61
+  full_cpu_repository_suite:
+    result: PASS
+    passed: 806
+    environment: CUDA_VISIBLE_DEVICES_empty
+  exact_checkpoint_hash: PASS
+  exact_coordinate_manifest_anchor: PASS
+  execution_lock_real_cli: PASS
+  torch_not_imported_by_locked_cli: PASS
+  feature_output_absent: PASS
+  recovery_ledger_absent: PASS
+
+operations_performed:
+  local_metadata_reads: true
+  checkpoint_hash_reads: true
+  synthetic_in_memory_recovery_events: 30
+  wsi_opens: 0
+  patch_reads: 0
+  cuda_operations: 0
+  feature_extractions: 0
+  healnet_executions: 0
+  feature_publications: 0
+  recovery_ledger_writes: 0
+  p0002_p0008_operations: 0
+  deletion_operations: 0
+  google_drive_operations: 0
+  cohort_expansions: 0
+  training_runs: 0
+
+readiness:
+  cpu_preexecution_package: READY
+  synthetic_recovery_contract: READY
+  compact_artifact_contract: READY
+  gpu_execution: LOCKED
+  next_patient: BLOCKED_UNTIL_P0001_TERMINAL_RECORDED
+
+future_authorization_statement_sha256: 86db1c4ddb2deead9ce8ca0d6282a890136c3e63451685aa862909a184867f48
+next_gate: SEPARATE_EXACT_P0001_PRODUCTION_GPU_EXECUTION_AUTHORIZATION_OR_DECLINE

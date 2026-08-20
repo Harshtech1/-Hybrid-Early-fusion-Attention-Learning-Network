@@ -1,0 +1,144 @@
+schema_version: 1
+status: P0001_PRODUCTION_GPU_PREEXECUTION_PREPARATION_AUTHORIZED_EXECUTION_LOCKED
+executable: false
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+cohort_index: 1
+patient_label: P0001
+classification: FIRST_PRODUCTION_BLOCK_NOT_SCIENTIFIC_PILOT
+
+preparation_authority:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: >-
+    I authorize CPU-only preparation and validation of the P0001 production GPU feature-extraction package using the frozen verified P0001 coordinates: 13,372 scale-2× and 3,444 scale-4× coordinates. Bind the ResNet50 ImageNet1K V2 checkpoint, natural concatenation contract `[16816,2048]`, compact artifact schema, Omic row 4, recovery ledger, and atomic publication. Use synthetic tests only. Do not open the P0001 WSI, read patches, use GPU/CUDA, extract features, run HEALNet, process P0002–P0008, delete files, access Drive, expand the cohort, or train. Stop when the fail-closed package, runtime estimate, and storage estimate are ready for execution review.
+  exact_statement_sha256: 0988b40c965de4a6dfbffde6a29dce11070931340d5ce6cab6c409ccee114976
+  transport_normalization: TRAILING_HTML_SPACE_ENTITY_IGNORED
+
+execution_lock:
+  runner_execution_authorized: false
+  executable_authorization_record_present: false
+  gpu_or_cuda: false
+  wsi_open_or_patch_read: false
+  feature_extraction: false
+  healnet: false
+  artifact_publication: false
+  recovery_ledger_publication: false
+
+identity:
+  patient_id: TCGA-3C-AALK
+  slide_id: TCGA-3C-AALK-01Z-00-DX1.4E6EB156-BB19-410F-878F-FC0EA7BD0B53.svs
+  gdc_uuid: 93b26333-5723-4fa4-a4de-6124c04ab243
+  omic_source_row_id: "4"
+  singleton_identity_sha256: eb1c2d20b35e9a5c0b30548bf06fc12fbb6130cb300e0e7c52bd2cbc6b7e47db
+  frozen_cohort_order_sha256: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+
+verified_inputs:
+  coordinate_result_path: multiscale_feature_pilot/provenance/brca_p0001_coordinate_execution_result.yaml
+  coordinate_result_sha256: 687cc3d7515f102666846310ef00fbad4e1df6b77ee3fd1f4689e659fa0f7ef2
+  coordinate_manifest_sha256: f1825acf7d0b96c92bfb66038d60af6e1572ea945490e2245d5e3ec222677d6e
+  coordinate_policy_sha256: d5ddfdf38f98a921a0876e71ed57fbf196407cf8bbf234433f3c0c0a46513cd4
+  scale_2x_rows: 13372
+  scale_4x_rows: 3444
+  total_rows: 16816
+  combined_shape: [16816, 2048]
+  natural_healnet_wsi_shape: [1, 16816, 2048]
+  branch_order: [scale_2x, scale_4x]
+  row_ranges:
+    scale_2x: [0, 13372]
+    scale_4x: [13372, 16816]
+  pooling_performed: false
+  transpose_performed: false
+  omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  omic_shapes: [[1, 1, 1558], [1, 1, 21], [1, 1, 1333]]
+  omic_content_sha256:
+    rna: 1894e15a5dbba2559c61e8521394599153a0ada90cf482fd9eb0c45347f5082a
+    mutation: 33767ff31d3c7c11a69ba46c746125f679492e03f5dec7c48f8117aa2a6b3c52
+    cnv: a0ef410e624c698475b78dc0270bf2613e2e320ba4935f8580cb0867d41bfd50
+  checkpoint:
+    encoder: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+    filename: resnet50-11ad3fa6.pth
+    size_bytes: 102540417
+    sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+    frozen: true
+    paper_encoder_difference: paper_describes_Kather100K_pretraining
+    engineering_checkpoint_decision: IMAGENET1K_V2_FROZEN_BY_USER
+
+future_execution_contract:
+  device: cuda:0
+  gpu: Tesla T4
+  dtype: float32
+  batch_size: 32
+  num_workers: 2
+  deterministic_algorithms: true
+  cublas_workspace_config: ":4096:8"
+  cudnn_deterministic: true
+  cudnn_benchmark: false
+  tf32: false
+  automatic_mixed_precision: false
+  cpu_fallback: false
+  patch_reads:
+    scale_2x: 13372
+    scale_4x: 3444
+    total: 16816
+  concatenation: torch.cat_dim_0_no_pooling_no_transpose
+  compact_output: /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_P0001.features
+  compact_schema: BRCA_COMPACT_FEATURE_ARTIFACT_SET_V1
+  compact_exact_files:
+    - combined_features.pt
+    - row_provenance.csv
+    - compact_manifest.json
+    - compact_manifest.json.sha256
+  atomic_publication: sibling_staging_validate_then_RENAME_NOREPLACE
+  preserve_failed_staging_for_manual_review: true
+
+recovery_v2:
+  ledger_path: /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_P0001.recovery_v2
+  transaction_id: 386116c1-6696-5020-a495-446d6e37b829
+  exact_stage_order:
+    - PLANNED
+    - ACQUISITION_AUTHORIZED
+    - RAW_VERIFIED
+    - HEADER_POLICY_VERIFIED
+    - COORDINATES_VERIFIED
+    - GPU_AUTHORIZED
+    - FEATURES_VERIFIED
+    - TERMINAL_RECORDED
+  stage_evidence:
+    production_request_sha256: 04da2f211bfae390ec94ec2dd082ed032204d9c3b81424c6273e33679b14134b
+    acquisition_header_authorization_sha256: 691a8d536c9a614a326d26f971f586b7e5ab441a5efea189e347f2c4d664d61a
+    header_result_sha256: 6c7faa0c4e80f4649d784140b907280c1f5b889f5153b4550da9e3e2f198efb3
+    policy_review_sha256: aefd0e5de9b41ce726e880b14d5002d4012acbffaed7196ba301b28c323da77c
+    coordinate_authorization_sha256: dcf916daf81a25c4a412f4a6aa43fe22bd616ec5755c68f94a7d2f2f2f6f5baa
+    coordinate_manifest_sha256: f1825acf7d0b96c92bfb66038d60af6e1572ea945490e2245d5e3ec222677d6e
+    checkpoint_identity_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+    raw_lifecycle_decision_sha256: 04da2f211bfae390ec94ec2dd082ed032204d9c3b81424c6273e33679b14134b
+  source_policy_hashes:
+    cohort_order_manifest: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+    compact_artifact_policy: 59d4b1168108052ba5b18d8c4b5f5aa6de83c36ab234907892bf374ee9f712b4
+    executor_v2_policy: 7558dcd296b1c5822ec698ac2458e86f38595748648aba54ca1db567b5c2a7cc
+    singleton_streaming_policy: 9172449122f11cb17ef196d79911d1e5914125544531dd7b1eeeca6a11ae7b5f
+  synthetic_rehearsal:
+    events: 16
+    all_stage_starts_precede_outcomes: true
+    immutable_hash_chain: true
+    feature_compact_evidence_bound: true
+    final_replay_action: STOP_TERMINAL
+    real_ledger_writes: 0
+  actual_execution_rule: >-
+    Persist recovery events only under the later exact GPU authorization; a
+    partial, failed, or conflicting ledger must fail closed and require
+    recovery-v2 replay or explicit retry review.
+
+estimates_not_measurements:
+  gpu_wall_seconds_range: [180, 260]
+  raw_combined_tensor_bytes: 137756672
+  compact_artifact_bytes_range: [138500000, 139000000]
+  peak_gpu_memory_bytes_range: [481000000, 485000000]
+  maximum_incremental_disk_bytes_with_staging: 278000000
+  basis: completed_B01_B02_B03_Q75_T4_measurements_and_exact_P0001_row_count
+
+future_exact_authorization_text: >-
+  I authorize the exact P0001-only production GPU feature execution using the frozen verified P0001 coordinates: 13,372 scale-2x and 3,444 scale-4x patch reads; float32 ResNet50 ImageNet1K V2 feature extraction; natural row concatenation into [16816,2048]; atomic compact artifact publication; recovery-v2 GPU_AUTHORIZED and FEATURES_VERIFIED ledger recording; and synthetic plus real-feature four-modality HEALNet numerical smoke tests. No training, backward pass, optimizer step, AMP, TF32, CPU fallback, coordinate regeneration, P0002–P0008 processing, Q25/Q50/Q75/B01/B02/B03/B06 or BLCA changes, Drive operations, cohort expansion, raw/pre-existing/user/project/final-artifact deletion, or official HEALNet modification; only cleanup of runner-created ephemeral recovery staging is permitted. Stop after artifact validation, recovery recording, and reporting.
+future_exact_authorization_text_sha256: 86db1c4ddb2deead9ce8ca0d6282a890136c3e63451685aa862909a184867f48
+
+next_gate: SEPARATE_EXACT_P0001_PRODUCTION_GPU_EXECUTION_AUTHORIZATION_OR_DECLINE
