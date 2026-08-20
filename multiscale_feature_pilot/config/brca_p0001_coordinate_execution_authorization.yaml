@@ -1,0 +1,58 @@
+schema_version: 1
+status: AUTHORIZED_P0001_SINGLE_MASK_READ_AND_COORDINATE_PUBLICATION
+executable: true
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+cohort_index: 1
+patient_label: P0001
+mode: CPU_ONLY_EXACTLY_ONE_LEVEL2_MASK_READ
+approval:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: >-
+    I authorize one P0001-only CPU coordinate execution: exactly one OpenSlide level-2 mask read at `(0,0)`, size `(5968,5120)`, using the frozen P0001 scale and coordinate policy, followed by tissue segmentation and atomic publication of the 2× and 4× coordinate bags. No patch reads, feature extraction, ResNet50, HEALNet, GPU/CUDA, P0002–P0008 processing, Q25/Q50/Q75/B01/B02/B03/B06 or BLCA changes, Drive operations, raw-file deletion, cohort expansion, or training. Stop after coordinate validation and reporting.
+  exact_statement_sha256: e04c4424a75f88327592d083029880cdfeab4f2cd2f82a54439f82cbfd1aa43f
+  transport_normalization: TRAILING_HTML_SPACE_ENTITY_IGNORED
+identity:
+  patient_id: TCGA-3C-AALK
+  slide_id: TCGA-3C-AALK-01Z-00-DX1.4E6EB156-BB19-410F-878F-FC0EA7BD0B53.svs
+  gdc_uuid: 93b26333-5723-4fa4-a4de-6124c04ab243
+  size_bytes: 1769848096
+  md5: 3d63b3311612d763525b6edb0848b986
+  sha256: f43597a87463d8d15007918dd5174ff966aa28dcb0de71cdc5752576cd7c2b5b
+  parcel_size_bytes: 106452
+  parcel_sha256: b666d63039457d08f381f5682c3e4b4a40953e4d3ec7e9e977703fd5b289537d
+  omic_source_row_index: "4"
+authorized_read:
+  openslide_open_count: 1
+  read_region_count: 1
+  level_0_location: [0, 0]
+  level: 2
+  size_at_level: [5968, 5120]
+authorized_outputs:
+  destination: /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_P0001.coordinates
+  branches: [scale_2x, scale_4x]
+  atomic_no_overwrite_publication: true
+  transaction_owned_staging_may_remain_on_failure_but_is_never_deleted: true
+source_bindings:
+  policy_path: multiscale_feature_pilot/config/brca_p0001_scale_coordinate_policy.yaml
+  policy_sha256: d5ddfdf38f98a921a0876e71ed57fbf196407cf8bbf234433f3c0c0a46513cd4
+  policy_review_sha256: aefd0e5de9b41ce726e880b14d5002d4012acbffaed7196ba301b28c323da77c
+  header_result_sha256: 6c7faa0c4e80f4649d784140b907280c1f5b889f5153b4550da9e3e2f198efb3
+  segmentation_source_sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+  artifact_schema_source_sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+  omic_source_sha256: 5061039913cb0dd4e8e30958c8b4b76f088396f7841255dd94234c3b462d5a5d
+  policy_commit: 223b8348b9946d1fe2a5a36d17dc93e30d171dd2
+authority:
+  patch_reads: false
+  feature_extraction: false
+  resnet50: false
+  healnet: false
+  gpu_or_cuda: false
+  p0002_p0008_processing: false
+  q25_q50_q75_b01_b02_b03_b06_or_blca_changes: false
+  drive_operations: false
+  preexisting_raw_user_project_or_final_artifact_deletion: false
+  transaction_owned_ephemeral_deletion: false
+  cohort_expansion: false
+  training: false
+required_stop: P0001_COORDINATE_VALIDATION_AND_REPORTING
