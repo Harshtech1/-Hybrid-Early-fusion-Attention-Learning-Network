@@ -1,0 +1,82 @@
+schema_version: 1
+status: AWAITING_EXPLICIT_B03_ACQUISITION_AND_HEADER_AUTHORIZATION
+executable: false
+cohort: TCGA-BRCA
+batch_label: B03
+prepared_at_utc: "2026-08-20T10:29:55Z"
+preparation_authority:
+  statement: >-
+    I authorize a CPU-only review of the completed B02 compact GPU pilot
+    against B01, Q25, Q50, and Q75, followed by preparation of the B03
+    acquisition and header-only authorization package. Do not download or
+    open the B03 WSI, use GPU/CUDA, generate coordinates or features, delete
+    files, access Drive, process B04–B06, expand the cohort, or train a model.
+  interpretation: PACKAGE_PREPARATION_ONLY_NO_B03_EXECUTION
+  canonical_statement_sha256: 790ce81750a3a40b138586b6309662b31e906cea1db7b9c3429dfd61c909397c
+identity:
+  patient_id: TCGA-AR-A1AY
+  slide_id: TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs
+  filename: TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs
+  gdc_uuid: 266c3852-f5d0-4815-94d9-dac5b0ff8276
+  expected_size_bytes: 918454431
+  expected_md5: 1980b183d5bb948c2fc263af62a4b1b4
+  state: released
+  omic_source_row_index: "372"
+  exact_case_and_full_slide_match_locally_reverified: true
+  omic_shapes: [[1, 1, 1558], [1, 1, 21], [1, 1, 1333]]
+  omic_content_sha256:
+    rna: 463b056072b280c951cf2626f6ca80e5d30014133c486f8d51423695f9869dfa
+    mutation: 7a67b8d094d93c2f5998b5384fdc07f07b46acc587e059aea33c60b7e9bd3afd
+    cnv: 21fdf23ebbe236f295337f497620bd522df309a81b071395a09b22800c7285b3
+manifest:
+  path: multiscale_feature_pilot/provenance/brca_six_patient_batch_guarded/B03_TCGA-AR-A1AY_266c3852-f5d0-4815-94d9-dac5b0ff8276.NOT_AUTHORIZED.gdc.tsv
+  sha256: 847ff7458fafafbba4596178531d7caf3e66a01d47a775e1879c5db4526ac73b
+  exact_rows: 1
+  remains_not_authorized: true
+future_execution_if_separately_authorized:
+  mode: CPU_ONLY_NO_CUDA
+  source: NCI_GDC
+  concurrency: 1
+  destination: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B03.incoming
+  checks: [uuid, filename, byte_size, md5, independent_sha256, no_partial_or_incomplete_files, regular_non_symlink_svs, exact_omic_rematch]
+  openslide_header_fields: [mpp_x, mpp_y, level_count, level_dimensions, level_downsamples]
+  read_region_calls: 0
+  pixel_access: false
+storage:
+  expected_raw_bytes: 918454431
+  conservative_required_available_bytes: 21836908862
+  available_bytes_at_package_preparation: 338797510656
+  preflight_must_be_repeated_before_download: true
+source_bindings:
+  preparation_commit: 3a5796f8aa7769a85222e4220b21ab64300c1007
+  B02_gpu_result_sha256: 62fcf0b5a9971939ae87f380f90e8fd6e196034226c715279071ff31908d3640
+  small_batch_proposal_sha256: 6133920baaccb73805d58daf53b8ffe93c30c49468a4a3e96a53bd8b960455d2
+  guarded_manifest_sha256: 847ff7458fafafbba4596178531d7caf3e66a01d47a775e1879c5db4526ac73b
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  filtered_gdc_manifest_sha256: ac1b4d591ce255a7d4e6bde3778a041b107576693657ee296fe6eb36c4e79a92
+  omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+authority_now:
+  download: false
+  wsi_open_or_header_read: false
+  pixel_or_region_read: false
+  gpu_or_cuda: false
+  coordinate_generation: false
+  feature_extraction: false
+  deletion: false
+  drive_operations: false
+  b04_b06_processing: false
+  cohort_expansion: false
+  training: false
+future_exact_authorization_text: >-
+  I authorize downloading only BRCA validation-batch patient B03, UUID
+  266c3852-f5d0-4815-94d9-dac5b0ff8276 (918,454,431 bytes), from GDC to local
+  persistent staging at concurrency one using its exact one-row manifest.
+  After download, perform only exact UUID/filename/size/MD5 verification,
+  independent SHA256 calculation, partial/incomplete checks, regular
+  non-symlink SVS confirmation, exact Omic rematch, and OpenSlide header-only
+  inspection of MPP and every pyramid level. Do not call read_region or access
+  pixels; do not generate masks, coordinates, or features; do not use
+  GPU/CUDA, Drive, deletion, B04–B06 processing, cohort expansion, or training.
+  Stop after the B03 metadata report and wait for my review.
+future_exact_authorization_text_sha256: 09fe4fd334284ac15e7e373365d811d9d98f46d1bab5e9beaddfae3b496c03f0
+next_decision: AUTHORIZE_OR_DECLINE_EXACT_B03_ACQUISITION_AND_HEADER_ONLY_TEXT
