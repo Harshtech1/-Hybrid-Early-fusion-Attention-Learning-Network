@@ -1,0 +1,176 @@
+schema_version: 1
+status: BRCA_B03_COORDINATES_VERIFIED
+cohort: TCGA-BRCA
+batch_label: B03
+recorded_at_utc: "2026-08-20T11:08:09Z"
+
+execution:
+  mode: CPU_ONLY_EXACT_SINGLE_LEVEL2_MASK_READ_AND_COORDINATE_PUBLICATION
+  started_at_utc: "2026-08-20T11:06:55.552796+00:00"
+  finished_at_utc: "2026-08-20T11:07:13.683506+00:00"
+  total_wall_seconds: 18.130712995000067
+  source_commit: 1a549433e2bc214d48b6f260afeccdc1892e5f30
+  authorization_path: multiscale_feature_pilot/config/brca_b03_coordinate_execution_authorization.yaml
+  authorization_sha256: 102346d52105eb30463e2daf4c022fd3fdec1cef2ae5957eed44776b3ce9228a
+  authorization_statement_sha256: 747eeb4bf20a85e7312ecaa744c809b14186e9adad8e3ccdf82bae3d76fdf3ae
+
+identity:
+  patient_id: TCGA-AR-A1AY
+  slide_id: TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs
+  gdc_file_uuid: 266c3852-f5d0-4815-94d9-dac5b0ff8276
+  wsi_path: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B03.incoming/266c3852-f5d0-4815-94d9-dac5b0ff8276/TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs
+  wsi_size_bytes: 918454431
+  wsi_md5: 1980b183d5bb948c2fc263af62a4b1b4
+  wsi_sha256: 4ef4ac79ce3cc0bfc5a4ea62985f080f0f877dca4c7e43191a04a35b2eba8228
+  regular_non_symlink: true
+  raw_wsi_retained: true
+  held_o_nofollow_descriptor_used: true
+  openslide_stable_proc_fd_path_used: true
+  exact_tree_and_parcel_revalidated: true
+
+header:
+  mpp_x: 0.2468
+  mpp_y: 0.2468
+  level_dimensions:
+    - [93296, 58121]
+    - [23324, 14530]
+    - [5831, 3632]
+    - [2915, 1816]
+  openslide_level_downsamples:
+    - 1.0
+    - 4.000034411562285
+    - 16.00123898678414
+    - 32.00522239895422
+
+omic:
+  source_row_index: "372"
+  exact_case_and_full_slide_match: true
+  exact_row_rematched_before_open_and_before_publication: true
+  archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  rna: {shape: [1, 1, 1558], dtype: float32, device: cpu, content_sha256: 463b056072b280c951cf2626f6ca80e5d30014133c486f8d51423695f9869dfa}
+  mutation: {shape: [1, 1, 21], dtype: float32, device: cpu, content_sha256: 7a67b8d094d93c2f5998b5384fdc07f07b46acc587e059aea33c60b7e9bd3afd}
+  cnv: {shape: [1, 1, 1333], dtype: float32, device: cpu, content_sha256: 21fdf23ebbe236f295337f497620bd522df309a81b071395a09b22800c7285b3}
+
+mask_read:
+  openslide_open_count: 1
+  read_region_count: 1
+  level_0_location: [0, 0]
+  level: 2
+  size_at_level: [5831, 3632]
+  shape: [3632, 5831, 4]
+  dtype: uint8
+  channel_order: RGBA
+  hash_serialization: contiguous_uint8_C_order_raw_bytes
+  sha256: 3bee296abdee520137bc4817f2e35bc8faba80c4b04e174cd130d417002a9a51
+  contour_count: 2
+  retained_hole_count: 6
+  coordinate_geometry_scale_xy: [16.0, 16.002477973568283]
+  retained_after_execution: false
+
+coordinate_artifacts:
+  schema: BRCA_COORDINATE_ARTIFACT_SET_V1
+  directory: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B03.coordinates
+  exact_file_count: 4
+  exact_files:
+    - coordinate_manifest.json
+    - coordinate_manifest.json.sha256
+    - scale_2x_coordinates.h5
+    - scale_4x_coordinates.h5
+  total_file_bytes: 202485
+  allocated_bytes: 221184
+  atomic_no_overwrite_publication: true
+  validated_after_publication: true
+  every_file_regular_non_symlink: true
+  lock_or_staging_present_after_return: false
+  external_to_git_repository: true
+  manifest:
+    size_bytes: 4938
+    sha256: cced78f863415ee12d57b905131e60758ba849645196c0a14309e9ab8d4e1ae5
+  manifest_sidecar:
+    size_bytes: 91
+    sha256: d75e338cc23ad44f1f1ce462c8bd584601b9fb216d56752d1543cbc6d0fd6d7d
+    referenced_manifest_sha256: cced78f863415ee12d57b905131e60758ba849645196c0a14309e9ab8d4e1ae5
+  scale_2x:
+    shape: [8875, 2]
+    dtype: int64
+    file_size_bytes: 151672
+    file_sha256: 87c85c89c9c8633da2b5cba6d33b585f183f50dc01dcacfaa9bb713c0adb846d
+    coordinates_sha256: fb44970afe9835f0f7664988bdf9e5f8d645ff5893631ecc94df79604828304f
+    unique_count: 8875
+    duplicate_count: 0
+    row_major_y_then_x: true
+    source_level: 0
+    level_0_footprint: [512, 512]
+    level_0_step: [512, 512]
+    effective_mpp: [0.4936, 0.4936]
+    min_xy: [2048, 3072]
+    max_xy: [89600, 53760]
+    first_xy: [18432, 3072]
+    last_xy: [60928, 53760]
+  scale_4x:
+    shape: [2257, 2]
+    dtype: int64
+    file_size_bytes: 45784
+    file_sha256: a1ffbe491781a53d7810132bce669b4862d0337f9c8063f49fe3c321c2a5e399
+    coordinates_sha256: b47aefad3b4f7785b0ac54512f761a1c159268f0b83d4f44f791d5a3c2ef1892
+    unique_count: 2257
+    duplicate_count: 0
+    row_major_y_then_x: true
+    source_level: 1
+    level_0_footprint: [1024, 1024]
+    level_0_step: [1024, 1024]
+    effective_mpp: [0.9872084927735719, 0.9872084927735719]
+    min_xy: [2048, 3072]
+    max_xy: [89088, 53248]
+    first_xy: [17408, 3072]
+    last_xy: [66560, 53248]
+  total_coordinate_count: 11132
+
+implementation_identity:
+  source_commit: 1a549433e2bc214d48b6f260afeccdc1892e5f30
+  runner_sha256: 1cea740fd87b57f1058e6ce65dbd9067fe5f19a31fb38da39f79c041556fd8d8
+  policy_sha256: 58de5cedb887a3d0faf12c68e8629d26cae4cf7ff8a867e20742d395890a522c
+  policy_review_sha256: 067b3ef6bb7d77778af0813a9c093b19ac11e69a769835b9b50ca10dd4a071f9
+  header_result_sha256: f0d3ea106e49f24220ded29743b31459caed06d325a22cc123a6ea2addb77111
+  segmentation_source_sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+  artifact_schema_source_sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+  omic_source_sha256: 5061039913cb0dd4e8e30958c8b4b76f088396f7841255dd94234c3b462d5a5d
+  official_healnet_observed_commit: 90459b65a3d4a4ef9fd405671c457b5a1163cc7d
+  official_healnet_clean: true
+  frozen_blca_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+
+validations:
+  exact_uuid_filename_size_md5_sha256: PASS
+  exact_download_tree_and_parcel: PASS
+  exact_omic_row_and_cpu_modality_hashes: PASS
+  exact_one_level_2_mask_read: PASS
+  manifest_and_sidecar_hashes_recomputed: PASS
+  hdf5_file_and_coordinate_content_hashes_recomputed: PASS
+  hdf5_exact_schema_dtype_and_attributes: PASS
+  nonempty_unique_strict_row_major_lattice_and_bounds: PASS
+  exact_output_file_set_and_no_symlinks: PASS
+  independent_read_only_artifact_validator: PASS
+  source_commit_and_bound_file_hashes: PASS
+
+operations_not_performed:
+  patch_reads: 0
+  feature_extractions: 0
+  resnet50_operations: 0
+  healnet_operations: 0
+  gpu_or_cuda_operations: 0
+  b04_b06_operations: 0
+  q25_q50_q75_b01_b02_or_blca_changes: 0
+  drive_operations: 0
+  deletion_operations: 0
+  cohort_expansions: 0
+  training_runs: 0
+
+repository_postconditions:
+  protected_existing_user_modifications_preserved: true
+  protected_blca_report_touched: false
+  coordinate_artifacts_outside_git: true
+
+required_stop: B03_COORDINATE_VALIDATION_AND_REPORTING
+required_stop_reached: true
+scientific_interpretation: COORDINATE_ARTIFACTS_ONLY_NO_FEATURES_OR_MODEL_OUTPUT
+next_gate: SEPARATE_REVIEW_AND_AUTHORIZATION_REQUIRED_BEFORE_B03_PATCH_READS_OR_GPU_FEATURE_EXTRACTION
