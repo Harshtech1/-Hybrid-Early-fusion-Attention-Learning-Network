@@ -1,0 +1,56 @@
+schema_version: 1
+status: P0001_RECOVERY_PREFIX_BOOTSTRAP_PACKAGE_VALIDATED_EXECUTION_PENDING_COMMIT
+recorded_at_utc: "2026-08-20T23:40:00Z"
+cohort: TCGA-BRCA
+production_row: P0001
+authorization:
+  source: DIRECT_USER_AUTHORIZATION
+  statement_sha256: 3ada92434dfc6f78bbf29e7d127fe2dd199e8fa11a7ea9356bbcea92e85f88fc
+  path: multiscale_feature_pilot/config/brca_p0001_recovery_prefix_bootstrap_authorization.yaml
+  sha256: d1842aa9225b53bcad59db17cf92504cf2b6f75411ed2bb16e552a85c154d875
+package:
+  base_commit: 03b0ad0b3e2c348200919a51f3ebd4fe6112f97f
+  runner:
+    path: scripts/run_brca_p0001_recovery_prefix_bootstrap.py
+    sha256: 6aeb0e1da5bcdbb1904b235306f69c967f78d3a07b83b73f59f46bb45721584b
+  implementation:
+    path: multiscale_feature_pilot/src/brca_p0001_recovery_prefix_bootstrap.py
+    sha256: 54425b6751f32fcb829d36b2553410a0e26eb686c9b74a071dba0bca9f9acd2d
+  test:
+    path: multiscale_feature_pilot/tests/test_brca_p0001_recovery_prefix_bootstrap.py
+    sha256: 39e897c4183f64e10fb9e8d8c986badc04ad5446ca4806d4c8fcc3c5b07a3070
+derived_prefix:
+  transaction_id: 386116c1-6696-5020-a495-446d6e37b829
+  exact_events: 10
+  exact_stage_successes: [PLANNED, ACQUISITION_AUTHORIZED, RAW_VERIFIED, HEADER_POLICY_VERIFIED, COORDINATES_VERIFIED]
+  bootstrap_recorded_at_utc: "2026-08-20T23:40:00Z"
+  timestamp_semantics: BACKFILL_RECORDING_TIME_OPERATIONAL_TIMES_REMAIN_IN_FROZEN_EVIDENCE
+  first_record_sha256: 10633d7b4b42e29501df6e8a71766f868f1e34c2eec95b8212d580204e966784
+  tip_record_sha256: 45077a18d10205a04c9ef3a80479be7af4079501a11891ca1b9cc8701a8347b6
+  replay_action: ADVANCE_STAGE
+  next_stage: GPU_AUTHORIZED
+publication_contract:
+  destination: /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_P0001.recovery_v2
+  destination_present_during_package_validation: false
+  atomic_complete_directory_RENAME_NOREPLACE: true
+  append_only_event_construction: true
+  delete_or_overwrite: false
+  interrupted_staging_requires_manual_review: true
+validation:
+  focused_tests: 7
+  focused_plus_recovery_and_gpu_preexecution_tests: 41
+  focused_tests_result: PASS
+  py_compile: PASS
+  synthetic_atomic_publication_round_trip: PASS
+  second_publication_no_overwrite_rejection: PASS
+  real_external_ledger_execution_performed: false
+operations_not_performed:
+  wsi_open_or_pixel_access: 0
+  read_region: 0
+  coordinate_generation: 0
+  gpu_or_cuda: 0
+  feature_extraction: 0
+  healnet: 0
+  deletion_or_overwrite: 0
+  training: 0
+next_gate: COMMIT_PACKAGE_THEN_EXECUTE_WITH_EXACT_EXPECTED_SOURCE_COMMIT

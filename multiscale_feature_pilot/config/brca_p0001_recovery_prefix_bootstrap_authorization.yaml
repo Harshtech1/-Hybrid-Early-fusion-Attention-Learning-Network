@@ -1,0 +1,95 @@
+schema_version: 1
+status: P0001_RECOVERY_V2_PREFIX_BOOTSTRAP_AUTHORIZED_NOT_EXECUTED
+executable: true
+cohort: TCGA-BRCA
+production_row: P0001
+
+authorization:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: >-
+    I authorize CPU-only phase-barrier preparation of the exact P0001–P0008 production block. First, create and validate P0001’s exact append-only 10-event recovery-v2 prefix through COORDINATES_VERIFIED using only frozen committed evidence. Amend and synthetically validate the first-eight execution policy so downloads remain concurrency one, no more than two CPU patient-preparation workers may overlap, and all GPU stages remain locked. Then download only P0002–P0008 using their exact seven frozen request-only manifests, totaling 6,527,281,524 bytes. For each patient, perform exact UUID, filename, size, MD5, SHA256, partial-file, regular non-symlink, Omic-row, MPP, and complete pyramid-header verification. OpenSlide header inspection is permitted, but no read_region or pixel access is authorized. Prepare each patient’s exact scale and coordinate policy and the proposed level-2 mask-read tuple, but do not generate masks or coordinates. Do not use GPU/CUDA, extract features, run HEALNet, process patients outside P0001–P0008, delete raw or existing files, access Drive, expand the cohort, or train. Stop after P0001 ledger validation and the seven P0002–P0008 metadata reports, policies, and combined coordinate-execution request are ready for review.
+  exact_statement_sha256: 3ada92434dfc6f78bbf29e7d127fe2dd199e8fa11a7ea9356bbcea92e85f88fc
+  transport_normalization:
+    escaped_markdown_underscores_removed: true
+    trailing_html_space_entity_ignored: true
+
+scope:
+  patient_id: TCGA-3C-AALK
+  slide_id: TCGA-3C-AALK-01Z-00-DX1.4E6EB156-BB19-410F-878F-FC0EA7BD0B53.svs
+  gdc_file_uuid: 93b26333-5723-4fa4-a4de-6124c04ab243
+  cohort_index: 1
+  omic_source_row_index: "4"
+  destination: /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_P0001.recovery_v2
+  destination_must_be_absent: true
+  exact_events: 10
+  exact_stage_successes:
+    - PLANNED
+    - ACQUISITION_AUTHORIZED
+    - RAW_VERIFIED
+    - HEADER_POLICY_VERIFIED
+    - COORDINATES_VERIFIED
+  terminal_tip:
+    last_durable_stage: COORDINATES_VERIFIED
+    replay_action: ADVANCE_STAGE
+    target_stage: GPU_AUTHORIZED
+  transaction_id: 386116c1-6696-5020-a495-446d6e37b829
+  bootstrap_recorded_at_utc: "2026-08-20T23:40:00Z"
+  timestamp_semantics: >-
+    Every bootstrap ledger record uses the bootstrap recording time. Historical
+    operational start and finish times remain authoritative only in the frozen
+    acquisition, header, policy, and coordinate evidence; the ledger timestamp
+    does not claim that those operations occurred at bootstrap time.
+
+publication:
+  build_in_sibling_staging_directory: true
+  event_publication: append_only_atomic_no_overwrite
+  final_publication: linux_renameat2_RENAME_NOREPLACE
+  validate_staged_and_final_replay: true
+  delete_or_overwrite_any_path: false
+  interrupted_staging_requires_manual_review: true
+
+frozen_evidence:
+  production_request:
+    path: multiscale_feature_pilot/config/brca_first_eight_production_execution_request.yaml
+    sha256: 04da2f211bfae390ec94ec2dd082ed032204d9c3b81424c6273e33679b14134b
+  cohort_proposal:
+    path: reports/brca_first_eight_canary_proposal.tsv
+    sha256: 940b8fd1f7d194c2c9b7c69ddae58ffff3c55196b6841ac859c60cbc01095dfd
+  one_row_manifest:
+    path: multiscale_feature_pilot/provenance/brca_first_eight_production_manifests/P0001_93b26333-5723-4fa4-a4de-6124c04ab243.REQUEST_ONLY.gdc.tsv
+    sha256: 1c05dc64b6af54604648b52e688e02f611f8e42aaf82cf911c81035b3fc385f2
+  acquisition_header_authorization:
+    path: multiscale_feature_pilot/config/brca_p0001_acquisition_header_authorization.yaml
+    sha256: 691a8d536c9a614a326d26f971f586b7e5ab441a5efea189e347f2c4d664d61a
+  header_result:
+    path: multiscale_feature_pilot/provenance/brca_p0001_header_metadata_result/result.yaml
+    sha256: 6c7faa0c4e80f4649d784140b907280c1f5b889f5153b4550da9e3e2f198efb3
+  scale_coordinate_policy:
+    path: multiscale_feature_pilot/config/brca_p0001_scale_coordinate_policy.yaml
+    sha256: d5ddfdf38f98a921a0876e71ed57fbf196407cf8bbf234433f3c0c0a46513cd4
+  scale_coordinate_policy_review:
+    path: multiscale_feature_pilot/provenance/brca_p0001_scale_coordinate_policy_review.yaml
+    sha256: aefd0e5de9b41ce726e880b14d5002d4012acbffaed7196ba301b28c323da77c
+  coordinate_authorization:
+    path: multiscale_feature_pilot/config/brca_p0001_coordinate_execution_authorization.yaml
+    sha256: dcf916daf81a25c4a412f4a6aa43fe22bd616ec5755c68f94a7d2f2f2f6f5baa
+  coordinate_result:
+    path: multiscale_feature_pilot/provenance/brca_p0001_coordinate_execution_result.yaml
+    sha256: 687cc3d7515f102666846310ef00fbad4e1df6b77ee3fd1f4689e659fa0f7ef2
+  coordinate_manifest:
+    external_path: /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_P0001.coordinates/coordinate_manifest.json
+    sha256: f1825acf7d0b96c92bfb66038d60af6e1572ea945490e2245d5e3ec222677d6e
+
+prohibited:
+  wsi_open_or_pixel_access: true
+  read_region: true
+  mask_or_coordinate_generation: true
+  gpu_or_cuda: true
+  feature_extraction: true
+  healnet_execution: true
+  deletion_or_overwrite: true
+  drive_operations: true
+  cohort_expansion: true
+  training: true
+
+required_stop: P0001_RECOVERY_PREFIX_VALIDATION_AND_CPU_PHASE_PACKAGE_REVIEW
