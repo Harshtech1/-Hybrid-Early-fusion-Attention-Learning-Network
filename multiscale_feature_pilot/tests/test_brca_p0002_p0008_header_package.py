@@ -133,14 +133,33 @@ def test_phase_barrier_never_exceeds_one_download_and_two_patients(
     assert peak_patients <= 2
 
 
-def test_preflight_refuses_existing_raw_or_result(
+def test_preflight_adopts_only_empty_secure_incoming(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
     source = package.PATIENTS[0]
     monkeypatch.setattr(package.Patient, "incoming", property(lambda _self: tmp_path / "incoming"))
     monkeypatch.setattr(package.Patient, "result_bundle", property(lambda _self: tmp_path / "result"))
-    source.incoming.mkdir()
-    with pytest.raises(package.HeaderPackageError, match="incoming exists"):
+    monkeypatch.setattr(package, "DATA_ROOT", tmp_path)
+    source.incoming.mkdir(mode=0o700)
+    package.preflight_patient(source)
+    assert package._create_incoming(source)[:2] == (
+        source.incoming.stat().st_dev,
+        source.incoming.stat().st_ino,
+    )
+    (source.incoming / "unexpected").write_bytes(b"data")
+    with pytest.raises(package.HeaderPackageError, match="incoming is not empty"):
+        package.preflight_patient(source)
+
+
+def test_preflight_refuses_existing_result(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = package.PATIENTS[0]
+    monkeypatch.setattr(package.Patient, "incoming", property(lambda _self: tmp_path / "incoming"))
+    monkeypatch.setattr(package.Patient, "result_bundle", property(lambda _self: tmp_path / "result"))
+    monkeypatch.setattr(package, "DATA_ROOT", tmp_path)
+    source.result_bundle.mkdir()
+    with pytest.raises(package.HeaderPackageError, match="result exists"):
         package.preflight_patient(source)
 
 

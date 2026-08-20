@@ -223,8 +223,9 @@ def _active_gdc_clients(proc_root: Path = Path("/proc")) -> list[int]:
 
 
 def preflight_patient(patient: Patient) -> None:
-    require(not patient.incoming.exists() and not patient.incoming.is_symlink(), f"incoming exists: {patient.label}")
-    require(not patient.result_bundle.exists() and not patient.result_bundle.is_symlink(), f"result exists: {patient.label}")
+    if os.path.lexists(patient.incoming):
+        _validate_adoptable_incoming(patient)
+    require(not os.path.lexists(patient.result_bundle), f"result exists: {patient.label}")
     _directory(DATA_ROOT)
 
 
@@ -246,11 +247,24 @@ def _fsync_directory(path: Path) -> None:
         os.close(descriptor)
 
 
+def _validate_adoptable_incoming(patient: Patient) -> os.stat_result:
+    """Accept only an untouched secure staging directory; never alter it."""
+
+    details = patient.incoming.lstat()
+    require(stat.S_ISDIR(details.st_mode) and not stat.S_ISLNK(details.st_mode), f"unsafe incoming: {patient.label}")
+    require(stat.S_IMODE(details.st_mode) == 0o700, f"incoming mode drift: {patient.label}")
+    require(details.st_uid == os.geteuid(), f"incoming owner drift: {patient.label}")
+    require(not any(patient.incoming.iterdir()), f"incoming is not empty: {patient.label}")
+    return details
+
+
 def _create_incoming(patient: Patient) -> tuple[int, int, int]:
-    require(not patient.incoming.exists() and not patient.incoming.is_symlink(), f"incoming appeared: {patient.label}")
     _directory(DATA_ROOT)
-    os.mkdir(patient.incoming, 0o700)
-    details = _directory(patient.incoming)
+    if os.path.lexists(patient.incoming):
+        details = _validate_adoptable_incoming(patient)
+    else:
+        os.mkdir(patient.incoming, 0o700)
+        details = _directory(patient.incoming)
     require(stat.S_IMODE(details.st_mode) == 0o700, f"incoming mode drift: {patient.label}")
     _fsync_directory(DATA_ROOT)
     return details.st_dev, details.st_ino, details.st_mode
