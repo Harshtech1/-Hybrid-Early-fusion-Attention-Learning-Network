@@ -1,0 +1,75 @@
+schema_version: 1
+status: REQUEST_PREPARED_EXECUTION_NOT_AUTHORIZED
+executable: false
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+scope: EXACT_P0002_P0008_CPU_COORDINATE_PHASE
+proposed_execution:
+  cpu_only: true
+  patient_labels: [P0002, P0003, P0004, P0005, P0006, P0007, P0008]
+  exact_patient_count: 7
+  maximum_cpu_patient_workers: 2
+  exact_openslide_opens_per_patient: 1
+  exact_header_reads_per_patient: 1
+  exact_read_region_calls_per_patient: 1
+  exact_total_read_region_calls: 7
+  mask_channel_contract: RGBA_uint8
+  segmentation: frozen_reviewed_internal_HSV_saturation_policy
+  coordinate_branches: [scale_2x, scale_4x]
+  publication: per_patient_atomic_no_overwrite
+  retain_raw_wsi: true
+patients:
+  P0002:
+    read_region: {level_0_location: [0, 0], level: 2, size_at_level: [4606, 4846]}
+    policy_sha256: fe939b4fea41204b6835d51c11a7f4d4f3e2f868f1b07d91b35581275aad9a36
+    header_result_sha256: b778b1eef8e1116023c6473e179fcbbc1f29f2d87bbf7db0cf930c47f33cb9a4
+  P0003:
+    read_region: {level_0_location: [0, 0], level: 2, size_at_level: [3859, 3740]}
+    policy_sha256: 84535d8e55120434ce475dd2c3c62dcb9034815c3b97bf29464deaa32e46441b
+    header_result_sha256: b3944520e2dafee3c8dc0faf18c72b433e4e4e46e40c495c87aab186c98bc37a
+  P0004:
+    read_region: {level_0_location: [0, 0], level: 2, size_at_level: [5602, 4979]}
+    policy_sha256: fcf5e8f84a11fbd5df4e9f678457b219dd551efb27358d1a78a46be0235034a8
+    header_result_sha256: 22fdf4b1e4a2c3496a0af1d6c213286356643527bad535a5e1937164b1464a5a
+  P0005:
+    read_region: {level_0_location: [0, 0], level: 2, size_at_level: [6474, 5594]}
+    policy_sha256: 2faacdcdfbfd0944b0535a8d02ec7ac8db7cc107c49e269a259e5bd56cf1dd76
+    header_result_sha256: 1f506556d08d774f91d2f4ad4bd26bcda9473ab90206017634d8280a14c65561
+  P0006:
+    read_region: {level_0_location: [0, 0], level: 2, size_at_level: [7019, 5184]}
+    policy_sha256: a0ac176cdc1764050ff71678fad07f0fddd8316b6672e0985668de87b34ff10b
+    header_result_sha256: 5c0a1364cf5fcc3d53bb3d2de25e9a943dacae857501f8bdd5e7020b83bc37da
+  P0007:
+    read_region: {level_0_location: [0, 0], level: 2, size_at_level: [5879, 5017]}
+    policy_sha256: 929feccf3cd69506a379773af19e977a958e045e682d035fb182779934343339
+    header_result_sha256: 38e8f9989ec958fd4ae041feaf857923861d03acb79df12b7a6f80a0a339b5e0
+  P0008:
+    read_region: {level_0_location: [0, 0], level: 2, size_at_level: [7679, 4583]}
+    policy_sha256: ef643966438b442a71ef4fbaff36a13ae185068dfbd43225dcd9fb1b033db178
+    header_result_sha256: f193d9b7f2d4cd92ca131f973abf7367dc2a4b0adbb2c8e9d9773735ddbe71c8
+resource_bounds:
+  total_level_2_pixels: 201935546
+  total_rgba_uint8_bytes: 807742184
+  maximum_theoretical_lattice_sites_before_tissue_filter: 244656
+authority:
+  coordinate_execution: false
+  wsi_pixel_access: false
+  gpu_or_cuda: false
+  patch_or_feature_extraction: false
+  healnet: false
+  patients_outside_p0002_p0008: false
+  deletion: false
+  google_drive: false
+  cohort_expansion: false
+  training: false
+required_next_authorization: >-
+  I authorize the exact P0002-P0008 CPU coordinate phase defined in
+  multiscale_feature_pilot/config/brca_p0002_p0008_coordinate_execution_request.yaml:
+  exactly one OpenSlide level-2 RGBA mask read per patient at its frozen tuple,
+  with at most two CPU patient workers, followed by the frozen tissue segmentation
+  and atomic no-overwrite publication and validation of each patient's 2x and 4x
+  coordinate bags. No patch reads, feature extraction, ResNet50, HEALNet,
+  GPU/CUDA, patients outside P0002-P0008, deletion, Drive operations, cohort
+  expansion, or training. Stop after all seven coordinate results are validated
+  and reported.
+required_stop: COMBINED_COORDINATE_EXECUTION_REVIEW

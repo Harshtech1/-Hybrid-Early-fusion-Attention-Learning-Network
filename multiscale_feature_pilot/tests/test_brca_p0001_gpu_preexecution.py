@@ -274,9 +274,14 @@ def test_gpu_runner_requires_separately_authorized_prior_ledger_prefix() -> None
     ) == "GPU_AUTHORIZATION_APPEND_REQUIRED"
 
 
-def test_uncommitted_source_cli_attempt_fails_before_output_or_ledger() -> None:
+def test_uncommitted_source_cli_attempt_fails_without_output_or_ledger_change() -> None:
     assert not os.path.lexists(OUTPUT)
-    assert not os.path.lexists(LEDGER)
+    assert LEDGER.is_dir() and not LEDGER.is_symlink()
+    before = [
+        (path.name, hashlib.sha256(path.read_bytes()).hexdigest())
+        for path in sorted(LEDGER.glob("event-*.json"))
+    ]
+    assert len(before) == 10
     completed = subprocess.run(
         [sys.executable, str(RUNNER), "--expected-source-commit", "0" * 40],
         cwd=ROOT,
@@ -290,7 +295,11 @@ def test_uncommitted_source_cli_attempt_fails_before_output_or_ledger() -> None:
     assert payload["status"] == "BLOCKED"
     assert "source commit drift" in payload["error"]
     assert not os.path.lexists(OUTPUT)
-    assert not os.path.lexists(LEDGER)
+    after = [
+        (path.name, hashlib.sha256(path.read_bytes()).hexdigest())
+        for path in sorted(LEDGER.glob("event-*.json"))
+    ]
+    assert after == before
 
 
 def test_runner_binds_production_adapter_compact_publisher_and_recovery_v2() -> None:

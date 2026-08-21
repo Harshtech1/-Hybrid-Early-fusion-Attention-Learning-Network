@@ -1,0 +1,105 @@
+schema_version: 1
+status: REVIEWED_BRCA_PRODUCTION_P0005_SCALE_AND_COORDINATE_POLICY_V1_EXECUTION_LOCKED
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+cohort_index: 5
+patient_label: P0005
+execution_mode: CPU_ONLY_FROZEN_HEADER_METADATA_REVIEW
+authority:
+  source: DIRECT_USER_PHASE_BARRIER_AUTHORIZATION
+  exact_user_statement_sha256: 3ada92434dfc6f78bbf29e7d127fe2dd199e8fa11a7ea9356bbcea92e85f88fc
+  interpretation: P0005_CPU_ONLY_SCALE_AND_COORDINATE_POLICY_DESIGN_NO_EXECUTION
+frozen_evidence:
+  header_result_path: multiscale_feature_pilot/provenance/brca_p0005_header_metadata_result/result.yaml
+  header_result_sha256: 1f506556d08d774f91d2f4ad4bd26bcda9473ab90206017634d8280a14c65561
+  header_report_path: multiscale_feature_pilot/provenance/brca_p0005_header_metadata_result/report.md
+  header_report_sha256: 1c52f035eec044a29351e69d9874ac73fa6c605148ec3ce17e9763f76f3f403a
+  header_result_commit: 3354b3d988d472cf29a1031386d892ea16f3ee14
+  p0001_reviewed_policy_sha256: d5ddfdf38f98a921a0876e71ed57fbf196407cf8bbf234433f3c0c0a46513cd4
+identity:
+  patient_id: TCGA-5T-A9QA
+  slide_id: TCGA-5T-A9QA-01Z-00-DX1.B4212117-E0A7-4EF2-B324-8396042ACEC1.svs
+  gdc_uuid: cfe3c99d-0c00-4360-b768-2cb4fbd1040a
+  size_bytes: 2057150279
+  md5: 27fd9e24f2ac9701d108461e11db9e90
+  sha256: 7c5c0b74bd26d9f70121964cb644982aac35c67d86be97ecd97cec38052ed312
+  omic_source_row_index: "8"
+pinned_header:
+  mpp_x: 0.2525
+  mpp_y: 0.2525
+  level_dimensions: [[103584, 89511], [25896, 22377], [6474, 5594], [3237, 2797]]
+  openslide_scalar_level_downsamples: [1.0, 4.000067033114359, 16.000625670361103, 32.001251340722206]
+  coordinate_geometry_scale_xy:
+    level_0: [1.0, 1.0]
+    level_1: [4.0, 4.000134066228717]
+    level_2: [16.0, 16.001251340722202]
+    level_3: [32.0, 32.002502681444405]
+  geometry_rule: derive_x_and_y_independently_from_dimensions
+scale_policy:
+  tolerance_fraction: 0.10
+  scale_2x:
+    target_mpp: 0.5
+    source_level: 0
+    source_footprint: [512, 512]
+    output_patch: [256, 256]
+    interpolation: PIL.Image.Resampling.LANCZOS
+    effective_mpp: [0.505, 0.505]
+    relative_target_error: [0.010000000000000009, 0.010000000000000009]
+  scale_4x:
+    target_mpp: 1.0
+    source_level: 1
+    source_footprint: [256, 256]
+    output_patch: [256, 256]
+    interpolation: none
+    effective_mpp: [1.0100169258613756, 1.0100169258613756]
+    relative_target_error: [0.010016925861375592, 0.010016925861375592]
+future_mask_policy:
+  level: 2
+  dimensions: [6474, 5594]
+  level_0_location: [0, 0]
+  proposed_read_region: {level_0_location: [0, 0], level: 2, size: [6474, 5594]}
+  coordinate_geometry_scale_xy: [16.0, 16.001251340722202]
+  theoretical_pixel_count: 36215556
+  theoretical_rgba_uint8_bytes: 144862224
+  shared_by_branches: true
+  algorithm: reviewed_internal_HSV_saturation_tissue_segmentation
+  algorithm_source_path: multiscale_feature_pilot/src/brca_q25_coordinates.py
+  algorithm_source_sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+  released_clam_or_exact_paper_reproduction: false
+  sthresh: 8
+  mthresh: 7
+  close: 4
+  use_otsu: false
+  area_threshold_multiplier: 100
+  hole_area_threshold_multiplier: 16
+  max_holes: 8
+  scaled_reference_area: 1023
+  tissue_net_area_threshold_mask_pixels: 102300
+  retained_hole_area_threshold_mask_pixels: 16368
+branches:
+  scale_2x: {level_0_anchor: [0, 0], level_0_footprint: [512, 512], level_0_step: [512, 512], reject_incomplete_footprints: true, theoretical_columns: 202, theoretical_rows: 174, theoretical_sites_before_tissue_filter: 35148, last_complete_origin: [102912, 88576], trailing_strip_right_bottom: [160, 423]}
+  scale_4x: {level_0_anchor: [0, 0], native_source_level: 1, native_source_patch: [256, 256], level_0_declared_footprint: [1024, 1024], level_0_step: [1024, 1024], geometry_compatibility: CLAM_INT_CAST_GEOMETRY_COMPATIBLE, reject_incomplete_footprints: true, theoretical_columns: 101, theoretical_rows: 87, theoretical_sites_before_tissue_filter: 8787, last_complete_origin: [102400, 88064], trailing_strip_right_bottom: [160, 423]}
+  theoretical_total_sites_before_tissue_filter: 43935
+future_artifact_contract:
+  schema: BRCA_COORDINATE_ARTIFACT_SET_V1
+  schema_source_sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+  branch_order: [scale_2x, scale_4x]
+  shape_each: "[N,2]"
+  dtype: int64
+  coordinate_space: level_0
+  ordering: row_major_y_then_x
+  require_nonempty_unique_and_in_bounds: true
+  publication: sibling_staging_then_linux_RENAME_NOREPLACE
+execution_boundary:
+  status: EXECUTION_LOCKED
+  wsi_open: false
+  read_region_or_pixel_access: false
+  mask_or_coordinate_generation: false
+  coordinate_artifact_publication: false
+  feature_or_model_execution: false
+  gpu_or_cuda: false
+  deletion: false
+  google_drive: false
+  cohort_expansion: false
+  training: false
+next_gate: COMBINED_EXACT_P0002_P0008_SINGLE_MASK_READ_AUTHORIZATION
