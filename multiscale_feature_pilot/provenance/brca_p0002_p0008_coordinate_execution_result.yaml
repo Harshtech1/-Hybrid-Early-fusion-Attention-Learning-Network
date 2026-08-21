@@ -1,0 +1,131 @@
+schema_version: 1
+status: BRCA_PRODUCTION_P0002_P0008_COORDINATES_VERIFIED
+recorded_at_utc: "2026-08-21T00:19:32Z"
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+execution:
+  mode: CPU_ONLY_EXACT_SEVEN_PATIENT_SINGLE_MASK_READ_COORDINATE_PHASE
+  started_at_utc: "2026-08-21T00:16:53.372242+00:00"
+  finished_at_utc: "2026-08-21T00:18:35.058394+00:00"
+  total_wall_seconds: 101.68615342000021
+  source_commit: a54b55622af5c56e38cd461670bd8f08073a188e
+  maximum_cpu_patient_workers: 2
+  exact_openslide_opens: 7
+  exact_header_reads: 7
+  exact_read_region_calls: 7
+  authorization_sha256: 970c1585555664e7cfbcddd4a25667ca7556d8c8cd50b3d8adf29e5debb58250
+  approval_sha256: 32f8d5130d2063ff04d8bc5c6143214976e85091f9f679d31c5a7b63269a1ac8
+implementation:
+  runner_sha256: f1a41bf6c87f00ed7d59cbb1c40184f0329401864cba1b4895e25c417e154ef9
+  module_sha256: a5850ec1cd89d9605308174c6ba64885c57c169ec7625946198ac7284747503c
+patients:
+  P0002:
+    read_region: [[0, 0], 2, [4606, 4846]]
+    wall_seconds: 17.638863776000107
+    mask_sha256: dcf73f52ed0e8394ae7ca078582fa2c9fc0fd350a1f3ea64faa25bd621aa5ccf
+    contour_count: 1
+    retained_hole_count: 1
+    manifest_sha256: 0fc86c83799ff17a340d8414579458d6ea4401e636d57226ae8aef188718dbc9
+    manifest_sidecar_sha256: f35bc26f4606105cbb8d46f5528c6717adc0e95fe04f20b533035ef775047bd7
+    total_artifact_bytes: 220737
+    scale_2x: {count: 9785, file_sha256: 03eaccd6985df58ac9621fb29e86290c8c8b77fa275e3bfedcf461aa2bde8a31, coordinates_sha256: b16db8397574f0d30252d7b8c082ff14af1a2fe2957a8cc14ceffac6e46242ea, min_xy: [4096, 6144], max_xy: [69632, 74752]}
+    scale_4x: {count: 2486, file_sha256: 5c3cbef13a6ccc8d77ba07180c4654b3375e57ad17d64f703434942c3012795e, coordinates_sha256: 122746d21658c003996a0f89dc40d04e9e55b9625e6ca60b798373e3eef089fe, min_xy: [4096, 6144], max_xy: [69632, 74752]}
+  P0003:
+    read_region: [[0, 0], 2, [3859, 3740]]
+    wall_seconds: 10.989865637000094
+    mask_sha256: f7ef0e54a80db12075459932ca2a40387e275e05cdc889d7096c5aa29395296f
+    contour_count: 3
+    retained_hole_count: 1
+    manifest_sha256: 992e0687afc61497e4e27b70abf639c3fc894a8a1e513e7b88a3d19225ea037e
+    manifest_sidecar_sha256: 6cb00fb97dc26b48438a51987c5a073362d09dede9a190dc5080ad65f841b361
+    total_artifact_bytes: 94435
+    scale_2x: {count: 3461, file_sha256: 222b26b768926cff77892ddfd23ef4773b0e799c3ac830729209a0700dcecc27, coordinates_sha256: a6a978d394aa8092be0d476c3b5fa43f7fd51d712487b4261fd468d22c878579, min_xy: [6656, 6144], max_xy: [59904, 54272]}
+    scale_4x: {count: 921, file_sha256: 8520061fc09be06791fbf8281e814752d56685be9b1d2bc27c8959947aeaf80c, coordinates_sha256: 4a04adf80101156eddba6c33f9567b90242c33cecad8256774fb284446b4f277, min_xy: [6144, 6144], max_xy: [59392, 54272]}
+  P0004:
+    read_region: [[0, 0], 2, [5602, 4979]]
+    wall_seconds: 25.59369698699993
+    mask_sha256: 67adebdbd704e2ffa43968c9632755d5f6f839203113c0787b5b9f40462c0cf0
+    contour_count: 3
+    retained_hole_count: 4
+    manifest_sha256: 0535021c70316aa7b57d88e5474b75f665a2e2603f07bce0b5484b799cf608ea
+    manifest_sidecar_sha256: aadc346a5caa4d88233cb0e420bfee556ea8c03581b3dd4834aa1ce27190bbf1
+    total_artifact_bytes: 103861
+    scale_2x: {count: 3933, file_sha256: c9bd3fe1338bb9340091503c3f79c8b9e35a8c0866958c06e46eb4fc51abcf3f, coordinates_sha256: f0e90cfe2c06b24621b2bfe72686c23562f93aa2718a48f8af0ec038bcc2a53a, min_xy: [5120, 0], max_xy: [89088, 75264]}
+    scale_4x: {count: 1034, file_sha256: 0200d835d6ac78b1dde706c008ea42a562d55b17c6b3a550ed45dca8de00b020, coordinates_sha256: 947101fb3dccb6650e7800c09bae0b63138f69f78720c4ebb61c709f36ae13cf, min_xy: [5120, 0], max_xy: [88064, 74752]}
+  P0005:
+    read_region: [[0, 0], 2, [6474, 5594]]
+    wall_seconds: 39.19103597599997
+    mask_sha256: 07388afaa1906d48eba3d4f2e4e753ae60b34bc77f0b6ccdfb56af1a3659f8b0
+    contour_count: 1
+    retained_hole_count: 4
+    manifest_sha256: 69493bee64a272387c8605e2d65a098a92b8eb608b629df64fe840d660683a60
+    manifest_sidecar_sha256: ea60b88426e8d2de2835386a17b8a05a12c0b15f661f7c0474ff87f8af117598
+    total_artifact_bytes: 496861
+    scale_2x: {count: 23559, file_sha256: ca0a73acb4bb84b31fa52e7c88cccce32f26792992de176b2722a0815fac12d5, coordinates_sha256: 6bbc1fe60d8eec0fb40befb99c346fffffe3ac7024764978008790a7a9e589f2, min_xy: [5120, 0], max_xy: [101376, 88576]}
+    scale_4x: {count: 5971, file_sha256: 8f983095ebf1b574334231e9062da7ba03df7ab3d90205ee2f09ec2522f17287, coordinates_sha256: 5b006012700dd4c4813b3e25a29f25f9e533e6012d486798e440fa19edd49db6, min_xy: [5120, 0], max_xy: [101376, 88064]}
+  P0006:
+    read_region: [[0, 0], 2, [7019, 5184]]
+    wall_seconds: 31.355586634000247
+    mask_sha256: 05bfc4c7f5df79427b88018ffc8100522c6005f234ca1f1a5a9970c9dee7908f
+    contour_count: 2
+    retained_hole_count: 11
+    manifest_sha256: 4c976d3dc5dd6b9ccdeb5fd07022442fdba2e9e960df615dab41ddb176f5e6d9
+    manifest_sidecar_sha256: 7cd07f6dcc1333afb11ba08c966228fe1526c8081f10050e1bcfa5504ef2a0d7
+    total_artifact_bytes: 175895
+    scale_2x: {count: 7505, file_sha256: 5062779f6a702ba082c65fe4039a37c945019121c2e7cc030f2aa253368cc1ef, coordinates_sha256: c23f53984fc53194bcd88350e71169fa610d807fb8f180187a05d84fe847a7a4, min_xy: [12800, 7168], max_xy: [110080, 71680]}
+    scale_4x: {count: 1962, file_sha256: b2705930067e9cf5fe1f7ffcd74581b11a24c130e2f0c26f30c0f243f0e5574c, coordinates_sha256: e4d70bb5f1c854279edca2a9d13d4f6b0e47ee51b0b208d1ce3a8e733f644d45, min_xy: [13312, 7168], max_xy: [109568, 70656]}
+  P0007:
+    read_region: [[0, 0], 2, [5879, 5017]]
+    wall_seconds: 42.35804810200034
+    mask_sha256: eabc2136806488ff83390698ef747027a8e2ab10614280275dc089ba6b0e4987
+    contour_count: 3
+    retained_hole_count: 2
+    manifest_sha256: 9698587e8b8d78f1163ca05d7565703404a56aae0f3b0a069da7c51f58505876
+    manifest_sidecar_sha256: 5a0d94f8fc856f91dffeb31ab117d1378e47a3baaeb344b1f1348a8d1cf052f8
+    total_artifact_bytes: 210730
+    scale_2x: {count: 9238, file_sha256: 366c8444742a94250f2053fe8f7118bfc42dfa57d14686303044619c1856f1b8, coordinates_sha256: c23c9cd5c8b6c8d427e00c20a1d6008756d6948707ce717a735b840ff7353d85, min_xy: [0, 0], max_xy: [93184, 75264]}
+    scale_4x: {count: 2407, file_sha256: d0b7735b646073f31f6104f7a17b909496817ec802c4dcbed7b1d621e08ad63f, coordinates_sha256: 56c90b1a04292a34ff218bebc7a25c7489eae93132a0254e28259f6bfc0c9d3e, min_xy: [0, 0], max_xy: [92160, 74752]}
+  P0008:
+    read_region: [[0, 0], 2, [7679, 4583]]
+    wall_seconds: 24.47262045699972
+    mask_sha256: dc5b9892de9afcc24ac1166a5bf711e618b5d155c1aeda2a2a84b5879ca202aa
+    contour_count: 2
+    retained_hole_count: 4
+    manifest_sha256: df3ab5961880f5d4938188b8249ec45f62bf35d79254dc203d40af6d39a8903f
+    manifest_sidecar_sha256: 1409a5a0abcce4608e618e5bd81aa84e90db2bce74d4bc3402c52ead5fd60dcf
+    total_artifact_bytes: 403222
+    scale_2x: {count: 18877, file_sha256: 65e321904b6576541f24afcc35ddac196a26bfa7f2b6c937f62f1d14a2a2b6cb, coordinates_sha256: 9ac14660ff5412982bd46949bf11816e5c3071a067ff825231979d4ad88a8103, min_xy: [5120, 5120], max_xy: [119296, 68608]}
+    scale_4x: {count: 4799, file_sha256: 0988c3219132e9da14faa483fbeb9288d701550fbaa3b8ffa58476c384456dd3, coordinates_sha256: 180bf89647e0db404217674f3a300c9b01abf975daf5e4b984b5d20006842154, min_xy: [5120, 5120], max_xy: [118784, 68608]}
+totals:
+  scale_2x_coordinates: 76358
+  scale_4x_coordinates: 19580
+  all_coordinates: 95938
+  artifact_bytes: 1705741
+validations:
+  exact_seven_destinations: PASS
+  exact_four_file_set_each: PASS
+  manifest_and_sidecar_hashes_recomputed: PASS
+  hdf5_file_and_coordinate_content_hashes_recomputed: PASS
+  schema_dtype_attributes_and_bounds: PASS
+  nonempty_unique_row_major_lattice: PASS
+  policy_coordinate_capacity: PASS
+  no_runner_staging_after_success: PASS
+  held_wsi_identity_through_publication: PASS
+  held_nofollow_coordinate_parent: PASS
+operations:
+  authorized_level_2_mask_reads: 7
+  authorized_tissue_segmentations: 7
+  authorized_coordinate_publications: 7
+  patch_reads: 0
+  feature_extractions: 0
+  resnet50: 0
+  healnet: 0
+  gpu_or_cuda: 0
+  deletions: 0
+  drive: 0
+  cohort_expansion: 0
+  training: 0
+required_stop_reached: true
+scientific_interpretation: COORDINATE_ARTIFACTS_ONLY_NO_FEATURES_OR_MODEL_OUTPUT
+next_gate: CPU_ONLY_P0002_P0008_GPU_FEATURE_PACKAGE_PREPARATION_OR_CONSOLIDATED_FIRST_EIGHT_GPU_EXECUTION_REVIEW
+
