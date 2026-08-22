@@ -1,0 +1,109 @@
+schema_version: 1
+phase: BRCA_PHASE_2_Q25_ACQUISITION_GATE
+status: Q25_ACQUISITION_AND_METADATA_AUTHORIZED
+recorded_utc_date: 2026-08-18
+
+approval_record:
+  source: USER_REPORTED_SUPERVISOR_APPROVAL
+  user_statement: sir approved
+  approved_request: >-
+    Download only the exact Q25/Q50/Q75 candidates one at a time, beginning
+    with Q25; use native pyramid levels within 10% per axis of approximately
+    0.5 and 1.0 micrometers per pixel; reject failures without silent
+    resampling; stop after Q25 size, MD5, and MPP/pyramid metadata.
+
+authority:
+  supervisor_cohort_choice:
+    status: APPROVED
+    statement: Go with brca, blca
+  user_phase_2_cpu_preflight:
+    status: APPROVED
+    statement: start phase 2 now
+  exact_three_wsi_download:
+    status: APPROVED_SEQUENTIAL
+    candidate_uuids:
+      - dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+      - 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+      - 25aec062-60d1-446e-a1c6-0c79cc74a770
+    concurrency: 1
+    begin_with: Q25
+    current_executable_scope: Q25_ONLY
+    q50_q75_status: LOCKED_PENDING_Q25_REPORT
+  wsi_open_or_metadata_read:
+    status: APPROVED_Q25_METADATA_ONLY_AFTER_SIZE_MD5
+    allowed_fields: [mpp_x, mpp_y, level_dimensions, level_downsamples]
+    pixel_or_region_read: NOT_AUTHORIZED
+  coordinate_generation:
+    status: NOT_AUTHORIZED
+  feature_extraction:
+    status: NOT_AUTHORIZED
+  healnet_real_input_execution:
+    status: NOT_AUTHORIZED
+  training:
+    status: NOT_AUTHORIZED
+  full_cohort_acquisition:
+    status: NOT_AUTHORIZED
+
+approved_current_actions:
+  - verify_external_linux_gdc_client
+  - retain_guarded_one_row_manifest_candidates_as_frozen_provenance
+  - validate_manifest_identity_size_and_md5_against_frozen_sources
+  - construct_and_validate_q25_only_authorized_manifest
+  - download_q25_only_with_concurrency_one
+  - verify_q25_exact_size_and_md5_before_opening
+  - open_q25_for_mpp_and_pyramid_metadata_only_after_hash_match
+  - evaluate_approved_native_level_policy
+  - verify_storage_budget_without_downloading_data
+
+prohibited_until_q25_report_review:
+  - download_q50_or_q75
+  - open_q25_before_exact_size_and_md5_match
+  - read_wsi_pixels_or_regions
+  - import_openslide_in_metadata_policy_module
+  - generate_coordinates
+  - run_resnet50
+  - run_real_input_healnet
+  - train
+
+approved_candidates:
+  selection_status: APPROVED_EXACT_THREE_SEQUENTIAL
+  concurrency: 1
+  current_executable_scope: Q25_ONLY
+  q50_q75_status: LOCKED_PENDING_Q25_REPORT
+  total_declared_bytes: 2984417159
+  rows:
+    - label: Q25
+      patient_id: TCGA-LL-A6FP
+      wsi_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+      filename: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+      declared_bytes: 648046947
+      md5: 75536393096ffd928bc35ec9503c3655
+      state: released
+    - label: Q50
+      patient_id: TCGA-AR-A1AW
+      wsi_uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+      filename: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+      declared_bytes: 975626387
+      md5: 304509e03f26cbecc9aee4ea691c8e5a
+      state: released
+    - label: Q75
+      patient_id: TCGA-E2-A154
+      wsi_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+      filename: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+      declared_bytes: 1360743825
+      md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+      state: released
+
+next_transition_requirements:
+  - recheck_lightning_200gb_quota_and_local_staging_ledger
+  - retain_one_patient_concurrency
+  - download_q25_only
+  - require_exact_q25_size_and_md5_before_metadata_open
+  - stop_after_q25_hash_and_metadata_validation
+  - require_new_review_before_q50_or_q75
+
+gpu_switch:
+  required_now: false
+  earliest_allowed_point: >-
+    After an authorized WSI passes size, MD5, MPP, pyramid, coordinate, and
+    storage gates, immediately before ResNet50 feature extraction.

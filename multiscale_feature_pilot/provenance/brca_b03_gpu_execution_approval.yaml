@@ -1,0 +1,48 @@
+schema_version: 1
+status: B03_GPU_FEATURE_PILOT_AUTHORIZED_READY_FOR_COMMITTED_PREFLIGHT
+cohort: TCGA-BRCA
+candidate: B03
+recorded_at_utc: "2026-08-20T11:36:28Z"
+authorization:
+  source: DIRECT_USER_AUTHORIZATION
+  statement_sha256: cd5655fd930baff34450553c503b3401b65e3722a7beb153499d073c81343b96
+  config_path: multiscale_feature_pilot/config/brca_b03_gpu_execution_authorization.yaml
+  config_sha256: 30e440b93c202ec1d445312ef27dd21b2bc8a6678913f9ecc264581d83be2fac
+implementation:
+  runner_path: scripts/run_brca_b03_gpu_pilot.py
+  runner_sha256: 2f0911276aee5f3e7cdc4d85a81f90fdfbe70ef99bbbfdae5ea1726a2ad786a4
+  test_path: multiscale_feature_pilot/tests/test_brca_b03_gpu_preexecution.py
+  test_sha256: d1342c86790b34d212e2ac416276399b3bbf090e17857230212c1b7c9762cc8f
+  preexecution_provenance_sha256: c491b6f19fb5bb0dfec8d6b1e8fd537cb388314699b96cb1521acc186eec29fb
+scope:
+  patient_id: TCGA-AR-A1AY
+  gdc_uuid: 266c3852-f5d0-4815-94d9-dac5b0ff8276
+  coordinate_manifest_sha256: cced78f863415ee12d57b905131e60758ba849645196c0a14309e9ab8d4e1ae5
+  scale_2x_patch_reads: 8875
+  scale_4x_patch_reads: 2257
+  combined_shape: [11132, 2048]
+  natural_healnet_wsi_shape: [1, 11132, 2048]
+  encoder: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  synthetic_and_real_feature_healnet_smokes: true
+execution_state:
+  runner_execution_authorized: true
+  authorization_sha256_pinned: true
+  committed_source_preflight_required: true
+  gpu_execution_performed_at_recording: false
+  feature_output_present_at_recording: false
+prohibitions:
+  training: true
+  backward: true
+  optimizer_steps: true
+  amp: true
+  tf32: true
+  cpu_fallback: true
+  coordinate_regeneration: true
+  b04_b06_processing: true
+  q25_q50_q75_b01_b02_or_blca_changes: true
+  drive: true
+  deletion: true
+  cohort_expansion: true
+  official_healnet_modification: true
+next_gate: COMMIT_EXACT_AUTHORIZED_SOURCE_THEN_RUN_B03_GPU_PREFLIGHT_AND_EXECUTION

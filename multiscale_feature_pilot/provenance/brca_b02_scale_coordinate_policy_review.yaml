@@ -1,0 +1,34 @@
+schema_version: 1
+status: BRCA_B02_SCALE_AND_COORDINATE_POLICY_REVIEWED_EXECUTION_LOCKED
+cohort: TCGA-BRCA
+batch_label: B02
+source_commit: ccb927de2a5f28202d5d903f5988b9e5cd10b801
+inputs:
+  header_result_sha256: e6e02d343dea91961382fe90c2be7411d7ef5014056279aa5be9fe4dc66b4fe6
+  b01_reviewed_policy_sha256: 9a98a0edad90f1e82ad28025b9164c136c39041ad27fb5342251bdb8d062cb60
+  segmentation_source_sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+  artifact_schema_source_sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+outputs:
+  policy_path: multiscale_feature_pilot/config/brca_b02_scale_coordinate_policy.yaml
+  policy_sha256: 8f903489da7a653665fd7be8aced250c7656350fa0bd6370b168eb3e5baa0953
+  report_path: reports/brca_b02_scale_coordinate_policy_review.md
+  report_sha256: 61b7ea0fb0e2959f544ff33bae194b90cb39a4cfdfd6e99cdc0f1ccfb5f4838c
+  test_path: multiscale_feature_pilot/tests/test_brca_b02_scale_coordinate_policy.py
+  test_sha256: d340a751009b6176fb36211363cf2fd835d768d6c65f23dd0539824ebadeab66
+review:
+  metadata_only: true
+  scale_mapping_resolved: true
+  coordinate_geometry_resolved: true
+  mask_level_resolved: true
+  real_wsi_opened: false
+  pixels_read: 0
+  coordinates_generated: 0
+  artifacts_published: 0
+  gpu_operations: 0
+  b03_b06_operations: 0
+  deletion_operations: 0
+  drive_operations: 0
+  training_runs: 0
+required_stop: B02_CPU_ONLY_SCALE_AND_COORDINATE_POLICY_REVIEW
+required_stop_reached: true
+next_gate: EXPLICIT_B02_SINGLE_MASK_READ_AND_COORDINATE_PUBLICATION_AUTHORIZATION_OR_DECLINE

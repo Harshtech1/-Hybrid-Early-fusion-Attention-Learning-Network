@@ -77,16 +77,16 @@ Mutation:   1,125 finite values
 CNV:        193 finite values
 ```
 
-Synthetic four-modality interface testing produces a finite `[1,4]` output. No real-patient interface forward has run. Because HEALNet is untrained, the planned one-patient forward is a shape/numerical smoke test, not scientific inference or a survival prediction.
+Synthetic and real-input four-modality interface testing produced finite `[1,4]` outputs. The real WSI input was `[1,2048,44445]`, paired with the same patient's RNA, mutation, and CNV tensors. Because HEALNet was randomly initialized and untrained, this is a shape/numerical smoke test, not scientific inference or a survival prediction.
 
 ## Current gate
 
 ```text
-adapter/interface: READY_FOR_GPU_MULTISCALE_EXTRACTION
-runtime:           BLOCKED_NO_GPU
-checkpoint:        NOT CACHED
-real extraction:   NOT STARTED
+adapter/interface: VERIFIED
+runtime:           TESLA_T4_VERIFIED
+checkpoint:        IMAGENET1K_V2_VERIFIED
+real extraction:   BLCA_ONE_PATIENT_PILOT_SUCCESS
 training:          NOT STARTED
 ```
 
-See [GPU_HANDOFF.md](GPU_HANDOFF.md) for the portable restart sequence.
+See [reports/validated_pilot_baseline.md](reports/validated_pilot_baseline.md) for the frozen result and exact hashes.

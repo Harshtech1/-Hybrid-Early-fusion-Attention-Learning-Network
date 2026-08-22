@@ -1,0 +1,73 @@
+schema_version: 1
+status: B02_GPU_PREEXECUTION_CPU_VALIDATED_EXECUTION_LOCKED
+cohort: TCGA-BRCA
+batch_label: B02
+recorded_at_utc: "2026-08-20T10:25:05Z"
+preparation_source_commit: c459884aa7ff82b95fcf5fc083e4f8c56c38f878
+preparation_authority:
+  source: DIRECT_USER_AUTHORIZATION
+  statement_sha256: 2814f897abbd86d74d3d79df9db668085f087a2dbc4137a1fddcac489cce636f
+  config_path: multiscale_feature_pilot/config/brca_b02_gpu_preexecution.yaml
+  config_sha256: 7e6f755714c8811da601542b4874081c2e930b44ebdd4fd7b2b9d079048d9620
+implementation:
+  runner_path: scripts/run_brca_b02_gpu_pilot.py
+  runner_sha256: b433c4f242b535ffa649da4ac6b05f9a91d2658c007e78ddab67e3bdebf58a9b
+  preparation_test_path: multiscale_feature_pilot/tests/test_brca_b02_gpu_preexecution.py
+  preparation_test_sha256: 48f09d4a421aaa28d94a7ded7aa0321816ea59ae5b047b46faa02a4b380f92fd
+  legacy_contract_test_path: multiscale_feature_pilot/tests/test_brca_b02_gpu_runner.py
+  legacy_contract_test_sha256: ceeb242ecbb20c94e4171b010b1502e852a70b3ee316b51381e1b929bc8ee313
+  report_path: reports/brca_b02_gpu_preexecution.md
+  report_sha256: 9b838773c8d382df007b6dd51445dff4628e903360144bef8d5cc2bffcff3a77
+verified_frozen_contract:
+  patient_id: TCGA-BH-A0BG
+  slide_id: TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+  gdc_uuid: c5331e5e-10b4-4979-958b-d4592a2805de
+  coordinate_result_sha256: 492343550197ed06ece8ecd94bd56bbed3f959af6c864b100e9845c0f3e6f103
+  coordinate_manifest_sha256: 2b3e5dd754ebb4ca4ec26f3e017e21548b0115dc2d0517ae83146d8f7ec52ba2
+  scale_2x_rows: 7158
+  scale_4x_rows: 1862
+  combined_shape: [9020, 2048]
+  natural_healnet_wsi_shape: [1, 9020, 2048]
+  omic_row: "472"
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+future_gpu_contract:
+  gpu: Tesla T4
+  dtype: float32
+  branch_order: [scale_2x, scale_4x]
+  batch_size: 32
+  num_workers: 2
+  amp: false
+  tf32: false
+  cpu_fallback: false
+  compact_artifact_publisher_sha256: dcc1a1d2073a3be1b4ee7b54e22d2d379cdba97b6d86dd5192d14b481ea62af3
+estimates_not_measurements:
+  controlled_rerun_wall_seconds_range: [120, 140]
+  raw_combined_tensor_bytes: 73891840
+  compact_artifact_bytes_approximate: 74400000
+  peak_gpu_memory_bytes_approximate: 482000000
+historical_completed_result_read_only_reference:
+  result_path: multiscale_feature_pilot/provenance/brca_b02_gpu_pilot_result.yaml
+  result_sha256: 62fcf0b5a9971939ae87f380f90e8fd6e196034226c715279071ff31908d3640
+  measured_total_seconds: 124.93960884400008
+  measured_compact_artifact_bytes: 74342370
+  measured_peak_gpu_memory_bytes: 483956224
+  preexisting_artifact_preserved: true
+  rerun_performed_during_preparation: false
+cpu_validation:
+  py_compile: PASS
+  focused_tests_passed: 6
+  full_tests_passed: 663
+  locked_cli_rehearsal: PASS
+  locked_cli_status: BLOCKED
+  wsi_opens: 0
+  patch_reads: 0
+  feature_rows: 0
+  cuda_operations: 0
+  healnet_executions: 0
+  feature_publications: 0
+  deletions: 0
+execution_lock:
+  execution_authorized_in_runner: false
+  authorization_sha256: PENDING_SEPARATE_EXACT_B02_GPU_AUTHORIZATION
+  stop_before_gpu_execution: true
+next_gate: SEPARATE_EXACT_B02_GPU_EXECUTION_AUTHORIZATION_OR_DECLINE

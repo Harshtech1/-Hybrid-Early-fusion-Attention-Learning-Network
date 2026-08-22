@@ -35,19 +35,20 @@ Do not use `cat(dim=1)`, `stack`, or direct WSI/Omic concatenation.
 | Item | Status |
 |---|---|
 | Supervisor architecture | Confirmed and documented |
-| KIRP manifest/Omic matching audit | Completed; 249 single-candidate cases, 11 multi-WSI cases deferred |
+| KIRP alignment summary | 260 matched: 249 single-candidate, 11 multi-WSI deferred; deterministic row-level selection manifest still required |
 | Verified BLCA WSI | Completed |
 | BLCA OpenSlide metadata and MD5 | Completed |
 | Level-1 CLAM coordinates | 8,911 rows, HDF5 verified |
 | BLCA WSI/Omic patient + slide identity | Exact match |
 | BLCA RNA/mutation/CNV availability | 1,523 / 1,125 / 193 finite values |
 | Multiscale adapter | Implemented |
-| Unit tests | 24 passed |
+| Unit tests | 66 passed at freeze validation |
 | Four-modality synthetic HEALNet interface | Finite `[1,4]` |
-| Source-machine CUDA gate | `BLOCKED_NO_GPU` |
-| ImageNet V2 checkpoint | Not cached or downloaded |
-| Real ResNet50 features | Not generated |
-| Real HEALNet interface forward | Not run |
+| GPU / checkpoint / OpenSlide gates | Verified on Tesla T4 |
+| Real ResNet50 features | `[35534,2048]` and `[8911,2048]`, verified |
+| Combined feature bag | `[44445,2048]`, verified |
+| Real-input HEALNet interface smoke | Finite `[1,4]`; random initialization |
+| BLCA one-patient pilot | `BLCA_ONE_PATIENT_PILOT_SUCCESS` |
 | Training/evaluation | Not started |
 
 The synthetic HEALNet test uses random model weights and proves only shape/numerical interface compatibility. It is not scientific inference or a survival prediction.
@@ -90,15 +91,17 @@ The supervisor track is not an exact reproduction of the paper's encoder choice.
 
 Expected checkpoint filename: `resnet50-11ad3fa6.pth`. Keep it in the external torch cache, never Git.
 
-## Runtime last measured on source machine
+## Validated GPU pilot runtime
 
 ```text
 torch:                     2.8.0+cu128
 torchvision:               0.23.0+cu128
-torch.cuda.is_available(): false
-torch CUDA device count:   0
-nvidia-smi:                unavailable
-checkpoint cached:         false
+torch.cuda.is_available(): true
+torch CUDA device count:   1
+GPU:                       Tesla T4, 15,360 MiB
+NVIDIA driver:             580.173.02
+checkpoint cached:         true
+checkpoint SHA256:         11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
 ```
 
 ## Repository boundary
@@ -111,16 +114,6 @@ GitHub contains only small source, tests, configuration, manifests, and provenan
 
 ## Next phase
 
-On an NVIDIA GPU machine:
+The BLCA one-patient engineering pilot has passed and is frozen. Before any KIRP acquisition, restore the real KIRP Omic LFS object and materialize a deterministic row-level alignment/selection manifest. Resolve the 11 multi-WSI cases explicitly, compute exact selected storage, and recheck disk headroom. Do not train or download the cohort until that evidence is complete.
 
-1. Clone the pilot handoff branch and clean official tag as siblings.
-2. Restore and hash-verify the BLCA WSI, coordinate HDF5, and Omic CSV outside Git.
-3. Pass the read-only GPU/source/data/checkpoint gate.
-4. Freeze the remaining 2x operational details.
-5. Implement/validate the real two-branch extraction runner.
-6. Extract and validate `[N1,2048]` and `[N2,2048]`.
-7. Concatenate rows, preserve provenance, and adapt to `[1,2048,P]`.
-8. Run one random-initialized HEALNet interface forward with the same patient's separate RNA, mutation, and CNV; require finite `[1,4]`.
-9. Stop before training or cohort acquisition.
-
-Only after that pilot passes should the implementation be frozen and the approved KIRP acquisition/scaling phase begin.
+The authoritative result record is [reports/validated_pilot_baseline.md](reports/validated_pilot_baseline.md). The HEALNet interface smoke was random-initialized and is not a trained survival prediction.

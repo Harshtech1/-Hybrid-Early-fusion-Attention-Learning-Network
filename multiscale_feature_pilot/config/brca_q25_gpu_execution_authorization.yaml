@@ -1,0 +1,156 @@
+schema_version: 1
+phase: BRCA_Q25_GPU_FEATURE_AND_INTERFACE_PILOT
+status: AUTHORIZED_Q25_FEATURE_EXTRACTION_AND_HEALNET_SMOKE_ONLY
+cohort: TCGA-BRCA
+candidate: Q25
+
+approval_evidence:
+  user_action: switched to GPU Now !
+  supervisor_cohort: Go with brca, blca
+
+corrective_transition:
+  prior_attempt_status: BRCA_Q25_GPU_ATTEMPT_1_BLOCKED_RECOVERABLE_CONFIGURATION
+  incident_record_path: multiscale_feature_pilot/provenance/brca_q25_gpu_attempt_1.yaml
+  incident_record_sha256: 2fe5fd4343082bec7bd421c56d039b1bcb50c5097e300d836ab7dd5101579e46
+  root_cause: missing_pre_cuda_CUBLAS_WORKSPACE_CONFIG
+  scope_expanded: false
+
+approval_scope:
+  allowed:
+    - exact_q25_level_0_and_level_1_patch_reads
+    - scale_2x_lanczos_resampling
+    - resnet50_imagenet1k_v2_feature_extraction
+    - external_atomic_feature_artifact_publication
+    - natural_layout_healnet_numerical_interface_smoke
+    - pre_extraction_synthetic_natural_layout_healnet_contract_smoke
+  prohibited:
+    - model_training
+    - optimizer_or_backward_execution
+    - q50_or_q75_download_open_or_processing
+    - full_cohort_download_or_processing
+    - google_drive_mount_upload_or_delete
+    - raw_wsi_deletion
+    - official_healnet_modification
+    - frozen_blca_commit_or_tag_modification
+    - git_tracking_of_wsi_hdf5_pt_pth_or_checkpoint_artifacts
+    - cpu_feature_extraction_fallback
+    - automatic_mixed_precision
+    - tf32
+    - cross_patient_concatenation
+    - wsi_feature_transpose
+
+execution_contract:
+  batch_size: 32
+  num_workers: 2
+  seed: 0
+  device: cuda:0
+  dtype: float32
+  automatic_mixed_precision: false
+  tf32: false
+  cudnn_benchmark: false
+  cudnn_deterministic: true
+  torch_deterministic_algorithms: true
+  cublas_workspace_config: ":4096:8"
+  pre_extraction_synthetic_interface_smoke: true
+  branch_order: [scale_2x, scale_4x]
+  combined_operation: torch.cat
+  combined_dim: 0
+  natural_model_shape: [1, 9322, 2048]
+  no_transpose: true
+
+bound_inputs:
+  wsi:
+    path: /teamspace/studios/this_studio/brca_pilot_data/Q25.incoming/dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6/TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+    patient_id: TCGA-LL-A6FP
+    slide_id: TCGA-LL-A6FP-01Z-00-DX1
+    gdc_file_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+    filename: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+    size_bytes: 648046947
+    md5: 75536393096ffd928bc35ec9503c3655
+    sha256: ac852be806eb0d91214145983319b604919a8e1d16bd59378a3dba69a600979c
+  coordinates:
+    directory: /teamspace/studios/this_studio/brca_pilot_data/Q25.coordinates
+    manifest_sha256: 7d64ec37595792994e61ab3bf60461498e805bbff0429599f0328b49c93d2ad2
+    branches:
+      scale_2x:
+        filename: scale_2x_coordinates.h5
+        size_bytes: 128136
+        sha256: 4458a8d1c79eac1b7a0bec68871ffc7a71ec2dc21b4e3b9206ae2601410ff0cc
+        coordinates_sha256: 84fbe621186a4c0945f7baf3a7c82f39d54f34b37eb4c39a6498b85c709befdd
+        coordinate_count: 7404
+      scale_4x:
+        filename: scale_4x_coordinates.h5
+        size_bytes: 40360
+        sha256: f055a37018c9b978da60c3aca6258b75853778974e1c4f9ddd32e2aaa2b492fa
+        coordinates_sha256: b6181b69a80b5ba83344fcf7f9de9b53eccdc31a4a09e86548576a8bbba64946
+        coordinate_count: 1918
+  omic:
+    path: /teamspace/studios/this_studio/Author_Official_Repo_directery/healnet/data/tcga/omic/tcga_brca_all_clean.csv.zip
+    size_bytes: 4081277
+    sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+    exact_case_id: TCGA-LL-A6FP
+    exact_slide_id: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+    rna_shape: [1, 1, 1558]
+    mutation_shape: [1, 1, 21]
+    cnv_shape: [1, 1, 1333]
+  checkpoint:
+    path: /home/zeus/.cache/torch/hub/checkpoints/resnet50-11ad3fa6.pth
+    size_bytes: 102540417
+    sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+    identity: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+  output:
+    directory: /teamspace/studios/this_studio/brca_pilot_data/Q25.features
+    must_be_outside_git: true
+    atomic_directory_publication: true
+    overwrite_or_resume: false
+
+bound_sources:
+  attempt_1_incident_record:
+    path: multiscale_feature_pilot/provenance/brca_q25_gpu_attempt_1.yaml
+    sha256: 2fe5fd4343082bec7bd421c56d039b1bcb50c5097e300d836ab7dd5101579e46
+  scale_policy_config:
+    path: multiscale_feature_pilot/config/brca_q25_scale_policy.yaml
+    sha256: fd54080543706d56cf6fe336b61630f3f8c09a6741e4fcf5ea7c42801d0ff816
+  scale_policy_evaluator:
+    path: multiscale_feature_pilot/src/brca_q25_scale_policy.py
+    sha256: 6ede1db26638363f1ecca2fbd8db3f2ae222eacff291ba6de44634f26d148a89
+  coordinate_policy_config:
+    path: multiscale_feature_pilot/config/brca_q25_coordinate_policy.yaml
+    sha256: 85410751aec43b14997fa4c0e2a611ceb329178f788df04f336031104b697d43
+  coordinate_policy_core:
+    path: multiscale_feature_pilot/src/brca_q25_coordinates.py
+    sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+  coordinate_artifact_validator:
+    path: multiscale_feature_pilot/src/brca_coordinate_artifacts.py
+    sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+  q25_feature_adapter:
+    path: multiscale_feature_pilot/src/brca_q25_feature_extraction.py
+    sha256: 14c0eba94e49fabc37fc40e4018490a818b64db7a0eb83f54f6ce5c04cfa2e3a
+  q25_feature_artifact_publisher:
+    path: multiscale_feature_pilot/src/brca_q25_feature_artifacts.py
+    sha256: 1269727809a008e563fa70331472fd68d58cae780cc9355f6cd7fc815beecea5
+  shared_feature_extraction:
+    path: multiscale_feature_pilot/src/feature_extraction.py
+    sha256: 9731f9773238800268673ec299acbcdf8caaa4ac676c96f4559cb10604c707e7
+  scale_2x_resampling:
+    path: multiscale_feature_pilot/src/scale_2x_policy.py
+    sha256: a3672f730f8be026edfab0ea25c4460836aad227099152e5cc7d290c03d1f7aa
+  multiscale_bag_contract:
+    path: multiscale_feature_pilot/src/multiscale_bag.py
+    sha256: 26a85db8738b80c7f7f2f75d1379a54203ee870519ee1ee63f78f809ed17d914
+  row_provenance_contract:
+    path: multiscale_feature_pilot/src/provenance.py
+    sha256: 76f8c9eac1ba0c32679a1d7f8d34c07c79fc27cdc28c6762dd13a169e5db5917
+  brca_omic_loader:
+    path: multiscale_feature_pilot/src/brca_omic.py
+    sha256: 5061039913cb0dd4e8e30958c8b4b76f088396f7841255dd94234c3b462d5a5d
+  natural_healnet_smoke:
+    path: multiscale_feature_pilot/src/supervisor_healnet_smoke.py
+    sha256: df2c0010347ddc6cfc49200bf35802337752c01a78b96727a5ad538fb847eec4
+  pinned_healnet_loader:
+    path: multiscale_feature_pilot/src/healnet_smoke.py
+    sha256: 34a7ad1204dfc84ef8e63a2ac4cd8b932dbccf39e9f424b424dc6eb37a4d6009
+
+required_stop:
+  after: VALIDATED_Q25_FEATURE_ARTIFACTS_AND_HEALNET_SMOKE
+  training_authorized: false

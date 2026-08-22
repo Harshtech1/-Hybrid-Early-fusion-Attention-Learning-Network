@@ -1,0 +1,93 @@
+schema_version: 1
+status: BRCA_B01_COORDINATES_VERIFIED
+cohort: TCGA-BRCA
+batch_label: B01
+recorded_at_utc: "2026-08-19T20:00:11Z"
+execution:
+  mode: CPU_ONLY_SINGLE_MASK_READ_AND_COORDINATE_PUBLICATION
+  source_commit: 3cb90064d36b4bba5d424190ebf7809c6b6c8bde
+  authorization_sha256: 2701184101fd95c95dd8bebb7cca715ae5010793693bbe1a30e5ae7454926d49
+  runner_sha256: 745ce8c11c2d5babe7c43479cf0b3365a7c87592f236c023aa2796e15a81023f
+  preflight_attempts: 2
+  preflight_failures_before_wsi_open: 1
+  successful_mask_executions: 1
+identity:
+  patient_id: TCGA-GI-A2C8
+  slide_id: TCGA-GI-A2C8-01Z-00-DX1.09BD8AC9-645A-4C8B-9B36-77D833BDBA09.svs
+  gdc_uuid: 0a886f18-c44c-4b5e-b243-6df6e27f426a
+  size_bytes: 408704377
+  md5: a9f830d456b4a1fe0e9bb5b5b99f4b7e
+  sha256: b3c27e220c5c3961600782af42e91a52ea0b85a710d8d4aa722831ea00f9ad5f
+mask_read:
+  openslide_open_count: 1
+  read_region_count: 1
+  level_0_location: [0, 0]
+  level: 2
+  size_at_level: [3986, 2456]
+  dtype: uint8
+  channel_order: RGBA
+  sha256: 093b00e4c2aa271b01fae4754631638f63758ff8084ba51b74d6adecd6cf7427
+  contour_count: 1
+  retained_hole_count: 0
+  retained_after_execution: false
+coordinate_artifacts:
+  directory: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B01.coordinates
+  schema: BRCA_COORDINATE_ARTIFACT_SET_V1
+  total_file_bytes: 100270
+  exact_file_count: 4
+  atomic_no_overwrite_publication: true
+  zero_unlink_or_recursive_cleanup: true
+  staging_present_after_success: false
+  manifest:
+    size_bytes: 4963
+    sha256: ff1eebc9fa51128cdda6294fa48cf34008b203db236acf59e8570725b3fc4c8b
+  sidecar:
+    size_bytes: 91
+    sha256: 25a079d7f34031b55dba0c34de839f07f595bca8b6c3e9a83ba7e2f5f157b904
+  scale_2x:
+    size_bytes: 70040
+    sha256: 929d5ffa553449ad8d763ae796388a95632a8778d0f79545ae9d0333a63cad53
+    coordinates_sha256: 19bacb5413e57a328d4c1a3a7c3f2830786b0e494e20947e582cc09bec95cf26
+    shape: [3773, 2]
+    dtype: int64
+    unique_count: 3773
+    min_xy: [6144, 3584]
+    max_xy: [58368, 33792]
+    first_xy: [17408, 3584]
+    last_xy: [49664, 33792]
+  scale_4x:
+    size_bytes: 25176
+    sha256: 442ee073339a891f905aaa82c60dbdb58e5a4a3a7e086edf057bfca03e36b471
+    coordinates_sha256: ee10e5ea1e4dfa9b2af8ebcd794cc8b5c118f077ce7b7b881062ea184065451f
+    shape: [969, 2]
+    dtype: int64
+    unique_count: 969
+    min_xy: [6144, 3072]
+    max_xy: [57344, 33792]
+    first_xy: [18432, 3072]
+    last_xy: [49152, 33792]
+  total_coordinate_count: 4742
+validations:
+  exact_one_read_region: PASS
+  wsi_identity_and_final_hash_recheck: PASS
+  omic_exact_row_924_match: PASS
+  manifest_sidecar_and_file_hashes: PASS
+  hdf5_schema_metadata_dtype_shape: PASS
+  nonempty_unique_row_major_lattice_and_bounds: PASS
+  atomic_no_overwrite_publication: PASS
+operations_not_performed:
+  patch_reads: 0
+  feature_extraction: 0
+  resnet50: 0
+  healnet: 0
+  gpu_or_cuda: 0
+  b02_b06_processing: 0
+  q25_q50_q75_or_blca_changes: 0
+  drive_operations: 0
+  deletions: 0
+  cohort_expansion: 0
+  training: 0
+required_stop: B01_COORDINATE_ARTIFACT_VALIDATION_AND_REPORT
+required_stop_reached: true
+next_gate: SEPARATE_REVIEW_AND_AUTHORIZATION_REQUIRED_BEFORE_B01_PATCH_READS_OR_FEATURE_EXTRACTION
+

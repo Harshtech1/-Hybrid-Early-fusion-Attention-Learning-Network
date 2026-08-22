@@ -1,0 +1,22 @@
+schema_version: 1
+status: AUTHORIZED_B01_HEADER_ONLY
+executable_scope: B01_DOWNLOAD_AND_HEADER_ONLY
+manifest_count: 1
+combined_manifest_present: false
+patient_concurrency: 1
+entry:
+  label: B01
+  patient_id: TCGA-GI-A2C8
+  omic_source_row_id: "924"
+  basename: B01_TCGA-GI-A2C8_0a886f18-c44c-4b5e-b243-6df6e27f426a.AUTHORIZED_HEADER_ONLY.gdc.tsv
+  rows: 1
+  sha256: 7f1236c48bb76baf76904234433edd63f5e5643f6cb1de3110baa15d1c1c8b92
+  id: 0a886f18-c44c-4b5e-b243-6df6e27f426a
+  filename: TCGA-GI-A2C8-01Z-00-DX1.09BD8AC9-645A-4C8B-9B36-77D833BDBA09.svs
+  md5: a9f830d456b4a1fe0e9bb5b5b99f4b7e
+  size: "408704377"
+  state: released
+authorization_config: multiscale_feature_pilot/config/brca_b01_acquisition_header_authorization.yaml
+required_stop: B01_EXACT_FILE_OMIC_AND_HEADER_METADATA_REPORT
+all_other_batch_patients_authorized: false
+

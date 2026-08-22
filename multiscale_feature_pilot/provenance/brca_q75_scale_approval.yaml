@@ -1,0 +1,155 @@
+schema_version: 1
+status: BRCA_Q75_SCALE_POLICY_APPROVED_CPU_RECORDED_EXECUTION_LOCKED
+cohort: TCGA-BRCA
+candidate: Q75
+recorded_at_utc: "2026-08-19T04:10:07Z"
+
+authority:
+  source: DIRECT_USER_CONTINUATION
+  exact_user_statement: OK CONTINUE PLEASE
+  exact_user_statement_sha256: 70e658b86380c6b3c86fd0f980937ecb081e38d51ed3b7056cc534f9cb95e3e3
+  bounded_interpretation: >-
+    Approval applies only to formalizing the mapping proposed immediately
+    before the user replied: level 0 512x512 to 256x256 with PIL Lanczos for
+    the approximately 0.5-MPP branch, and native level 1 256x256 for the
+    approximately 1.0-MPP branch. It does not authorize executing the mapping.
+  approved_scope: Q75_SCALE_MAPPING_FORMALIZATION_ONLY
+
+header_result_evidence:
+  result_path: multiscale_feature_pilot/provenance/brca_q75_header_metadata_result/result.yaml
+  result_sha256: 08a7ed3e67ddf17513ee2dbda2adfd2398333787aaa75fe9eacf911f3c1a3898
+  report_path: multiscale_feature_pilot/provenance/brca_q75_header_metadata_result/report.md
+  report_sha256: 9ed50ecc8464109e0a8ca121082462f8765b1c70663499180cc644cfe604d985
+  header_gate_source_commit: ef6c8921d993567c8178fc932f7315378714ca5a
+  header_result_commit: c7e98f4ce2663556be9b487441fe36494364ff18
+  status: BRCA_Q75_FILE_AND_HEADER_METADATA_VERIFIED
+  required_stop_reached: true
+  prior_scale_policy_approved: false
+  exact_bytes_revalidated_by_focused_tests: true
+
+identity:
+  patient_id: TCGA-E2-A154
+  slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  gdc_file_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  size_bytes: 1360743825
+  md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+  sha256: 844eb17d1bf66136b61f0c0e69ae1609e7dc9eca096e8c206e60ddd34332ab37
+  exact_omic_source_row_index: "771"
+  exact_case_and_full_slide_omic_match: true
+
+pinned_header_metadata:
+  mpp: [0.2468, 0.2468]
+  level_count: 4
+  level_dimensions:
+    - [108528, 90471]
+    - [27132, 22617]
+    - [6783, 5654]
+    - [3391, 2827]
+  level_downsamples:
+    - 1.0
+    - 4.000066321793341
+    - 16.000619030774672
+    - 32.00359724763015
+
+approved_scale_mapping:
+  maximum_relative_error_per_axis: 0.10
+  scale_2x:
+    target_mpp: 0.5
+    source_level: 0
+    source_native_mpp: [0.2468, 0.2468]
+    source_footprint: [512, 512]
+    output_patch: [256, 256]
+    operation: EXPLICIT_LINEAR_DOWNSAMPLE
+    linear_downsample_factor: 2.0
+    interpolation: PIL.Image.Resampling.LANCZOS
+    effective_mpp: [0.4936, 0.4936]
+    relative_error_fraction: [0.0128, 0.0128]
+    result: PASS_APPROVED_EXPLICIT_DECLARED_2X
+  scale_4x:
+    target_mpp: 1.0
+    source_level: 1
+    source_native_mpp: [0.9872163682185965, 0.9872163682185965]
+    source_footprint: [256, 256]
+    output_patch: [256, 256]
+    operation: NATIVE_LEVEL
+    linear_downsample_factor: 1.0
+    interpolation: none
+    effective_mpp: [0.9872163682185965, 0.9872163682185965]
+    relative_error_fraction:
+      - 0.012783631781403515
+      - 0.012783631781403515
+    result: PASS_APPROVED_NATIVE
+
+implementation:
+  base_commit_before_transition: c7e98f4ce2663556be9b487441fe36494364ff18
+  config:
+    path: multiscale_feature_pilot/config/brca_q75_scale_policy.yaml
+    sha256: d29be0892e0b0324ae9b4390a1db9a9ae4b5a60b4541ddb7a36c81b8d2bca6b5
+  pure_evaluator:
+    path: multiscale_feature_pilot/src/brca_q75_scale_policy.py
+    sha256: 3aecb1f3818f9ae98708cdf61f6ccf4b938ffe5fe78bbbaff6e11896e5eb4482
+  focused_tests:
+    path: multiscale_feature_pilot/tests/test_brca_q75_scale_policy.py
+    sha256: 77d3d6ccc718a498baa29cea4c621cffaea79e96fdc905663daef1cc506d1431
+
+verification:
+  focused_command: >-
+    /home/zeus/miniconda3/envs/cloudspace/bin/python -m pytest -q
+    multiscale_feature_pilot/tests/test_brca_q75_scale_policy.py
+  focused_result: 22 passed
+  full_suite_command: >-
+    /home/zeus/miniconda3/envs/cloudspace/bin/python -m pytest -q
+    multiscale_feature_pilot/tests
+  full_suite_result: 485 passed
+  exact_user_statement_hash: PASS
+  exact_header_result_and_report_hashes: PASS
+  exact_header_source_and_result_commits: PASS
+  exact_wsi_identity: PASS
+  exact_pyramid_metadata: PASS
+  fail_closed_evidence_drift_tests: PASS
+  fail_closed_header_drift_tests: PASS
+  pure_evaluator_execution_surface_check: PASS
+
+operations_in_this_transition:
+  network_requests: 0
+  wsi_opens: 0
+  pixel_or_region_reads: 0
+  resampling_executions: 0
+  tissue_masks: 0
+  coordinates: 0
+  patch_extractions: 0
+  resnet50_inference: 0
+  healnet_executions: 0
+  q75_features: 0
+  gpu_operations: 0
+  raw_wsi_deletions: 0
+  google_drive_operations: 0
+  full_cohort_operations: 0
+  q25_q50_modifications: 0
+  blca_modifications: 0
+  training_runs: 0
+
+execution_boundary:
+  scale_mapping_approved: true
+  status: EXECUTION_LOCKED
+  wsi_open: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  pixel_or_region_access: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  resampling_execution: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  tissue_mask_generation: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  coordinate_generation: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  patch_extraction: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  resnet50_inference: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  feature_generation: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  healnet_execution: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  gpu_work: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  raw_wsi_deletion: NOT_AUTHORIZED
+  google_drive_operations: NOT_AUTHORIZED
+  full_cohort_processing: NOT_AUTHORIZED
+  training: NOT_AUTHORIZED
+  next_gate: SEPARATE_Q75_COORDINATE_POLICY_REVIEW_REQUIRED
+
+repository_boundary:
+  protected_blca_report_touched: false
+  q25_or_q50_touched: false
+  official_healnet_touched: false
+  git_stage_commit_or_push: false

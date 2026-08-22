@@ -1,0 +1,94 @@
+schema_version: 1
+status: PROPOSED_BRCA_PILOT_NOT_AUTHORIZED
+decision_date_utc: 2026-08-18
+decision_scope:
+  supervisor_cohort_choice: [BLCA, BRCA]
+  brca_cpu_preparation: authorized
+  wsi_download: not_authorized
+  wsi_pixel_access: not_authorized
+  feature_extraction: not_authorized
+  training: not_authorized
+frozen_reference:
+  repository: healnet_pilot
+  tag: blca-one-patient-pilot-v1
+  commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+official_healnet:
+  repository: https://github.com/konst-int-i/healnet
+  tag: v0.1.0
+  commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+sources:
+  omic_archive:
+    path: data/tcga/omic/tcga_brca_all_clean.csv.zip
+    size_bytes: 4081277
+    sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+    rows: 1022
+    patients: 956
+    feature_dimensions:
+      rna: 1558
+      mutation: 21
+      cnv: 1333
+  filtered_wsi_manifest:
+    path: data/tcga/gdc_manifests/filtered/brca_wsi_manifest_filtered.txt
+    size_bytes: 157900
+    sha256: ac1b4d591ce255a7d4e6bde3778a041b107576693657ee296fe6eb36c4e79a92
+    rows: 1022
+    patients: 956
+cohort_alignment:
+  singleton_exact_matches: 894
+  multi_wsi_patients_deferred: 62
+  wsi_only_patients: 0
+  omic_only_patients: 0
+  singleton_declared_wsi_bytes: 918532189383
+  row_level_alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  download_plan_sha256: ef32418e6551ded13bab3e7d1f5c2760d628b348c59c394ebdd6865e60372a82
+selection_policy:
+  label: nearest_observed_inclusive_size_quantiles_v1
+  population: singleton_exact_matches_only
+  sort: [wsi_size_bytes, patient_id, wsi_uuid]
+  quantiles: [0.25, 0.50, 0.75]
+  zero_based_index: floor((n - 1) * q + 0.5)
+  half_tie: upward
+  arbitrary_multi_wsi_tie_break: prohibited
+selected_patients:
+  - label: Q25
+    quantile: 0.25
+    one_based_rank: 224
+    patient_id: TCGA-LL-A6FP
+    omic_source_index: 956
+    omic_csv_line: 958
+    slide_id: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+    wsi_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+    wsi_size_bytes: 648046947
+    wsi_md5: 75536393096ffd928bc35ec9503c3655
+    gdc_state: released
+  - label: Q50
+    quantile: 0.50
+    one_based_rank: 448
+    patient_id: TCGA-AR-A1AW
+    omic_source_index: 370
+    omic_csv_line: 372
+    slide_id: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+    wsi_uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+    wsi_size_bytes: 975626387
+    wsi_md5: 304509e03f26cbecc9aee4ea691c8e5a
+    gdc_state: released
+  - label: Q75
+    quantile: 0.75
+    one_based_rank: 671
+    patient_id: TCGA-E2-A154
+    omic_source_index: 771
+    omic_csv_line: 773
+    slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+    wsi_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+    wsi_size_bytes: 1360743825
+    wsi_md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+    gdc_state: released
+total_declared_wsi_bytes: 2984417159
+execution_constraints:
+  one_row_gdc_manifest_per_patient: true
+  concurrency: 1
+  require_size_and_md5_before_pixel_access: true
+  inspect_mpp_and_pyramid_before_coordinate_generation: true
+  download_all_filtered_rows: false
+  process_multi_wsi_patients: false
+  gpu_required_now: false

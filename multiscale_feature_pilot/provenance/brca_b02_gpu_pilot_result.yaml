@@ -1,0 +1,103 @@
+schema_version: 1
+status: BRCA_BATCH_B02_GPU_FEATURE_PILOT_SUCCESS
+cohort: TCGA-BRCA
+candidate: B02
+recorded_at_utc: "2026-08-19T21:16:25Z"
+execution:
+  started_at_utc: "2026-08-19T21:13:50.445074+00:00"
+  finished_at_utc: "2026-08-19T21:15:55.384717+00:00"
+  total_seconds: 124.93960884400008
+  source_commit: 7a031f8db80d2c330009bd40e8bba6f20089d5e0
+  authorization_sha256: bd2ca8270089945a9060b802c1e4c8d32da73bd24f3124cd1ceed703b1d29471
+  device: cuda:0
+  gpu: Tesla T4
+  dtype: float32
+  batch_size: 32
+  num_workers: 2
+  deterministic_algorithms: true
+  cudnn_deterministic: true
+  cudnn_benchmark: false
+  tf32: false
+  automatic_mixed_precision: false
+  cpu_fallback: false
+identity:
+  patient_id: TCGA-BH-A0BG
+  slide_id: TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+  gdc_file_uuid: c5331e5e-10b4-4979-958b-d4592a2805de
+  wsi_size_bytes: 724114911
+  wsi_md5: a8c6e730df401ff67e1a1e52a6cb6307
+  wsi_sha256: df85b3c048b18ae0a5b9414e7e220110d98891f73f28189849e6e602d1743741
+coordinates:
+  manifest_sha256: 2b3e5dd754ebb4ca4ec26f3e017e21548b0115dc2d0517ae83146d8f7ec52ba2
+  scale_2x_count: 7158
+  scale_4x_count: 1862
+  total_count: 9020
+feature_extraction:
+  encoder: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  branch_order: [scale_2x, scale_4x]
+  scale_2x:
+    shape: [7158, 2048]
+    source_level: 0
+    source_patch_shape: [512, 512]
+    output_patch_shape: [256, 256]
+    interpolation: PIL.Image.Resampling.LANCZOS
+    effective_mpp: [0.501, 0.501]
+    seconds: 94.57355607600005
+  scale_4x:
+    shape: [1862, 2048]
+    source_level: 1
+    source_patch_shape: [256, 256]
+    output_patch_shape: [256, 256]
+    interpolation: none
+    effective_mpp: [1.002037431239458, 1.002037431239458]
+    seconds: 18.587387989000035
+  combined:
+    operation: torch.cat
+    dim: 0
+    shape: [9020, 2048]
+    natural_model_shape: [1, 9020, 2048]
+    pooling_performed: false
+    transpose_performed: false
+  peak_gpu_memory_bytes: 483956224
+healnet_smokes:
+  synthetic_and_real_both_passed: true
+  channel_dims: [2048, 1558, 21, 1333]
+  input_shapes: [[1, 9020, 2048], [1, 1, 1558], [1, 1, 21], [1, 1, 1333]]
+  output_shape: [1, 4]
+  attention_shapes: [[1, 2, 9020], [1, 2, 1], [1, 2, 1], [1, 2, 1]]
+  output_and_attention_finite: true
+  random_initialized: true
+  evaluation_inference_only: true
+artifacts:
+  schema: BRCA_COMPACT_FEATURE_ARTIFACT_SET_V1
+  directory: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B02.features
+  exact_file_count: 4
+  total_file_bytes: 74342370
+  manifest_sha256: 07bc593acf5cad0712154b7eb05771661439412047cc3a98a48c4c1ffb116dec
+  combined_features:
+    size_bytes: 73893417
+    file_sha256: ef314a798519ab61fc36c27bbbeed942e0db8003626d48a15a0e0f1b4342fcc6
+    tensor_content_sha256: 2cbdc7ed988024ab6d52795c7a5d41b3a1a675039ddb6f9b5e628bec003aed8c
+  row_provenance:
+    size_bytes: 447137
+    sha256: b9983b660382567e867da3832d2b472eb438486c4a5d8f5448b36ca3c6195f33
+    row_count: 9020
+  manifest_sidecar_sha256: 8c3011b8acf5091e0679318abc2b583bca04a8fdee91fbb7c7d1253b569413c1
+  atomic_no_overwrite_publication: true
+  independently_validated_after_publication: true
+operations_not_performed:
+  training_runs: 0
+  backward_passes: 0
+  optimizer_steps: 0
+  amp_operations: 0
+  tf32_operations: 0
+  cpu_fallbacks: 0
+  coordinate_regenerations: 0
+  other_patient_operations: 0
+  deletions: 0
+  drive_operations: 0
+  cohort_expansions: 0
+scientific_interpretation: ENGINEERING_FEATURE_AND_INTERFACE_PILOT_NOT_A_TRAINED_PREDICTION
+required_stop_reached: true
+next_gate: CPU_ONLY_B02_REVIEW_AND_B03_PLANNING_REQUIRED_BEFORE_FURTHER_GPU_WORK

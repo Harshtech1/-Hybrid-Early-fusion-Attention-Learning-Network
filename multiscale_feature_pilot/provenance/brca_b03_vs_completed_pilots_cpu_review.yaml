@@ -1,0 +1,60 @@
+schema_version: 1
+status: BRCA_B03_CPU_COMPARISON_COMPLETE
+cohort: TCGA-BRCA
+recorded_at_utc: "2026-08-20T11:52:51Z"
+source_commit: ecd6f555d7fe121f26570bc95162b69cc90caa64
+
+frozen_result_sha256:
+  Q25: 76df862c438f4d94e34342b54c80c0866a440af0574be9003444075d7073c6e4
+  Q50: 904ad3c7bef859f89fef6151014f9eb4b37b5af5d6668972feb19b0e656d263b
+  Q75: 2ecf8fc558ad295fc3cbdc2780f7fb9a7c9e93fa452fb70b833e7f1f6dc30460
+  B01: c4eb80a03ab36999ec29f495a565fdc90ca4dee9c507f8619bef5f5c703ddc57
+  B02: 62fcf0b5a9971939ae87f380f90e8fd6e196034226c715279071ff31908d3640
+  B03: 843d34ac4f3b1839cf705c423f525a54ba3cf88c6bf55614503ed42d974c9437
+
+measured_matrix:
+  Q25: {patches: 9322, gpu_seconds: 155.79171268499977, seconds_per_1000_patches: 16.71226267807335, artifact_bytes: 153208853, bytes_per_patch: 16435.191267968246, peak_gpu_memory_bytes: 481334784, artifact_layout: legacy_duplicate}
+  Q50: {patches: 10793, gpu_seconds: 171.42871093199983, seconds_per_1000_patches: 15.883323536736759, artifact_bytes: 177402321, bytes_per_patch: 16436.79431112758, peak_gpu_memory_bytes: 481334784, artifact_layout: legacy_duplicate}
+  Q75: {patches: 16945, gpu_seconds: 245.15734978399996, seconds_per_1000_patches: 14.467828255178517, artifact_bytes: 278525034, bytes_per_patch: 16437.00407199764, peak_gpu_memory_bytes: 481859072, artifact_layout: legacy_duplicate}
+  B01: {patches: 4742, gpu_seconds: 73.46194821200015, seconds_per_1000_patches: 15.491764700970085, artifact_bytes: 39092076, bytes_per_patch: 8243.795023196963, peak_gpu_memory_bytes: 481334784, artifact_layout: compact}
+  B02: {patches: 9020, gpu_seconds: 124.93960884400008, seconds_per_1000_patches: 13.851397876274953, artifact_bytes: 74342370, bytes_per_patch: 8241.947893569844, peak_gpu_memory_bytes: 483956224, artifact_layout: compact}
+  B03: {patches: 11132, gpu_seconds: 118.405110648, seconds_per_1000_patches: 10.636463407114624, artifact_bytes: 91770745, bytes_per_patch: 8243.868577075098, peak_gpu_memory_bytes: 483956224, artifact_layout: compact}
+
+shared_contract:
+  encoder: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+  feature_width: 2048
+  dtype: float32
+  branch_order: [scale_2x, scale_4x]
+  natural_layout: "[1,P_i,2048]"
+  omic_modalities_separate: [rna, mutation, cnv]
+  healnet_smoke_output_shape: [1, 4]
+  healnet_smokes_random_initialized_not_trained_predictions: true
+  paper_encoder_difference: paper_describes_Kather100K_pretraining
+
+review_findings:
+  b03_expected_combined_shape: [11132, 2048]
+  b03_observed_combined_shape: [11132, 2048]
+  b03_preexecution_gpu_seconds_estimate: [160, 200]
+  b03_observed_gpu_seconds: 118.405110648
+  compact_bytes_per_patch_range_b01_b03: [8241.947893569844, 8243.868577075098]
+  legacy_duplicate_bytes_per_patch_range_q25_q75: [16435.191267968246, 16437.00407199764]
+  compact_layout_approximately_halves_retained_bytes: true
+  gpu_memory_capacity_is_not_the_dominant_constraint: true
+  runtime_is_slide_and_io_specific_not_patch_count_only: true
+  b01_b02_b03_compact_artifacts_independently_revalidated: true
+
+operations_not_performed:
+  wsi_opens: 0
+  pixel_or_patch_reads: 0
+  coordinate_generations: 0
+  gpu_or_cuda_operations: 0
+  feature_extractions: 0
+  healnet_executions: 0
+  artifact_mutations: 0
+  deletions: 0
+  drive_operations: 0
+  cohort_operations: 0
+  training_runs: 0
+
+recommendation: PROCEED_TO_B06_ACQUISITION_AND_HEADER_ONLY_REVIEW_BEFORE_ANY_MORE_GPU_WORK
+next_gate: EXPLICIT_B06_ACQUISITION_AND_HEADER_ONLY_AUTHORIZATION_OR_DECLINE

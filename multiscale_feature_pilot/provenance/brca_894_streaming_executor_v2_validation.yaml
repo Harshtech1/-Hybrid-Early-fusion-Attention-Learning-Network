@@ -1,0 +1,143 @@
+schema_version: 2
+status: BRCA_894_STREAMING_EXECUTOR_RECOVERY_V2_CPU_SYNTHETICALLY_VERIFIED
+cohort: TCGA-BRCA
+recorded_at_utc: "2026-08-20T12:32:41Z"
+scope: CPU_ONLY_NON_EXECUTABLE_PLANNER_AND_RECOVERY_LEDGER_CONTRACT
+
+authorization:
+  user_authorized:
+    cpu_only_generic_894_patient_streaming_executor: true
+    recovery_ledger_upgrade: true
+    synthetic_validation: true
+    parallel_with_b06_header_workstream: true
+  explicitly_not_authorized:
+    cohort_execution: true
+    downloads_beyond_separate_b06_workstream: true
+    wsi_or_openslide: true
+    pixel_reads: true
+    coordinate_generation: true
+    gpu_or_cuda: true
+    feature_extraction: true
+    healnet: true
+    google_drive: true
+    deletion: true
+    training: true
+
+frozen_cohort_order:
+  source_path: reports/brca_row_level_alignment.csv
+  source_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  filter_alignment_status: KEEP
+  filter_alignment_reason: EXACT_SINGLETON_CASE_AND_SLIDE_MATCH
+  sort_key: [case_id, slide_id, id]
+  exact_rows: 894
+  canonical_order_sha256: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+  canonical_type_note: omic_source_row_id_string_and_size_bytes_integer
+  live_row_parsing_or_validation_by_this_planner: false
+  future_adapter_exact_rematch_required:
+    - cohort_index
+    - patient_id
+    - slide_id
+    - gdc_uuid
+    - omic_source_row_id
+    - md5
+    - size_bytes
+
+verified_contract:
+  per_patient_transaction_size: 1
+  exact_identity_fields: [cohort_index, patient_id, slide_id, gdc_uuid, transaction_id]
+  two_events_per_attempt: [STAGE_STARTED, STAGE_SUCCEEDED_OR_STAGE_FAILED]
+  exact_stage_order:
+    - PLANNED
+    - ACQUISITION_AUTHORIZED
+    - RAW_VERIFIED
+    - HEADER_POLICY_VERIFIED
+    - COORDINATES_VERIFIED
+    - GPU_AUTHORIZED
+    - FEATURES_VERIFIED
+    - TERMINAL_RECORDED
+  no_stage_skipping: true
+  failure_does_not_advance: true
+  maximum_attempts_per_stage: 3
+  explicit_retry_authorization: true
+  retry_preserves_stage_authorization_source_policies_base_inputs_and_idempotency: true
+  retry_binds_prior_failure: true
+  frozen_retryable_error_codes:
+    - RESOURCE_TEMPORARILY_UNAVAILABLE
+    - SESSION_INTERRUPTED
+    - TRANSIENT_IO
+  nonretryable_or_exhausted_route: separately_authorized_superseding_transaction_same_patient_identity
+  mandatory_output_hash_validation_before_success: true
+  collision_policy: validate_and_reuse_only_on_exact_hash_equality
+  output_overwrite_surface: false
+  next_patient_requires_terminal_success_and_next_cohort_index: true
+  timestamp_order: nondecreasing_utc
+  immutable_sha256_chain: true
+  stale_or_concurrent_tip: rejected
+  terminal_reopen: rejected
+
+ledger_security:
+  exclusive_staging_creation: true
+  file_and_directory_fsync: true
+  atomic_no_overwrite_hard_link: true
+  symlinks_and_broken_symlinks: rejected
+  bounded_held_descriptor_reads: true
+  nofollow_open: true
+  pre_open_post_path_tokens_checked: true
+  maximum_event_bytes: 1000000
+  strict_utf8_json: true
+  duplicate_json_keys: rejected
+  partial_unexpected_or_noncontiguous_files: rejected
+  stranded_staging_auto_publish: false
+  stranded_staging_auto_delete: false
+  stranded_staging_disposition: explicit_manual_review_or_cleanup_required
+
+implementation:
+  base_repository_head_at_final_validation: 2f0e4ce798a7296f1b2981aaf5bf1ca85f1f227c
+  v2_files_uncommitted_and_bound_by_individual_sha256_at_validation: true
+  files:
+    multiscale_feature_pilot/config/brca_894_streaming_executor_v2_policy.yaml: 7558dcd296b1c5822ec698ac2458e86f38595748648aba54ca1db567b5c2a7cc
+    multiscale_feature_pilot/src/brca_streaming_recovery_v2.py: 4986390d37c17307d53843aefe66c105f2abd7d67cd9fb6b70708a52d20b03d6
+    multiscale_feature_pilot/src/brca_streaming_executor_v2.py: bff584b18a9ea3a652b69cc883aecbeeed9ff88401ae6d3217e72565383fcecb
+    multiscale_feature_pilot/tests/test_brca_streaming_recovery_v2.py: ad755cacd2c64cd82ebbb8c410c263b2253f20fbb78f4b6df6bc5f6032fbb95c
+    multiscale_feature_pilot/tests/test_brca_streaming_executor_v2.py: 520283571b677b1929a03eb5505982d6d1ee194f44a5916e037e17b728af96db
+    reports/brca_894_streaming_executor_v2_validation.md: 58350e115619b9aa4371d3c99710e8024f3b71b6b0b0771c014892babe079f95
+  frozen_dependencies:
+    multiscale_feature_pilot/config/brca_894_singleton_streaming_policy.yaml: 9172449122f11cb17ef196d79911d1e5914125544531dd7b1eeeca6a11ae7b5f
+    multiscale_feature_pilot/config/brca_compact_artifact_policy.yaml: 59d4b1168108052ba5b18d8c4b5f5aa6de83c36ab234907892bf374ee9f712b4
+
+validation:
+  py_compile: PASS
+  focused_v1_and_v2_streaming_tests:
+    result: PASS
+    passed: 50
+  full_cpu_repository_tests:
+    result: PASS
+    passed: 722
+    environment: CUDA_VISIBLE_DEVICES_empty
+  yaml_safe_load_and_contract_assertions: PASS
+  canonical_894_order_digest_reproduced: PASS
+  git_diff_check_owned_files: PASS
+  independent_boundary_audit: PASS_AFTER_FAIL_CLOSED_HARDENING
+
+operations_performed:
+  local_frozen_text_and_metadata_reads: true
+  synthetic_temporary_ledger_fixtures: true
+  cohort_patients_processed: 0
+  downloads: 0
+  wsi_opens: 0
+  pixel_reads: 0
+  coordinate_generations: 0
+  gpu_or_cuda_operations: 0
+  feature_extractions: 0
+  healnet_executions: 0
+  google_drive_operations: 0
+  raw_wsi_deletions: 0
+  training_runs: 0
+
+readiness:
+  recovery_ledger_and_non_executable_stage_planner_contract: READY
+  production_live_operation_adapter: NOT_IMPLEMENTED_AND_NOT_AUTHORIZED
+  raw_wsi_lifecycle: SEPARATE_DECISION_REQUIRED
+  cohort_execution: NOT_AUTHORIZED
+
+next_gate: REVIEW_B06_GEOMETRY_RAW_WSI_LIFECYCLE_AND_SEPARATELY_DESIGN_PRODUCTION_ADAPTER

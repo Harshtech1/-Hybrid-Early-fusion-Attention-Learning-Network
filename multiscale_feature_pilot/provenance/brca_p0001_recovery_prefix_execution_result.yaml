@@ -1,0 +1,37 @@
+schema_version: 1
+status: P0001_RECOVERY_PREFIX_VERIFIED
+recorded_at_utc: "2026-08-20T23:52:59Z"
+cohort: TCGA-BRCA
+production_row: P0001
+execution:
+  mode: CPU_ONLY_FROZEN_EVIDENCE_RECOVERY_V2_BACKFILL
+  source_commit: 228aaa62fee2f04a9afe09b519bb4ebc7662402b
+  authorization_path: multiscale_feature_pilot/config/brca_p0001_recovery_prefix_bootstrap_authorization.yaml
+  authorization_sha256: d1842aa9225b53bcad59db17cf92504cf2b6f75411ed2bb16e552a85c154d875
+ledger:
+  path: /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_P0001.recovery_v2
+  exact_event_files: 10
+  first_record_sha256: 10633d7b4b42e29501df6e8a71766f868f1e34c2eec95b8212d580204e966784
+  tip_record_sha256: 45077a18d10205a04c9ef3a80479be7af4079501a11891ca1b9cc8701a8347b6
+  durable_stage: COORDINATES_VERIFIED
+  replay_action: ADVANCE_STAGE
+  next_stage: GPU_AUTHORIZED
+  bootstrap_staging_present_after_return: false
+validation:
+  exact_round_trip_against_frozen_derived_prefix: PASS
+  exact_sequence_1_through_10: PASS
+  hash_chain_and_replay: PASS
+  exact_durable_stage: PASS
+  exact_next_stage: PASS
+  independent_read_only_postpublication_validation: PASS
+operations:
+  wsi_open_or_pixel_access: 0
+  coordinate_generation: 0
+  gpu_or_cuda: 0
+  feature_extraction: 0
+  healnet: 0
+  deletion_or_overwrite: 0
+  drive: 0
+  training: 0
+required_stop_reached: true
+scientific_interpretation: RECOVERY_PROVENANCE_ONLY_NO_NEW_SCIENTIFIC_COMPUTATION

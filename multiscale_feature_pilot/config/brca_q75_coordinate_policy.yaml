@@ -1,0 +1,246 @@
+schema_version: 1
+cohort: TCGA-BRCA
+candidate_label: Q75
+policy_status: REVIEWED_BRCA_Q75_COORDINATE_POLICY_V1_EXECUTION_LOCKED
+execution_mode: CPU_ONLY_SCALAR_POLICY_REVIEW
+
+authority:
+  source: DIRECT_USER_INSTRUCTION
+  exact_user_statement: >-
+    Continue with CPU-only Q75 coordinate-policy design and review. Do not open
+    the WSI or generate coordinates yet.
+  exact_user_statement_sha256: 1dd1a3f8d74e6ecb276748ba0db193811e88b8fde2dae387961fb5719cfbd109
+  approved_scope: Q75_COORDINATE_POLICY_DESIGN_AND_REVIEW_ONLY
+  interpretation: >-
+    Resolve and test scalar geometry only. No WSI handle, image, mask,
+    coordinate array, or coordinate artifact may be created by this policy.
+
+frozen_predecessor_evidence:
+  header_result:
+    path: multiscale_feature_pilot/provenance/brca_q75_header_metadata_result/result.yaml
+    sha256: 08a7ed3e67ddf17513ee2dbda2adfd2398333787aaa75fe9eacf911f3c1a3898
+    report_path: multiscale_feature_pilot/provenance/brca_q75_header_metadata_result/report.md
+    report_sha256: 9ed50ecc8464109e0a8ca121082462f8765b1c70663499180cc644cfe604d985
+    header_gate_source_commit: ef6c8921d993567c8178fc932f7315378714ca5a
+    header_result_commit: c7e98f4ce2663556be9b487441fe36494364ff18
+  scale_approval:
+    commit: 42db4dd4b402b3b7c32970f96db2f8d0c5f46180
+    config_path: multiscale_feature_pilot/config/brca_q75_scale_policy.yaml
+    config_sha256: d29be0892e0b0324ae9b4390a1db9a9ae4b5a60b4541ddb7a36c81b8d2bca6b5
+    source_path: multiscale_feature_pilot/src/brca_q75_scale_policy.py
+    source_sha256: 3aecb1f3818f9ae98708cdf61f6ccf4b938ffe5fe78bbbaff6e11896e5eb4482
+    provenance_path: multiscale_feature_pilot/provenance/brca_q75_scale_approval.yaml
+    provenance_sha256: aae6547c7c23cfdad51f62e3587b33c7abe3c5fb7d6fbdcd15ffeed3737fdd8e
+    report_path: reports/brca_q75_scale_approval.md
+    report_sha256: 6ae91ce127e426e079c68e752be39912e31528687dd897d7ce7f1594cd9fd017
+    status: BRCA_Q75_SCALE_POLICY_APPROVED_CPU_RECORDED_EXECUTION_LOCKED
+    scale_mapping_approved: true
+    execution_locked: true
+
+q75_identity:
+  patient_id: TCGA-E2-A154
+  slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  gdc_file_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  filename: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  size_bytes: 1360743825
+  md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+  sha256: 844eb17d1bf66136b61f0c0e69ae1609e7dc9eca096e8c206e60ddd34332ab37
+  exact_omic_source_row_index: "771"
+  exact_case_and_full_slide_omic_match: true
+  omic_shapes:
+    rna: [1, 1, 1558]
+    mutation: [1, 1, 21]
+    cnv: [1, 1, 1333]
+
+pinned_header_metadata:
+  mpp_x: 0.2468
+  mpp_y: 0.2468
+  level_count: 4
+  level_dimensions:
+    - [108528, 90471]
+    - [27132, 22617]
+    - [6783, 5654]
+    - [3391, 2827]
+  openslide_scalar_level_downsamples:
+    - 1.0
+    - 4.000066321793341
+    - 16.000619030774672
+    - 32.00359724763015
+  coordinate_geometry_scale_xy:
+    level_0: [1.0, 1.0]
+    level_1: [4.0, 4.000132643586682]
+    level_2: [16.0, 16.001238061549344]
+    level_3: [32.004718372161605, 32.00247612309869]
+  geometry_rule: >-
+    Derive x and y coordinate ratios independently from level dimensions. The
+    OpenSlide scalar downsample remains physical-MPP evidence and is not
+    substituted for both coordinate axes.
+
+reviewed_precedents:
+  q25_coordinate_policy:
+    path: multiscale_feature_pilot/config/brca_q25_coordinate_policy.yaml
+    sha256: 85410751aec43b14997fa4c0e2a611ceb329178f788df04f336031104b697d43
+  q25_reviewed_algorithm:
+    path: multiscale_feature_pilot/src/brca_q25_coordinates.py
+    sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+    clam_compatibility_commit: 26e0b6c4873e112f1ccd74cd834894c4ab7a2934
+    clam_attribution_status: >-
+      Historically aligned compatibility pin; not proven to be the exact CLAM
+      commit used by the paper authors.
+    known_issue_path: shared/provenance/known_issues.md
+    known_issue_sha256: 8dff689f8181f7e08215595252042185542d9970c5885693b9afdaa7aa32c3c4
+  q50_coordinate_policy:
+    path: multiscale_feature_pilot/config/brca_q50_coordinate_policy.yaml
+    sha256: e5cb83739d3d8fab04da8a63ae1560df04ccc547a79512c219eecb575c0c2114
+  q50_coordinate_source:
+    path: multiscale_feature_pilot/src/brca_q50_coordinates.py
+    sha256: 7dd739667cb6fe0887f3452127c9ff4d43659831d17096922a9f62685149f892
+  future_algorithm_reuse_if_separately_authorized:
+    - HSV_saturation_tissue_segmentation
+    - four_point_easy_and_center_hole_predicate
+    - global_level0_lattice_iteration
+    - clam_integer_cast_geometry_helper
+  numerical_q25_or_q50_slide_metadata_reused: false
+  algorithms_executed_by_this_review: false
+  dependency_drift_action: reject_before_any_future_execution
+
+future_coordinate_artifact_contract:
+  schema_path: multiscale_feature_pilot/src/brca_coordinate_artifacts.py
+  schema_sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+  schema: BRCA_COORDINATE_ARTIFACT_SET_V1
+  branch_order: [scale_2x, scale_4x]
+  shape_each: "[N,2]"
+  dtype: int64
+  columns: [x, y]
+  coordinate_space: level_0
+  require_nonempty: true
+  require_unique: true
+  ordering: row_major_y_then_x
+  overwrite_or_resume: prohibited
+  publication: sibling_staging_then_linux_RENAME_NOREPLACE
+  artifacts_written_by_this_review: false
+
+future_tissue_mask_policy:
+  level: 2
+  dimensions: [6783, 5654]
+  theoretical_pixel_count: 38351082
+  theoretical_rgba_uint8_bytes: 153404328
+  theoretical_values_are_arithmetic_only: true
+  policy_kind: custom_engineering_mask_selection
+  exact_released_clam_or_paper_reproduction: false
+  shared_by_branches: true
+  contour_coordinate_space: level_0_x_y
+  coordinate_geometry_scale_xy: [16.0, 16.001238061549344]
+  clam_commit: 26e0b6c4873e112f1ccd74cd834894c4ab7a2934
+  color_space: HSV_saturation
+  sthresh: 8
+  mthresh: 7
+  close: 4
+  use_otsu: false
+  a_t: 100
+  a_h: 16
+  max_n_holes: 8
+  reference_patch_size: 512
+  scaled_reference_area: 1023
+  scaled_reference_area_formula: int(512**2/(16.0*16.001238061549344))
+  tissue_net_area_threshold_mask_pixels_squared: 102300
+  tissue_net_area_rule: contour_area-minus-all-direct-hole-areas > 102300
+  hole_area_threshold_mask_pixels_squared: 16368
+  retained_hole_rule: direct_hole_area > 16368
+  retained_hole_ranking: sort_descending_by_area_then_keep_at_most_8
+  alpha_channel_policy: ignore_alpha_use_first_three_RGB_channels
+  saturation_filter: RGB_to_HSV_then_median_blur_saturation_kernel_7
+  binary_threshold: fixed_saturation_threshold_8_no_otsu
+  morphology: MORPH_CLOSE_4x4_ones_kernel
+  contour_retrieval: RETR_CCOMP_direct_foreground_and_holes
+  contour_approximation: CHAIN_APPROX_NONE
+  level_0_scaling: multiply_x_y_independently_then_cast_numpy_int32
+  contour_rule: pinned_four_pt_easy_any_probe_on_or_inside
+  contour_predicate: any_of_four_probes_pointPolygonTest>=0
+  hole_rule: reject_only_when_mapped_patch_center_is_strictly_inside
+  hole_predicate: reject_only_if_center_pointPolygonTest>0
+  boundary_semantics: contour_boundary_accepted_and_hole_boundary_retained
+  mask_created_by_this_review: false
+
+branches:
+  scale_2x:
+    target_mpp: 0.5
+    effective_mpp: [0.4936, 0.4936]
+    source_level: 0
+    source_footprint: [512, 512]
+    output_patch_later: [256, 256]
+    later_operation: EXPLICIT_LINEAR_DOWNSAMPLE
+    later_interpolation: PIL.Image.Resampling.LANCZOS
+    grid_label: custom_global_level0_lattice_v1
+    level_0_lattice_anchor: [0, 0]
+    coordinate_geometry_scale_xy: [1.0, 1.0]
+    level_0_declared_footprint: [512, 512]
+    level_0_step: [512, 512]
+    reject_incomplete_level_0_footprints: true
+    theoretical_full_slide_grid_before_tissue_filter:
+      columns: 211
+      rows: 176
+      sites: 37136
+      last_complete_level_0_origin: [107520, 89600]
+      trailing_strip_right_bottom: [496, 359]
+    accepted_tissue_site_count: unknown_until_separately_authorized_execution
+    released_clam_coordinate_reproduction: false
+    exact_paper_coordinate_reproduction: false
+  scale_4x:
+    target_mpp: 1.0
+    effective_mpp: [0.9872163682185965, 0.9872163682185965]
+    source_level: 1
+    source_footprint: [256, 256]
+    output_patch_later: [256, 256]
+    later_operation: NATIVE_LEVEL
+    later_interpolation: none
+    grid_label: custom_global_level0_lattice_v1
+    level_0_lattice_anchor: [0, 0]
+    coordinate_geometry_scale_xy: [4.0, 4.000132643586682]
+    level_0_declared_footprint: [1024, 1024]
+    level_0_step: [1024, 1024]
+    geometry_derivation: 256*int(ds_x),256*int(ds_y)
+    geometry_compatibility: CLAM_INT_CAST_GEOMETRY_COMPATIBLE
+    reject_incomplete_level_0_footprints: true
+    theoretical_full_slide_grid_before_tissue_filter:
+      columns: 105
+      rows: 88
+      sites: 9240
+      last_complete_level_0_origin: [106496, 89088]
+      trailing_strip_right_bottom: [1008, 359]
+    accepted_tissue_site_count: unknown_until_separately_authorized_execution
+    released_clam_coordinate_reproduction: false
+    exact_native_level_grid_tiling: false
+    caveat: >-
+      This custom constant-step level-0 lattice is CLAM integer-cast geometry
+      compatible. It is neither released-CLAM coordinate reproduction nor an
+      exact inversion of the rounded level-1 pixel grid.
+
+review_result:
+  coordinate_policy_resolved: true
+  design_is_scalar_only: true
+  real_coordinates_generated: false
+  actual_tissue_patch_counts_known: false
+  q75_coordinate_execution_approved: false
+
+execution_boundary:
+  status: EXECUTION_LOCKED
+  wsi_open_authorized: false
+  pixel_or_region_access_authorized: false
+  tissue_mask_generation_authorized: false
+  coordinate_generation_authorized: false
+  coordinate_artifact_publication_authorized: false
+  patch_extraction_authorized: false
+  resampling_execution_authorized: false
+  resnet50_inference_authorized: false
+  feature_generation_authorized: false
+  healnet_execution_authorized: false
+  gpu_work_authorized: false
+  raw_wsi_deletion_authorized: false
+  google_drive_operations_authorized: false
+  full_cohort_processing_authorized: false
+  q25_q50_modification_or_rerun_authorized: false
+  blca_modification_authorized: false
+  official_healnet_modification_authorized: false
+  training_authorized: false
+  next_gate: SEPARATE_Q75_COORDINATE_EXECUTION_AUTHORIZATION_REQUIRED

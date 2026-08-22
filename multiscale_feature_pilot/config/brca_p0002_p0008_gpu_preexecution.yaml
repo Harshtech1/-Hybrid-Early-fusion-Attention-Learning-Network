@@ -1,0 +1,70 @@
+schema_version: 1
+status: P0002_P0008_GPU_PREEXECUTION_PREPARED_EXECUTION_LOCKED
+executable: false
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+preparation_authority:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: >-
+    I authorize CPU-only preparation and synthetic validation of the exact P0002–P0008 production GPU feature-extraction packages using their frozen verified coordinate artifacts, together with a consolidated P0001–P0008 GPU execution plan using ResNet50 ImageNet1K V2 and the compact artifact/recovery-v2 contracts. Do not open WSIs or read patches, use GPU/CUDA, extract features, run HEALNet, modify or delete existing artifacts, access Drive, process patients outside P0001–P0008, expand the cohort, or train. Stop when all fail-closed packages, runtime/storage estimates, and the exact consolidated GPU authorization request are ready for review
+  exact_statement_sha256: 56c7aa49dfe2fc0efc02060ea872d398c4a6be9a99c2e0b66f561565634082f1
+
+execution_lock:
+  gpu_or_cuda: false
+  wsi_open_or_patch_read: false
+  feature_extraction: false
+  healnet: false
+  artifact_publication: false
+  recovery_ledger_publication: false
+  deletion: false
+  training: false
+
+frozen_inputs:
+  coordinate_execution_result:
+    path: multiscale_feature_pilot/provenance/brca_p0002_p0008_coordinate_execution_result.yaml
+    sha256: bdb8f9e03164006b8420230e392c18df073df37519d52aa89ae7d5a05baa665b
+  coordinate_execution_request:
+    path: multiscale_feature_pilot/config/brca_p0002_p0008_coordinate_execution_request.yaml
+    sha256: 47805f82a8a727f6dc646860a109b8cd5d8c19a3213a8c18fba5c31fcd96ca6e
+  encoder:
+    name: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+    checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+    frozen: true
+    paper_difference: paper_describes_Kather100K_pretraining
+
+packages:
+  P0002: {cohort_index: 2, omic_row: "5", coordinate_manifest_sha256: 0fc86c83799ff17a340d8414579458d6ea4401e636d57226ae8aef188718dbc9, scale_2x_rows: 9785, scale_4x_rows: 2486, combined_shape: [12271, 2048], raw_feature_bytes: 100524032}
+  P0003: {cohort_index: 3, omic_row: "6", coordinate_manifest_sha256: 992e0687afc61497e4e27b70abf639c3fc894a8a1e513e7b88a3d19225ea037e, scale_2x_rows: 3461, scale_4x_rows: 921, combined_shape: [4382, 2048], raw_feature_bytes: 35897344}
+  P0004: {cohort_index: 4, omic_row: "7", coordinate_manifest_sha256: 0535021c70316aa7b57d88e5474b75f665a2e2603f07bce0b5484b799cf608ea, scale_2x_rows: 3933, scale_4x_rows: 1034, combined_shape: [4967, 2048], raw_feature_bytes: 40689664}
+  P0005: {cohort_index: 5, omic_row: "8", coordinate_manifest_sha256: 69493bee64a272387c8605e2d65a098a92b8eb608b629df64fe840d660683a60, scale_2x_rows: 23559, scale_4x_rows: 5971, combined_shape: [29530, 2048], raw_feature_bytes: 241909760}
+  P0006: {cohort_index: 6, omic_row: "9", coordinate_manifest_sha256: 4c976d3dc5dd6b9ccdeb5fd07022442fdba2e9e960df615dab41ddb176f5e6d9, scale_2x_rows: 7505, scale_4x_rows: 1962, combined_shape: [9467, 2048], raw_feature_bytes: 77553664}
+  P0007: {cohort_index: 7, omic_row: "10", coordinate_manifest_sha256: 9698587e8b8d78f1163ca05d7565703404a56aae0f3b0a069da7c51f58505876, scale_2x_rows: 9238, scale_4x_rows: 2407, combined_shape: [11645, 2048], raw_feature_bytes: 95395840}
+  P0008: {cohort_index: 8, omic_row: "11", coordinate_manifest_sha256: df3ab5961880f5d4938188b8249ec45f62bf35d79254dc203d40af6d39a8903f, scale_2x_rows: 18877, scale_4x_rows: 4799, combined_shape: [23676, 2048], raw_feature_bytes: 193953792}
+
+consolidated_future_gpu_plan:
+  patient_execution_order: [P0001, P0002, P0003, P0004, P0005, P0006, P0007, P0008]
+  maximum_concurrent_patients: 1
+  total_patch_reads: 112754
+  total_raw_feature_bytes: 923680768
+  compact_artifact_bytes_range: [929324096, 934024096]
+  estimated_gpu_wall_seconds_range: [1210, 1800]
+  determinism:
+    device: cuda:0
+    dtype: float32
+    batch_size: 32
+    deterministic_algorithms: true
+    cublas_workspace_config: ":4096:8"
+    cudnn_deterministic: true
+    cudnn_benchmark: false
+    automatic_mixed_precision: false
+    tf32: false
+    cpu_fallback: false
+  publication: per_patient_atomic_no_overwrite_compact_artifact_set
+  recovery_v2:
+    P0001: append_GPU_AUTHORIZED_and_FEATURES_VERIFIED_to_existing_verified_prefix
+    P0002_P0008: append_only_prefix_bootstrap_through_COORDINATES_VERIFIED_then_GPU_AUTHORIZED_and_FEATURES_VERIFIED
+
+future_exact_authorization_text: >-
+  I authorize the exact consolidated P0001–P0008 production GPU feature execution using the frozen verified coordinate artifacts and ResNet50 ImageNet1K V2 checkpoint. Execute patients serially in this order: P0001, P0002, P0003, P0004, P0005, P0006, P0007, P0008. Perform exactly 13,372/3,444; 9,785/2,486; 3,461/921; 3,933/1,034; 23,559/5,971; 7,505/1,962; 9,238/2,407; and 18,877/4,799 scale-2x/scale-4x patch reads respectively, for 112,754 total patches. For every patient, use float32 ResNet50 ImageNet1K V2 extraction, natural 2x-then-4x row concatenation into its frozen [P_i,2048] tensor, atomic no-overwrite compact artifact publication, recovery-v2 binding, and synthetic plus real-feature four-modality HEALNet numerical smoke tests. P0002–P0008 may first receive only their append-only recovery-v2 prefixes through COORDINATES_VERIFIED from frozen committed evidence. No training, backward pass, optimizer step, AMP, TF32, CPU fallback, coordinate regeneration, patients outside P0001–P0008, Drive operations, cohort expansion, raw/pre-existing/user/project/final-artifact deletion, or official HEALNet modification; only cleanup of runner-created ephemeral recovery staging is permitted. Stop after all eight artifact validations, recovery recordings, and one combined report.
+future_exact_authorization_text_sha256: 1c73211482bef0df20b9f6379557b7f5dc7f6430d3d5028d09694be66c393511
+required_stop: CONSOLIDATED_GPU_EXECUTION_REVIEW

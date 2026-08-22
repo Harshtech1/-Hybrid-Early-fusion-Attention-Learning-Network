@@ -1,0 +1,194 @@
+schema_version: 1
+status: BRCA_Q25_GPU_FEATURE_PILOT_SUCCESS
+cohort: TCGA-BRCA
+candidate: Q25
+patient_id: TCGA-LL-A6FP
+slide_id: TCGA-LL-A6FP-01Z-00-DX1
+gdc_file_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+
+execution:
+  attempt: 2
+  started_at_utc: "2026-08-18T23:00:49.992809+00:00"
+  finished_at_utc: "2026-08-18T23:03:25.784546+00:00"
+  total_seconds: 155.79171268499977
+  source_commit: 61caefed25852c070282bb294f063b783a3c35ba
+  authorization_sha256: b64578f2138d8adc94a931f565eddd32257f541b49fc8fd1fc8718e2c4ca1060
+  attempt_1_incident_path: multiscale_feature_pilot/provenance/brca_q25_gpu_attempt_1.yaml
+  attempt_1_incident_sha256: 2fe5fd4343082bec7bd421c56d039b1bcb50c5097e300d836ab7dd5101579e46
+  process_environment:
+    CUBLAS_WORKSPACE_CONFIG: ":4096:8"
+  torch_deterministic_algorithms: true
+  cudnn_deterministic: true
+  cudnn_benchmark: false
+  tf32: false
+  automatic_mixed_precision: false
+  batch_size: 32
+  num_workers: 2
+
+inputs:
+  wsi:
+    filename: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+    size_bytes: 648046947
+    md5: 75536393096ffd928bc35ec9503c3655
+    sha256: ac852be806eb0d91214145983319b604919a8e1d16bd59378a3dba69a600979c
+    level_0_dimensions: [65736, 67406]
+    level_0_pixel_count: 4431000816
+    mpp_x: 0.2525
+    mpp_y: 0.2525
+  coordinates:
+    manifest_sha256: 7d64ec37595792994e61ab3bf60461498e805bbff0429599f0328b49c93d2ad2
+    scale_2x_hdf5_sha256: 4458a8d1c79eac1b7a0bec68871ffc7a71ec2dc21b4e3b9206ae2601410ff0cc
+    scale_2x_content_sha256: 84fbe621186a4c0945f7baf3a7c82f39d54f34b37eb4c39a6498b85c709befdd
+    scale_2x_count: 7404
+    scale_4x_hdf5_sha256: f055a37018c9b978da60c3aca6258b75853778974e1c4f9ddd32e2aaa2b492fa
+    scale_4x_content_sha256: b6181b69a80b5ba83344fcf7f9de9b53eccdc31a4a09e86548576a8bbba64946
+    scale_4x_count: 1918
+  omic:
+    archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+    source_row_index: "956"
+    exact_case_and_full_slide_match: true
+    rna_shape: [1, 1, 1558]
+    mutation_shape: [1, 1, 21]
+    cnv_shape: [1, 1, 1333]
+    kept_as_three_separate_healnet_modalities: true
+    concatenated_with_wsi: false
+  checkpoint:
+    identity: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+    size_bytes: 102540417
+    sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+
+feature_extraction:
+  branch_order: [scale_2x, scale_4x]
+  scale_2x:
+    effective_mpp: [0.505, 0.505]
+    shape: [7404, 2048]
+    dtype: float32
+    all_finite: true
+    streaming_seconds: 114.42982402400003
+    model_forward_seconds: 20.26405061340332
+    peak_gpu_memory_bytes: 481334784
+  scale_4x:
+    effective_mpp: [1.0100149842739303, 1.0100149842739303]
+    shape: [1918, 2048]
+    dtype: float32
+    all_finite: true
+    streaming_seconds: 20.25732625699993
+    model_forward_seconds: 5.154315444946289
+    peak_gpu_memory_bytes: 481334784
+  combined:
+    operation: torch.cat
+    dim: 0
+    shape: [9322, 2048]
+    dtype: float32
+    all_finite: true
+    scale_2x_prefix_exact: true
+    scale_4x_suffix_exact: true
+    row_provenance_count: 9322
+    transpose_performed: false
+    natural_model_shape: [1, 9322, 2048]
+
+healnet_contracts:
+  pre_extraction_synthetic:
+    ran_before_ResNet_and_pixel_dataset: true
+    synthetic_zero_inputs: true
+    output_shape: [1, 4]
+    attention_shapes:
+      - [1, 2, 9322]
+      - [1, 2, 1]
+      - [1, 2, 1]
+      - [1, 2, 1]
+    output_and_attention_finite: true
+    interface_seconds: 0.5927887170000758
+    peak_gpu_memory_bytes: 266871808
+    random_initialized: true
+    training: false
+    scientific_prediction: false
+  real_features:
+    wsi_shape: [1, 9322, 2048]
+    output_shape: [1, 4]
+    attention_shapes:
+      - [1, 2, 9322]
+      - [1, 2, 1]
+      - [1, 2, 1]
+      - [1, 2, 1]
+    output_and_attention_finite: true
+    interface_seconds: 0.20411134000005404
+    peak_gpu_memory_bytes: 266871808
+    random_initialized: true
+    training: false
+    scientific_prediction: false
+
+artifacts:
+  directory: /teamspace/studios/this_studio/brca_pilot_data/Q25.features
+  total_file_bytes: 153208853
+  atomic_no_overwrite_publication: true
+  external_to_git_repository: true
+  git_tracked: false
+  exact_file_count: 6
+  manifest:
+    filename: feature_manifest.json
+    size_bytes: 7368
+    sha256: 88a3146d34cf907604cecf109ff3879b26afcf6458ce86a9e2e46a7e127dcc0f
+  manifest_sidecar:
+    filename: feature_manifest.json.sha256
+    size_bytes: 88
+    sha256: d8f9e0f28e544d9588f2c4eb4c184789359401dabdac96d7a220c80d964a7e55
+  scale_2x_features:
+    filename: scale_2x_features.pt
+    size_bytes: 60655145
+    sha256: f1dcdfc93510700f72dffcb264d01aded1f2927b35850d7da28ee3ac7f14b9d3
+    tensor_content_sha256: cd0ac69726eda5de6516b4513bfdd7eee021325b8501f58590a7200c7254b237
+  scale_4x_features:
+    filename: scale_4x_features.pt
+    size_bytes: 15713833
+    sha256: bdf5622c52e753a1032d6a1747f6ce2c3c9c961910f2757ddbb6e2797695e19a
+    tensor_content_sha256: d1f462a458c641c875b96649c7de20093f6bd339677258de8b47226d117ac356
+  combined_features:
+    filename: combined_features.pt
+    size_bytes: 76367401
+    sha256: 5dbd65789458d6239aac2190b5bce5d38a29769a7d589fdeada26f9d60ae1b9d
+    tensor_content_sha256: 300196a20822060236f81a9158a1c54ea8193d6b8408ad4271f306b997ccf327
+  row_provenance:
+    filename: row_provenance.csv
+    size_bytes: 465018
+    sha256: 40bb70fdf87b5bf0633aa44935cfd836ea3aa7b06ac726c3f4f37ffae3153395
+    row_count: 9322
+  strict_project_validator: passed
+  independent_reload_validation:
+    all_tensors_float32_finite: true
+    shapes_exact: true
+    combined_prefix_and_suffix_exact: true
+
+runtime:
+  gpu: Tesla T4
+  gpu_compute_capability: [7, 5]
+  driver: 580.173.02
+  python: 3.12.11
+  torch: 2.8.0+cu128
+  torchvision: 0.23.0+cu128
+  cudnn: 91002
+  openslide_python: 1.4.6
+  openslide_library: 3.4.1
+  pillow: 12.2.0
+
+postconditions:
+  official_healnet_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  official_healnet_loaded_read_only: true
+  frozen_blca_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+  repositories_unchanged_during_execution: true
+  post_run_observation_at_utc: "2026-08-18T23:04:08Z"
+  active_q25_processes_at_observation: 0
+  gpu_memory_used_mib_at_observation: 0
+  patients_processed: 1
+  training_runs: 0
+  backward_passes: 0
+  optimizer_steps: 0
+  q50_q75_operations: 0
+  full_cohort_operations: 0
+  kirp_operations: 0
+  google_drive_operations: 0
+  raw_wsi_deletions: 0
+  required_stop_reached: true
+
+scientific_interpretation: NOT_A_TRAINED_SURVIVAL_PREDICTION
+next_gate: SEPARATE_REVIEW_REQUIRED_BEFORE_ANY_TRAINING_OR_ADDITIONAL_PATIENT

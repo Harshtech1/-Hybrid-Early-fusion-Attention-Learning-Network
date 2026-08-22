@@ -1,0 +1,112 @@
+schema_version: 1
+status: CPU_ONLY_CONTROL_PLANE_VALIDATION_REAL_OPERATIONS_NOT_AUTHORIZED
+cohort: TCGA-BRCA
+
+scope:
+  purpose: >-
+    Bind exact singleton-cohort identity and validated stage evidence to the
+    recovery-v2 ledger without exposing a real project-operation surface.
+  synthetic_validation_only: true
+  live_cohort_execution: false
+
+cohort_binding:
+  alignment_path: reports/brca_row_level_alignment.csv
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  retained_filter:
+    alignment_status: KEEP
+    alignment_reason: EXACT_SINGLETON_CASE_AND_SLIDE_MATCH
+  sort_key: [case_id, slide_id, id]
+  patients: 894
+  raw_inventory_bytes: 918532189383
+  canonical_order_sha256: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+  exact_per_patient_fields:
+    - cohort_index
+    - patient_id
+    - slide_id
+    - gdc_uuid
+    - omic_source_row_id
+    - filename
+    - md5
+    - size_bytes
+    - state
+  manifest_format: exact_standard_gdc_one_row_tsv
+  omic_match_key: [patient_id, full_slide_id, source_row_id]
+
+control_plane:
+  patient_transaction_size: 1
+  patient_concurrency: 1
+  stage_order:
+    - PLANNED
+    - ACQUISITION_AUTHORIZED
+    - RAW_VERIFIED
+    - HEADER_POLICY_VERIFIED
+    - COORDINATES_VERIFIED
+    - GPU_AUTHORIZED
+    - FEATURES_VERIFIED
+    - TERMINAL_RECORDED
+  binds:
+    - exact_frozen_patient_identity
+    - exact_one_row_manifest_bytes_and_sha256
+    - exact_omic_patient_full_slide_and_source_row
+    - separate_stage_authorization_sha256
+    - frozen_source_policy_hashes
+    - stage_input_and_output_sha256_maps
+    - validation_record_sha256
+    - compact_artifact_validation_evidence
+    - recovery_v2_immutable_event_chain
+  appends_only_prebuilt_metadata_events: true
+
+compact_validation_evidence:
+  schema: BRCA_COMPACT_FEATURE_ARTIFACT_SET_V1
+  exact_identity_fields: [patient_id, slide_id, gdc_uuid, omic_source_row_id]
+  bound_to_exact_stage_source_policy_hashes: true
+  bound_to_exact_stage_input_hashes: true
+  exact_files:
+    - combined_features.pt
+    - row_provenance.csv
+    - compact_manifest.json
+    - compact_manifest.json.sha256
+  tensor_shape: "[P_i,2048]"
+  dtype: float32
+  device: cpu
+  contiguous: true
+  finite: true
+  requires_grad: false
+  branch_ranges_contiguous_2x_then_4x: true
+  row_provenance_count_equals_tensor_rows: true
+  actual_file_validation_must_precede_evidence_construction: true
+  validation_record_must_be_ledger_recorded_output_hash: true
+
+source_policy_hashes:
+  cohort_order_manifest: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+  compact_artifact_policy: 59d4b1168108052ba5b18d8c4b5f5aa6de83c36ab234907892bf374ee9f712b4
+  executor_v2_policy: 7558dcd296b1c5822ec698ac2458e86f38595748648aba54ca1db567b5c2a7cc
+  singleton_streaming_policy: 9172449122f11cb17ef196d79911d1e5914125544531dd7b1eeeca6a11ae7b5f
+
+synthetic_rehearsal:
+  patients: first_eight_frozen_cohort_rows
+  stages_per_patient: 8
+  events_per_stage: 2
+  events_per_patient: 16
+  total_events: 128
+  temporary_metadata_ledgers_only: true
+  project_artifacts_generated: false
+
+prohibited_surfaces:
+  download: false
+  network: false
+  wsi_or_openslide: false
+  pixel_or_read_region: false
+  mask_or_coordinate_generation: false
+  torch_or_cuda: false
+  feature_extraction: false
+  healnet: false
+  google_drive: false
+  raw_wsi_deletion: false
+  training: false
+
+authorization:
+  this_policy_authorizes_real_stage_operations: false
+  this_policy_authorizes_cohort_processing: false
+  this_policy_authorizes_raw_deletion: false
+  each_live_stage_requires_separate_exact_authorization: true

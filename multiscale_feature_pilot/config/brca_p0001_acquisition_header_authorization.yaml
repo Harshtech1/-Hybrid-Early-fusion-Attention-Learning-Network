@@ -1,0 +1,58 @@
+schema_version: 1
+status: AUTHORIZED_P0001_ACQUISITION_AND_HEADER_ONLY
+executable: true
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+cohort_index: 1
+patient_label: P0001
+execution_mode: CPU_ONLY_NO_CUDA
+approval:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: >-
+    I authorize CPU-only serial acquisition and header-only processing for the exact first production block defined in `multiscale_feature_pilot/config/brca_first_eight_production_execution_request.yaml`, using its eight request-only manifests at concurrency one. Begin with P0001. Verify exact identity, size, MD5, SHA256, partial-file status, Omic row, MPP, and all pyramid levels. Do not call `read_region`, access pixels, generate coordinates or features, use GPU/CUDA, delete raw files, access Drive, or train. Do not start a later patient before the preceding patient reaches its authorized terminal stage. Stop after the P0001 metadata report for review.
+  exact_statement_sha256: 1d755c3432c29450ba40520287f28b1c6273c6969af1962b9345f6aededf824b
+identity:
+  patient_id: TCGA-3C-AALK
+  slide_id: TCGA-3C-AALK-01Z-00-DX1.4E6EB156-BB19-410F-878F-FC0EA7BD0B53.svs
+  filename: TCGA-3C-AALK-01Z-00-DX1.4E6EB156-BB19-410F-878F-FC0EA7BD0B53.svs
+  gdc_uuid: 93b26333-5723-4fa4-a4de-6124c04ab243
+  declared_size_bytes: 1769848096
+  expected_md5: 3d63b3311612d763525b6edb0848b986
+  state: released
+  omic_source_row_index: "4"
+execution:
+  gdc_client: /teamspace/studios/this_studio/tools/gdc-client/2.3.0/gdc-client
+  gdc_client_version: "2.3"
+  gdc_client_sha256: 1df9281cbacbb53413607a4b9b682947dcb48b6ac7fade6527748bc025ae8c96
+  active_patient_concurrency: 1
+  active_gdc_clients: 1
+  destination: /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_P0001.incoming
+  request_manifest: multiscale_feature_pilot/provenance/brca_first_eight_production_manifests/P0001_93b26333-5723-4fa4-a4de-6124c04ab243.REQUEST_ONLY.gdc.tsv
+  request_manifest_sha256: 1c05dc64b6af54604648b52e688e02f611f8e42aaf82cf911c81035b3fc385f2
+  openslide_header_fields: [mpp_x, mpp_y, level_count, level_dimensions, level_downsamples]
+  conservative_required_available_bytes: 23539696192
+  fresh_preflight_required: true
+  strict_serial_order: true
+  stop_after_patient: P0001
+source_bindings:
+  preparation_commit: 63c4e040072ff9c962a85e94b814eec1a52b901a
+  production_request_sha256: 04da2f211bfae390ec94ec2dd082ed032204d9c3b81424c6273e33679b14134b
+  first_eight_source_sha256: 940b8fd1f7d194c2c9b7c69ddae58ffff3c55196b6841ac859c60cbc01095dfd
+  row_level_alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  frozen_cohort_order_sha256: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+  production_adapter_policy_sha256: 78c24ea714814c9775b1f6c1268179d3fe47c89c55391485bdb65691f51dddd8
+  survival_split_sha256: 3e519a26eaa24852862bf368a48cceffaf26783c73e80007737134ae6ed626ad
+  omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+authority:
+  download_p0001: true
+  openslide_header_only: true
+  read_region_or_pixel_access: false
+  masks_or_coordinates: false
+  features_or_models: false
+  gpu_or_cuda: false
+  raw_file_deletion: false
+  google_drive: false
+  later_patient_processing: false
+  cohort_expansion: false
+  training: false
+required_stop: P0001_EXACT_FILE_OMIC_AND_HEADER_METADATA_REPORT

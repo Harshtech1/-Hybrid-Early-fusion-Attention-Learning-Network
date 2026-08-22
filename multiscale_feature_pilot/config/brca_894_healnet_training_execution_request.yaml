@@ -1,0 +1,86 @@
+schema_version: 1
+status: TRAINING_PACKAGE_READY_FOR_EXECUTION_REVIEW_NOT_AUTHORIZED
+request_id: BRCA_HEALNET_IMAGENET1K_V2_TRAINING_V1
+cohort: TCGA-BRCA
+
+prerequisites:
+  finalized_protocol:
+    path: multiscale_feature_pilot/config/brca_survival_evaluation_protocol.yaml
+    sha256: 4bdbc0e92f3db35b115d030a6b2341f5c1c5c391b505a2a50339b1d855b687a8
+  split_manifest:
+    path: multiscale_feature_pilot/provenance/brca_894_survival_split.tsv
+    sha256: 3e519a26eaa24852862bf368a48cceffaf26783c73e80007737134ae6ed626ad
+  cutpoints:
+    path: multiscale_feature_pilot/provenance/brca_894_survival_cutpoints.json
+    sha256: 77b514098387f883a7bc5205ef191ff321aff94e6c874442f7ccc65ff9059d6d
+  compact_feature_registry:
+    status: MISSING_UNTIL_894_PRODUCTION_FEATURES_COMPLETE
+    exact_rows_required: 894
+    partitions_required: {training: 660, validation: 116, locked_test: 118}
+  official_healnet:
+    commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+    model_source_sha256: 78e9c2b10455f6ad43a88ed4e0a646cbf6304bf52cac06a5140f49dbc4796820
+    loss_source_sha256: 63dcd4c83169dcddea68a3c623ba3486d4263956e14d1a3db9480304470fdd2f
+
+runner_contract:
+  launcher: scripts/run_brca_894_healnet_training.py
+  launcher_sha256: 93f1ef892528fa081dd66cac083bd95fd501495415d8698b9ec402d70a265432
+  execution_authorized_constant: false
+  authorization_sha256: PENDING_SEPARATE_TRAINING_AUTHORIZATION
+  authorization_file: multiscale_feature_pilot/config/brca_894_healnet_training_execution_authorization.yaml
+  first_operation: fail_closed_authorization_gate
+  lazy_torch_and_model_import_after_gate: true
+  cuda_required: true
+  cpu_fallback: false
+  visible_cuda_devices: 1
+  cublas_workspace_config: ':4096:8'
+  float32: true
+  amp: false
+  tf32: false
+  source_closure:
+    multiscale_feature_pilot/src/brca_healnet_training_runtime.py: 95bd9c709f355137b44eb518f23318fb63d152386b630d972cde1c7eb29ddad2
+    multiscale_feature_pilot/src/brca_healnet_training_contract.py: 29df9d4f9ec15ef378b456d5a418b843a9fbd945d263d3d732b9d1d57ff55550
+    multiscale_feature_pilot/src/brca_training_checkpoint.py: 5eba48f86f794b6d96770b32dbb8b61913b36f5232c4141b69cd28f9f0156789
+    multiscale_feature_pilot/src/brca_training_result.py: ff2b7e5039db01ae78fb772525c7a7bb9b6420ed06cd1932e5fb23eb26eb8660
+    multiscale_feature_pilot/src/brca_survival_protocol.py: 4859d849d9bacc1253448af7abfd3d991cb149ada708107c721c5a286301b902
+
+checkpoint_and_recovery:
+  schema: BRCA_HEALNET_CHECKPOINT_V1
+  append_only_epoch_directories: true
+  exact_payloads:
+    - model_state.pt
+    - optimizer_state.pt
+    - scheduler_state.pt
+    - rng_state.pt
+    - epoch_history.json
+  identity_bindings:
+    - training_run_id
+    - source_commit
+    - authorization_sha256
+    - split_manifest_sha256
+    - cutpoints_sha256
+    - feature_registry_sha256
+    - training_policy_sha256
+    - official_healnet_commit
+  resume_latest_complete_checkpoint_only: true
+  stranded_staging_action: FAIL_CLOSED_MANUAL_REVIEW
+  overwrite_or_cleanup: prohibited
+
+locked_test:
+  start_marker_required_before_first_evaluation: true
+  evaluation_budget: 1
+  result_publication: atomic_no_overwrite_directory
+  crash_after_start_before_result: FAIL_CLOSED_NO_AUTOMATIC_REEVALUATION
+  patients: 118
+  outputs: [mean_nll, Harrell_c_index, patient_bootstrap_95_percent_ci]
+  bootstrap_replicates: 2000
+
+authorization:
+  load_real_features: false
+  import_or_execute_model: false
+  cuda: false
+  backward_or_optimizer: false
+  checkpoint_write: false
+  locked_test_evaluation: false
+  training: false
+next_gate: COMPLETE_AND_VALIDATE_894_FEATURE_REGISTRY_THEN_ISSUE_EXACT_TRAINING_AUTHORIZATION

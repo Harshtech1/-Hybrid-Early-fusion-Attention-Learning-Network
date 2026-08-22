@@ -1,0 +1,82 @@
+schema_version: 1
+status: CPU_PHASE_BARRIER_AUTHORIZED_GPU_AND_PIXEL_STAGES_LOCKED
+policy_id: BRCA_FIRST_EIGHT_CPU_PHASE_BARRIER_V1
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+classification: FIRST_PRODUCTION_BLOCK_NOT_SCIENTIFIC_PILOT
+
+supersedes_scheduling_only:
+  path: multiscale_feature_pilot/config/brca_first_eight_production_execution_request.yaml
+  sha256: 04da2f211bfae390ec94ec2dd082ed032204d9c3b81424c6273e33679b14134b
+  identity_stage_order_and_stage_authorization_contract_unchanged: true
+
+cohort_binding:
+  frozen_cohort_order_sha256: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+  source_tsv: reports/brca_first_eight_canary_proposal.tsv
+  source_tsv_sha256: 940b8fd1f7d194c2c9b7c69ddae58ffff3c55196b6841ac859c60cbc01095dfd
+  exact_indices: [1, 2, 3, 4, 5, 6, 7, 8]
+  exact_patients: 8
+  exact_raw_wsi_bytes: 8297129620
+  p0002_p0008_raw_wsi_bytes: 6527281524
+  exact_manifest_count: 8
+  manifests_directory: multiscale_feature_pilot/provenance/brca_first_eight_production_manifests
+
+scheduling:
+  download_concurrency: 1
+  cpu_patient_preparation_workers: 2
+  gpu_concurrency: 0
+  transaction_size_patients: 1
+  download_order: [P0002, P0003, P0004, P0005, P0006, P0007, P0008]
+  permitted_overlap:
+    - one_serial_download_and_one_other_patient_header_verification
+    - one_serial_download_and_one_other_patient_policy_design
+    - two_distinct_patients_in_cpu_metadata_or_policy_preparation
+  same_patient_stage_dependencies:
+    header_verification_requires_download_verified: true
+    policy_design_requires_header_verified: true
+    later_stage_cannot_start_before_prior_stage_success: true
+  stop_entire_block_on_first_identity_hash_authorization_or_stage_drift: true
+
+authorized_cpu_stages:
+  P0001: [RECOVERY_PREFIX_BOOTSTRAP]
+  P0002-P0008:
+    - SERIAL_ACQUISITION
+    - RAW_IDENTITY_AND_HASH_VERIFICATION
+    - OMIC_EXACT_ROW_REMATCH
+    - OPENSLIDE_HEADER_ONLY_INSPECTION
+    - SCALE_AND_COORDINATE_POLICY_DESIGN_FROM_HEADER
+    - PROPOSE_LEVEL2_MASK_READ_TUPLE_ONLY
+
+operation_locks:
+  read_region_or_pixel_access: true
+  mask_or_coordinate_generation: true
+  patch_reads: true
+  gpu_or_cuda: true
+  feature_extraction: true
+  healnet_execution: true
+  compact_feature_publication: true
+  drive_operations: true
+  raw_or_existing_file_deletion: true
+  cohort_patients_outside_p0001_p0008: true
+  training: true
+
+phase_barriers:
+  before_coordinate_execution:
+    requires_separate_exact_authorization: true
+    requires_all_seven_verified_header_reports_and_exact_read_tuples: true
+  before_gpu_execution:
+    requires_separate_exact_authorization: true
+    requires_verified_coordinates_and_locked_feature_packages: true
+  current_stop: ALL_P0002_P0008_HEADERS_POLICIES_AND_COMBINED_COORDINATE_REQUEST_READY
+
+manifests:
+  P0001: {cohort_index: 1, patient_id: TCGA-3C-AALK, gdc_uuid: 93b26333-5723-4fa4-a4de-6124c04ab243, sha256: 1c05dc64b6af54604648b52e688e02f611f8e42aaf82cf911c81035b3fc385f2}
+  P0002: {cohort_index: 2, patient_id: TCGA-4H-AAAK, gdc_uuid: fd6a8fe0-50d8-4f69-b678-1a884e1c5d3d, sha256: b15b39701d3365503e9b2f340c6e451b04cf97bc03f171c62f7b0e21b386a4f0}
+  P0003: {cohort_index: 3, patient_id: TCGA-5L-AAT0, gdc_uuid: b3780253-78fe-4907-9f5a-230b2bb4b24e, sha256: 339b2d52fb8948c088cd4ddc79ebb2cbaadeabdee98d03ac44b5702ff90bf982}
+  P0004: {cohort_index: 4, patient_id: TCGA-5L-AAT1, gdc_uuid: 4eec69ca-381b-4c17-b3e9-49492d71560e, sha256: 3692ecd473064cf13850beb4b1ad7a1131669419687a852cb793c65f30ed955c}
+  P0005: {cohort_index: 5, patient_id: TCGA-5T-A9QA, gdc_uuid: cfe3c99d-0c00-4360-b768-2cb4fbd1040a, sha256: 0287e08038054bedfac19065016161267a0ade08123ea91b5e3866b52c33384a}
+  P0006: {cohort_index: 6, patient_id: TCGA-A1-A0SB, gdc_uuid: cea82b7d-135a-49d5-b4f6-3fb0215f7188, sha256: ce31dd16674f4ec1928bec81aba0f621baba9925c9cbf8038a1e38a81f1afec3}
+  P0007: {cohort_index: 7, patient_id: TCGA-A1-A0SD, gdc_uuid: 0a9ea7ac-9d51-4ff7-b40b-659a57e64945, sha256: c28311d8b4a459167e3f9d1b552af61b8a01135a1f731b5297d7447214c31b06}
+  P0008: {cohort_index: 8, patient_id: TCGA-A1-A0SE, gdc_uuid: 53f1310d-cea9-4179-ad5c-3a257fcc7ed3, sha256: c33cfc39a9c708cc2ddca6ab42447923cd959b6a847a22634fc9d970a26ce931}
+
+next_gate: EXECUTE_AUTHORIZED_CPU_PHASE_AND_STOP_BEFORE_COORDINATE_PIXEL_ACCESS

@@ -1,0 +1,129 @@
+schema_version: 2
+status: CPU_ONLY_EXECUTOR_AND_RECOVERY_CONTRACT_EXECUTION_NOT_AUTHORIZED
+cohort: TCGA-BRCA
+
+scope:
+  purpose: deterministic_one_patient_stage_planning_and_recovery_ledger_replay
+  executable_project_operations: false
+  synthetic_fixtures_only_during_validation: true
+
+cohort_order_binding:
+  source_path: reports/brca_row_level_alignment.csv
+  source_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  filter:
+    alignment_status: KEEP
+    alignment_reason: EXACT_SINGLETON_CASE_AND_SLIDE_MATCH
+  sort_key: [case_id, slide_id, id]
+  canonical_row_fields:
+    - cohort_index
+    - patient_id
+    - slide_id
+    - gdc_uuid
+    - omic_source_row_id
+    - md5
+    - size_bytes
+  canonical_field_types:
+    cohort_index: integer
+    patient_id: string
+    slide_id: string
+    gdc_uuid: string
+    omic_source_row_id: string
+    md5: string
+    size_bytes: integer
+  canonical_serialization: sorted_key_compact_json_one_row_per_line_utf8_lf
+  canonical_894_order_sha256: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+  exact_patient_count: 894
+  raw_inventory_bytes: 918532189383
+
+transaction_identity:
+  immutable_fields: [cohort_index, patient_id, slide_id, gdc_uuid, transaction_id]
+  cohort_index_range: [1, 894]
+  transaction_id_format: canonical_lowercase_uuid
+  run_id_format: canonical_lowercase_uuid
+  next_patient_requires_terminal_success: true
+  next_patient_cohort_index_increment: 1
+  repeated_patient_id_prohibited: true
+
+stage_order:
+  - PLANNED
+  - ACQUISITION_AUTHORIZED
+  - RAW_VERIFIED
+  - HEADER_POLICY_VERIFIED
+  - COORDINATES_VERIFIED
+  - GPU_AUTHORIZED
+  - FEATURES_VERIFIED
+  - TERMINAL_RECORDED
+
+event_contract:
+  every_attempt_requires_started_before_outcome: true
+  outcome_values: [STAGE_SUCCEEDED, STAGE_FAILED]
+  success_advances_exactly_one_stage: true
+  failure_does_not_advance: true
+  no_stage_skip: true
+  timestamps_nondecreasing_utc: true
+  immutable_hash_chain: true
+  canonical_json: sorted_keys_compact_utf8_lf
+  required_hash_maps: [source_policy_hashes, input_hashes, output_hashes]
+  previous_tip_and_previous_success_bindings_required: true
+  exact_output_validation_required_before_success: true
+  existing_output_disposition: validate_and_reuse_only_when_exact_hashes_match
+  output_overwrite: false
+
+retry_policy:
+  maximum_attempts_per_stage: 3
+  explicit_retry_authorization_required: true
+  retry_preserves:
+    - stage_authorization_sha256
+    - source_policy_hashes
+    - base_stage_input_hashes
+    - idempotency_key
+  retry_binds_prior_failure_sha256: true
+  retryable_error_codes:
+    - RESOURCE_TEMPORARILY_UNAVAILABLE
+    - SESSION_INTERRUPTED
+    - TRANSIENT_IO
+  all_other_error_codes_non_retryable: true
+  blocked_failure_route: separately_authorized_new_transaction_for_same_cohort_patient_slide_uuid
+
+ledger_publication:
+  filename_pattern: event-NNNNNNNN.json
+  contiguous_sequence_from_one: true
+  atomic_no_overwrite: sibling_staging_exclusive_create_fsync_then_hard_link
+  directory_fsync: true
+  maximum_event_bytes: 1000000
+  symlinks: prohibited
+  strict_json_duplicate_keys: rejected
+  unexpected_or_partial_files: fail_closed
+  stranded_staging: explicit_manual_review_or_cleanup_required_no_automatic_deletion
+  concurrent_or_stale_tip: rejected
+
+concurrency:
+  patient_transaction_size: 1
+  patient_concurrency: 1
+  download_concurrency: 1
+  gpu_concurrency: 1
+
+source_policy_bindings_required:
+  - cohort_order_manifest
+  - compact_artifact_policy
+  - executor_v2_policy
+  - singleton_streaming_policy
+
+prohibited_execution_surfaces:
+  downloads: true
+  network: true
+  wsi_or_openslide: true
+  pixel_or_read_region: true
+  mask_or_coordinate_generation: true
+  torch_or_cuda: true
+  feature_extraction: true
+  healnet: true
+  google_drive: true
+  raw_wsi_deletion: true
+  training: true
+
+authorization:
+  this_file_authorizes_cohort_execution: false
+  this_file_authorizes_any_patient_stage: false
+  this_file_authorizes_deletion: false
+  production_adapter_requires_separate_review: true

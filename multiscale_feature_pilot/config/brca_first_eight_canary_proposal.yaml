@@ -1,0 +1,73 @@
+schema_version: 1
+status: FIRST_EIGHT_CANARY_PROPOSED_NOT_AUTHORIZED
+cohort: TCGA-BRCA
+proposal_id: BRCA_894_CANARY_0001_0008
+
+source:
+  frozen_order_sha256: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+  exact_rows: [1, 2, 3, 4, 5, 6, 7, 8]
+  proposal_tsv: reports/brca_first_eight_canary_proposal.tsv
+  proposal_tsv_sha256: 940b8fd1f7d194c2c9b7c69ddae58ffff3c55196b6841ac859c60cbc01095dfd
+
+exact_inventory:
+  patients: 8
+  raw_wsi_bytes: 8297129620
+  smallest_wsi_bytes: 349684623
+  largest_wsi_bytes: 2057150279
+  every_patient_singleton_exact_match: true
+  every_file_released: true
+  exact_identity_fields: [patient_id, slide_id, gdc_uuid, omic_source_row_id, md5, size_bytes]
+
+execution_proposal:
+  administrative_release_size: 8
+  atomic_patient_transaction_size: 1
+  patient_concurrency: 1
+  download_concurrency: 1
+  gpu_concurrency: 1
+  strict_frozen_cohort_order: true
+  stop_and_validate_after_each_patient: true
+  formal_review_after_patient_8: true
+  stage_authorizations: SEPARATE_EXACT_AUTHORIZATIONS_REQUIRED
+  executable_now: false
+
+estimates_not_guarantees:
+  t4_gpu_minutes_primary_q_pilot_range: [20.772228357999968, 32.68764663786666]
+  compact_artifact_bytes_primary_q_pilot_range: [614719000, 1117667520]
+  downloads_cpu_coordinates_and_retries_excluded_from_gpu_minutes: true
+  patient_patch_counts_unknown_until_header_and_coordinate_stages: true
+
+storage_scenario:
+  b06_raw_currently_retained_bytes: 1691494753
+  retain_all_eight_canary_raw_until_batch_review: PROPOSED_PENDING_LIFECYCLE_APPROVAL
+  conservative_components:
+    first_eight_raw_bytes: 8297129620
+    twice_largest_canary_raw_bytes: 4114300558
+    maximum_estimated_compact_bytes: 1117667520
+    existing_retained_b06_raw_bytes: 1691494753
+    mandatory_safety_floor_bytes: 20000000000
+  conservative_required_available_bytes: 35220592451
+  storage_preflight_required_before_every_patient: true
+  full_894_raw_inventory_cannot_be_retained_under_200gb_quota: true
+
+raw_lifecycle:
+  canary_recommendation: RETAIN_FIRST_EIGHT_RAW_UNTIL_CANARY_REVIEW
+  rationale: exact_eight_raw_total_is_temporarily_feasible_and_preserves_reauditability
+  full_cohort_recommendation: >-
+    After compact features and all hashes are verified, use a separately
+    authorized idempotent recovery-bound raw lifecycle operation; local raw
+    retention for all 894 patients is infeasible.
+  deletion_authorized_by_this_proposal: false
+  b06_deletion_authorized: false
+
+authorization:
+  downloads: false
+  wsi_open_or_pixel_access: false
+  coordinates: false
+  gpu_or_cuda: false
+  features_or_healnet: false
+  raw_deletion: false
+  drive: false
+  cohort_processing: false
+  training: false
+
+next_gate: REVIEW_LIFECYCLE_AND_PREPARE_SEPARATE_FIRST_EIGHT_STAGE_AUTHORIZATIONS

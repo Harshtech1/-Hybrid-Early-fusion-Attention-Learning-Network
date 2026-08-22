@@ -1,0 +1,88 @@
+schema_version: 1
+cohort: TCGA-BRCA
+candidate_label: Q25
+policy_status: APPROVED_Q25_EXPLICIT_2X_SCALE_POLICY_V1
+
+authority:
+  decision: APPROVED
+  source: supervisor_approval_relayed_by_user
+  approved_scope: Q25_SCALE_MAPPING_ONLY
+  pixel_or_region_read: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  coordinate_generation: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  feature_extraction: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  healnet_execution: NOT_AUTHORIZED_BY_THIS_TRANSITION
+  training: NOT_AUTHORIZED
+
+wsi_identity:
+  patient_id: TCGA-LL-A6FP
+  slide_id: TCGA-LL-A6FP-01Z-00-DX1
+  gdc_file_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+  filename: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+  size_bytes: 648046947
+  md5: 75536393096ffd928bc35ec9503c3655
+  sha256: ac852be806eb0d91214145983319b604919a8e1d16bd59378a3dba69a600979c
+
+pinned_header_metadata:
+  mpp_x: 0.2525
+  mpp_y: 0.2525
+  level_dimensions:
+    - [65736, 67406]
+    - [16434, 16851]
+    - [4108, 4212]
+    - [2054, 2106]
+  level_downsamples:
+    - 1.0
+    - 4.00005934365913
+    - 16.002635628163056
+    - 32.00527125632611
+
+acceptance:
+  target_mpp_per_axis:
+    scale_2x: 0.5
+    scale_4x: 1.0
+  maximum_relative_error_per_axis: 0.10
+  silent_level_substitution: prohibited
+  silent_resampling: prohibited
+  metadata_drift_action: reject
+
+branches:
+  scale_2x:
+    target_mpp: 0.5
+    source_level: 0
+    source_native_mpp_x: 0.2525
+    source_native_mpp_y: 0.2525
+    operation: EXPLICIT_LINEAR_DOWNSAMPLE
+    linear_downsample_factor: 2.0
+    effective_mpp_x: 0.505
+    effective_mpp_y: 0.505
+    relative_error_x: 0.01
+    relative_error_y: 0.01
+    result: PASS_APPROVED_EXPLICIT_2X
+  scale_4x:
+    target_mpp: 1.0
+    source_level: 1
+    source_native_mpp_x: 1.0100149842739303
+    source_native_mpp_y: 1.0100149842739303
+    operation: NATIVE_LEVEL
+    linear_downsample_factor: 1.0
+    effective_mpp_x: 1.0100149842739303
+    effective_mpp_y: 1.0100149842739303
+    relative_error_x: 0.010014984273930328
+    relative_error_y: 0.010014984273930328
+    result: PASS_NATIVE
+
+execution_boundary:
+  scale_mapping_resolved: true
+  interpolation_kernel: PENDING_SEPARATE_EXECUTION_POLICY
+  source_footprint_and_output_geometry: PENDING_SEPARATE_EXECUTION_POLICY
+  coordinate_lattice_and_tissue_mask: PENDING_SEPARATE_EXECUTION_POLICY
+  boundary_handling: PENDING_SEPARATE_EXECUTION_POLICY
+  real_pixel_execution_enabled: false
+  q50_q75_status: LOCKED
+
+supersession:
+  supersedes_decision_only: >-
+    The Q25 native-only rejection in brca_phase2_metadata_policy.yaml and the
+    metadata-gate report is retained as historical evidence. This document
+    supersedes only that native-only scale decision for this exact Q25 WSI.
+  historical_artifacts_must_not_be_rewritten: true

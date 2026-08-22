@@ -1,0 +1,132 @@
+schema_version: 1
+status: Q75_COORDINATE_EXECUTION_AUTHORIZED_CPU_ONLY
+cohort: TCGA-BRCA
+candidate: Q75
+recorded_at_utc: "2026-08-19T16:37:24Z"
+
+approval:
+  source: DIRECT_USER_INSTRUCTION
+  exact_user_statement: >-
+    I authorize one Q75-only CPU coordinate execution: exactly one OpenSlide
+    level-2 mask read at (0,0), size (6783,5654), using the frozen Q75
+    coordinate policy, followed by tissue segmentation and atomic publication
+    of the two coordinate bags. No patch reads, ResNet50, HEALNet, GPU,
+    Q25/Q50/BLCA changes, Drive operations, deletion, full-cohort work, or
+    training
+  exact_user_statement_sha256: 4caef338b722aecad6810870221707f312986af0cd72c07c8091a732d3fea86c
+  bounded_scope: >-
+    Securely reverify and open only the exact Q75 SVS on CPU, perform exactly
+    one full native level-2 mask read at level-0 location (0,0), apply the
+    frozen tissue/coordinate policy, create the scale_2x and scale_4x bags,
+    publish them atomically outside Git without overwrite or resume, validate,
+    report, and stop.
+
+supersession:
+  predecessor_coordinate_policy_status: >-
+    REVIEWED_BRCA_Q75_COORDINATE_POLICY_V1_EXECUTION_LOCKED
+  predecessor_policy_commit: 1582d5b1d5eb5fac7d44e5d0e5d4fb2feebf87f9
+  predecessor_records_preserved: true
+  prior_execution_lock_superseded_only_for:
+    - exact_q75_wsi_secure_open_and_header_reverification
+    - exactly_one_q75_level_2_full_mask_read
+    - frozen_q75_tissue_segmentation
+    - frozen_q75_scale_2x_and_scale_4x_coordinate_generation
+    - q75_coordinate_artifact_atomic_no_overwrite_publication
+    - q75_coordinate_artifact_validation_and_reporting
+
+identity:
+  patient_id: TCGA-E2-A154
+  slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  gdc_file_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  size_bytes: 1360743825
+  md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+  sha256: 844eb17d1bf66136b61f0c0e69ae1609e7dc9eca096e8c206e60ddd34332ab37
+  exact_omic_source_row_index: "771"
+  exact_case_and_full_slide_omic_match: true
+
+policy_identity:
+  header_result_sha256: 08a7ed3e67ddf17513ee2dbda2adfd2398333787aaa75fe9eacf911f3c1a3898
+  header_report_sha256: 9ed50ecc8464109e0a8ca121082462f8765b1c70663499180cc644cfe604d985
+  scale_policy_status: APPROVED_BRCA_Q75_SCALE_POLICY_V1_EXECUTION_LOCKED
+  scale_config_sha256: d29be0892e0b0324ae9b4390a1db9a9ae4b5a60b4541ddb7a36c81b8d2bca6b5
+  scale_core_sha256: 3aecb1f3818f9ae98708cdf61f6ccf4b938ffe5fe78bbbaff6e11896e5eb4482
+  coordinate_policy_status: REVIEWED_BRCA_Q75_COORDINATE_POLICY_V1_EXECUTION_LOCKED
+  coordinate_config_sha256: 58f15a9e39fcd3469ec656ef98c72ad6e42b8a3eab16fcbc24c4345cc4337d88
+  coordinate_core_sha256: 6f58c3b5f23f91d16c60e041933418ddf176bad70defdc7428176ae7505c35d0
+  coordinate_review_sha256: 3edd1a2000eb808c140972af4b4b9bf3b6e25d3602b4a2076b99c5fcc0046197
+  reviewed_shared_algorithm_sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+  coordinate_artifact_publisher_sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+
+implementation:
+  authorization_config:
+    path: multiscale_feature_pilot/config/brca_q75_coordinate_execution_authorization.yaml
+    sha256: 4510cf2849edf3b0478030453b77faa1e0348f245b7e6703232d661c062f4539
+  pure_authorization_validator:
+    path: multiscale_feature_pilot/src/brca_q75_coordinate_authorization.py
+    sha256: 794b759df886eaefdad017b468f381081a1328111064034a996782d6361e458f
+  focused_tests:
+    path: multiscale_feature_pilot/tests/test_brca_q75_coordinate_authorization.py
+    sha256: 6a01fb6fb26b896b22aa5d4cf65fddf1c25b16700734da051121481dc17fae92
+  cycle_free_binding: >-
+    Authorization binds only predecessor policy and dependency hashes. The
+    execution runner must pin the authorization and all execution-critical
+    files from its committed source without creating reciprocal hash bindings.
+
+execution_boundary:
+  cpu_only: true
+  stable_o_nofollow_wsi_descriptor: required
+  openslide_proc_fd_path: required
+  maximum_mask_reads: 1
+  successful_execution_mask_reads: 1
+  mask_level: 2
+  mask_level_0_location: [0, 0]
+  mask_level_dimensions: [6783, 5654]
+  coordinate_branches: [scale_2x, scale_4x]
+  coordinate_output: /teamspace/studios/this_studio/brca_pilot_data/Q75.coordinates
+  atomic_no_overwrite_publication: required
+  patch_reads: prohibited
+  resnet50: prohibited
+  healnet: prohibited
+  gpu: prohibited
+  q25_q50_blca_changes: prohibited
+  google_drive: prohibited
+  raw_or_preexisting_or_final_artifact_deletion: prohibited
+  full_cohort_processing: prohibited
+  training: prohibited
+  stop_after_coordinate_validation_and_report: true
+
+deletion_interpretation:
+  user_deletion_prohibition_preserved_for:
+    - raw_q75_wsi
+    - any_preexisting_user_or_project_data
+    - any_prior_or_final_coordinate_artifact
+  narrowly_permitted_transaction_cleanup:
+    scope: runner_created_q75_coordinate_lock_and_staging_paths_only
+    rationale: required_internal_cleanup_for_the_explicitly_authorized_atomic_transaction
+  final_output_deletion: prohibited
+
+verification:
+  focused_command: >-
+    /home/zeus/miniconda3/envs/cloudspace/bin/python -m pytest -q
+    multiscale_feature_pilot/tests/test_brca_q75_coordinate_authorization.py
+  focused_result: 18 passed
+  pure_validator_compile: PASS
+  exact_statement_hash: PASS
+  exact_predecessor_dependency_hashes: PASS
+  no_wsi_or_pixel_api_in_authorization_validator: PASS
+
+execution_at_record_time:
+  wsi_opened_by_this_transition: false
+  mask_pixels_read: 0
+  tissue_masks_generated: 0
+  coordinates_generated: 0
+  artifacts_written: 0
+  gpu_operations: 0
+  patch_reads: 0
+  feature_extractions: 0
+  healnet_executions: 0
+  training_runs: 0
+
+required_stop:
+  after: Q75_COORDINATE_ARTIFACT_VALIDATION_AND_REPORT
+  no_further_operation_inferred: true

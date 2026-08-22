@@ -1,0 +1,92 @@
+schema_version: 1
+phase: BRCA_Q50_SEQUENTIAL_ACQUISITION_GATE
+status: AUTHORIZED_Q50_ACQUISITION_AND_METADATA_ONLY
+cohort: TCGA-BRCA
+candidate: Q50
+
+approval_record:
+  source: DIRECT_USER_AUTHORIZATION
+  user_statement: >-
+    Authorize and start the Q50-only BRCA pilot. Do not train or process Q75
+    yet.
+  storage_decision_source: DIRECT_USER_AUTHORIZATION
+  storage_user_statement: >-
+    can we do without Google drive if possible for now
+
+predecessor:
+  q25_result_path: >-
+    multiscale_feature_pilot/provenance/brca_q25_gpu_pilot_result.yaml
+  q25_result_status: BRCA_Q25_GPU_FEATURE_PILOT_SUCCESS
+  q25_result_sha256: 76df862c438f4d94e34342b54c80c0866a440af0574be9003444075d7073c6e4
+  q25_feature_manifest_path: >-
+    /teamspace/studios/this_studio/brca_pilot_data/Q25.features/feature_manifest.json
+  q25_feature_manifest_sha256: 88a3146d34cf907604cecf109ff3879b26afcf6458ce86a9e2e46a7e127dcc0f
+
+authority:
+  exact_wsi_download:
+    status: APPROVED_Q50_ONLY
+    source: GDC
+    manifest_rows: 1
+    concurrency: 1
+    current_executable_scope: Q50_ONLY
+  wsi_open_or_metadata_read:
+    status: APPROVED_Q50_HEADER_METADATA_ONLY_AFTER_EXACT_SIZE_AND_MD5
+    allowed_fields: [mpp_x, mpp_y, level_dimensions, level_downsamples]
+    pixel_or_region_read: NOT_AUTHORIZED
+  q75_processing:
+    status: NOT_AUTHORIZED
+  coordinate_generation:
+    status: NOT_AUTHORIZED
+  feature_extraction:
+    status: NOT_AUTHORIZED
+  healnet_real_input_execution:
+    status: NOT_AUTHORIZED
+  training:
+    status: NOT_AUTHORIZED
+  full_cohort_acquisition:
+    status: NOT_AUTHORIZED
+
+authorized_q50:
+  patient_id: TCGA-AR-A1AW
+  wsi_uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+  filename: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+  declared_bytes: 975626387
+  md5: 304509e03f26cbecc9aee4ea691c8e5a
+  state: released
+  omic_source_index: "370"
+  exact_case_and_full_slide_match: true
+  omic_shapes:
+    rna: [1, 1, 1558]
+    mutation: [1, 1, 21]
+    cnv: [1, 1, 1333]
+
+storage_contract:
+  download_destination: >-
+    /teamspace/studios/this_studio/brca_pilot_data/Q50.incoming
+  google_drive_required: false
+  google_drive_operations_authorized: false
+  process_directly_from_rclone_mount: false
+  local_persistent_staging_required: true
+  raw_wsi_deletion_authorized: false
+
+execution_contract:
+  one_row_manifest_only: true
+  one_patient_at_a_time: true
+  gdc_internal_transfer_threads: client_default
+  require_exact_size_and_md5_before_openslide: true
+  require_sha256_after_download: true
+  reuse_q25_level_indices_or_scale_mapping: false
+  stop_after: Q50_EXACT_FILE_VERIFICATION_AND_HEADER_METADATA_REPORT
+
+prohibited_actions:
+  - q75_download_open_or_processing
+  - model_training
+  - optimizer_or_backward_execution
+  - coordinate_generation
+  - resnet50_feature_extraction
+  - healnet_real_input_execution
+  - full_cohort_download_or_processing
+  - google_drive_mount_upload_or_delete
+  - raw_wsi_deletion
+  - official_healnet_modification
+  - frozen_blca_commit_or_tag_modification

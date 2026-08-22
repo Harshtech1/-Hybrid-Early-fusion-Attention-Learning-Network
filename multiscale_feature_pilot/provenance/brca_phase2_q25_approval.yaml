@@ -1,0 +1,112 @@
+schema_version: 1
+phase: BRCA_PHASE_2_Q25_ACQUISITION_GATE
+status: Q25_ACQUISITION_READY
+recorded_utc_date: 2026-08-18
+
+predecessor:
+  branch: brca-phase2-metadata-preflight
+  commit: 5bd8e4f
+  frozen_blca_tag: blca-one-patient-pilot-v1
+  frozen_blca_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+
+approval_evidence:
+  source: USER_REPORTED_SUPERVISOR_APPROVAL
+  user_statement: sir approved
+  approved_request: >-
+    Download only the exact Q25/Q50/Q75 candidates one at a time, beginning
+    with Q25; use native pyramid levels within 10% per axis of approximately
+    0.5 and 1.0 micrometers per pixel; reject failures without silent
+    resampling; stop after Q25 size, MD5, and MPP/pyramid metadata.
+
+sequential_scope:
+  approved_candidate_labels: [Q25, Q50, Q75]
+  concurrency: 1
+  current_executable_scope: Q25_ONLY
+  q50_q75_status: LOCKED_PENDING_Q25_REPORT
+  stop_after: Q25_SIZE_MD5_AND_MPP_PYRAMID_REPORT
+
+current_q25:
+  patient_id: TCGA-LL-A6FP
+  uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+  filename: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+  declared_bytes: 648046947
+  expected_md5: 75536393096ffd928bc35ec9503c3655
+  manifest: >-
+    multiscale_feature_pilot/provenance/brca_phase2_q25_authorized/Q25_TCGA-LL-A6FP_dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6.AUTHORIZED_Q25_ONLY.gdc.tsv
+  manifest_sha256: 95bb1c4491497c265b868e96698cef3c3dd501458f801dae3c1dd702f3efa297
+  authorization_record: >-
+    multiscale_feature_pilot/provenance/brca_phase2_q25_authorized/MANIFEST_SET.AUTHORIZED_Q25.yaml
+  authorization_record_sha256: 8c6971df846a1dcbebfd83f689cd6496c8a85dcbf3b8eb74781cb7a85849aaea
+
+approval_binding:
+  authorization_config_sha256: a3a0704b8cc56acc6b082fd969e137107af3f64f27217fd808b9e9f4a54c016b
+  metadata_policy_sha256: daffdd77d271f28cb9440061b675d0991529f03ab99fb77bcdf5a3fb17275c43
+  approval_identity_sha256: cf2ba45a8df674a9e83310ec26ffa9dff90d403446c71371c8cd63ae15011cee
+
+metadata_policy:
+  status: APPROVED_NATIVE_LEVEL_METADATA_GATE_V1
+  targets_mpp:
+    scale_2x: 0.5
+    scale_4x: 1.0
+  per_axis_relative_tolerance_fraction: 0.10
+  native_level_only: true
+  silent_resampling: prohibited
+  opening_prerequisite: exact_q25_size_and_md5_match
+  permitted_after_prerequisite: mpp_and_pyramid_metadata_only
+
+still_not_authorized:
+  - q50_or_q75_download_before_q25_report_review
+  - q25_open_before_exact_size_and_md5_match
+  - any_wsi_pixel_or_region_read
+  - coordinate_generation
+  - feature_extraction
+  - real_input_healnet_execution
+  - training
+  - full_cohort_acquisition
+
+local_gate_result:
+  cpu_preflight_ready: true
+  frozen_sources_verified: true
+  acquisition_authorized: true
+  ready_to_download: true
+  current_download_scope: Q25_ONLY
+  q50_q75_locked: true
+  blockers: []
+
+validation:
+  command: >-
+    /home/zeus/miniconda3/envs/cloudspace/bin/python -m pytest
+    multiscale_feature_pilot/tests -q
+  passed: 222
+  failed: 0
+  git_diff_check: passed
+
+implementation_identity:
+  authorization_record_sha256: 8c6971df846a1dcbebfd83f689cd6496c8a85dcbf3b8eb74781cb7a85849aaea
+  files:
+    multiscale_feature_pilot/config/brca_phase2_authorization.yaml: a3a0704b8cc56acc6b082fd969e137107af3f64f27217fd808b9e9f4a54c016b
+    multiscale_feature_pilot/config/brca_phase2_metadata_policy.yaml: daffdd77d271f28cb9440061b675d0991529f03ab99fb77bcdf5a3fb17275c43
+    multiscale_feature_pilot/src/brca_phase2_preflight.py: 6bf3973e659712aad0725487cf5206426cb64de05f58daa5e88a18f5a00688ec
+    multiscale_feature_pilot/src/wsi_metadata_policy.py: b443ec59b96fc5bf117891389e8c5521a2dda028215b270811b3fca4a80fce48
+    multiscale_feature_pilot/src/brca_q25_authorized_manifest.py: 6746f420bf75e18e947c147d9cf56c3a104aa12ab3c68f7bbc3fb4442f710c2f
+    multiscale_feature_pilot/tests/test_brca_phase2_preflight.py: e7047a003fd75c586fac688c27b46fcbbef41c78df0b0592964f5cacc5e362eb
+    multiscale_feature_pilot/tests/test_wsi_metadata_policy.py: 7bc8e196bf81ab51b33d7fd469af4358e32be1af1a16b7691a0b957c3247a0ac
+    multiscale_feature_pilot/tests/test_brca_q25_authorized_manifest.py: 94be2ecfa8c868a7a93a8831bd49b5cde5f989736611ca5243511037b8a52fae
+    scripts/check_brca_phase2_preflight.py: 0c0aefdeaf833499c355b62b403ffde2dfcc4bc78eafc54acc611feabd61357a
+    scripts/build_brca_q25_authorized_manifest.py: dc67b502b934b8aa18b8d6d68519fca9b46a750d111cd8d622582a825a30e370
+
+safety_at_record_creation:
+  network_requests_performed: false
+  download_invocation_constructed: false
+  wsi_downloaded: false
+  wsi_opened: false
+  pixels_read: false
+  coordinates_generated: false
+  features_extracted: false
+  training_performed: false
+
+next_runtime_prerequisites:
+  - verify_live_lightning_quota_and_local_free_space
+  - confirm_q25_local_staging_destination
+  - invoke_only_the_q25_one_row_manifest
+  - verify_exact_size_and_md5_before_any_openslide_open

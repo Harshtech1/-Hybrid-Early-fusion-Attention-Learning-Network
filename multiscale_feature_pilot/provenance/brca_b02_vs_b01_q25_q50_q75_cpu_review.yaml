@@ -1,0 +1,67 @@
+schema_version: 1
+status: BRCA_B02_COMPACT_COMPATIBILITY_REVIEW_PASS
+cohort: TCGA-BRCA
+review_mode: CPU_ONLY_FROZEN_PROVENANCE_AND_READ_ONLY_ARTIFACT_VALIDATION
+recorded_at_utc: "2026-08-20T10:29:55Z"
+source_commit: 3a5796f8aa7769a85222e4220b21ab64300c1007
+preparation_authority:
+  statement: >-
+    I authorize a CPU-only review of the completed B02 compact GPU pilot
+    against B01, Q25, Q50, and Q75, followed by preparation of the B03
+    acquisition and header-only authorization package. Do not download or
+    open the B03 WSI, use GPU/CUDA, generate coordinates or features, delete
+    files, access Drive, process B04–B06, expand the cohort, or train a model.
+  interpretation: B02_READ_ONLY_REVIEW_AND_NONEXECUTABLE_B03_PACKAGE_ONLY
+  canonical_statement_sha256: 790ce81750a3a40b138586b6309662b31e906cea1db7b9c3429dfd61c909397c
+pilots:
+  B02: {wsi_bytes: 724114911, level_0_dimensions: [89291, 72971], scale_2x_rows: 7158, scale_4x_rows: 1862, total_rows: 9020, extraction_seconds: 113.16094406500008, total_gpu_seconds: 124.93960884400008, peak_gpu_memory_bytes: 483956224, retained_artifact_bytes: 74342370, artifact_schema: BRCA_COMPACT_FEATURE_ARTIFACT_SET_V1}
+  B01: {wsi_bytes: 408704377, level_0_dimensions: [63784, 39311], scale_2x_rows: 3773, scale_4x_rows: 969, total_rows: 4742, extraction_seconds: 66.249995855, total_gpu_seconds: 73.46194821200015, peak_gpu_memory_bytes: 481334784, retained_artifact_bytes: 39092076, artifact_schema: BRCA_COMPACT_FEATURE_ARTIFACT_SET_V1}
+  Q25: {wsi_bytes: 648046947, level_0_dimensions: [65736, 67406], scale_2x_rows: 7404, scale_4x_rows: 1918, total_rows: 9322, extraction_seconds: 134.687150281, total_gpu_seconds: 155.791712685, peak_gpu_memory_bytes: 481334784, retained_artifact_bytes: 153208853, artifact_schema: LEGACY_SIX_FILE_PILOT}
+  Q50: {wsi_bytes: 975626387, level_0_dimensions: [99960, 65334], scale_2x_rows: 8580, scale_4x_rows: 2213, total_rows: 10793, extraction_seconds: 146.888735434, total_gpu_seconds: 171.428710932, peak_gpu_memory_bytes: 481334784, retained_artifact_bytes: 177402321, artifact_schema: LEGACY_SIX_FILE_PILOT}
+  Q75: {wsi_bytes: 1360743825, level_0_dimensions: [108528, 90471], scale_2x_rows: 13487, scale_4x_rows: 3458, total_rows: 16945, extraction_seconds: 214.404903409, total_gpu_seconds: 245.157349784, peak_gpu_memory_bytes: 481859072, retained_artifact_bytes: 278525034, artifact_schema: LEGACY_SIX_FILE_PILOT}
+compact_storage:
+  B02_raw_float32_tensor_bytes: 73891840
+  B02_complete_artifact_bytes: 74342370
+  B02_artifact_bytes_per_row: 8241.947894
+  B01_artifact_bytes_per_row: 8243.795023
+  legacy_artifact_bytes_per_row_range: [16435.191268, 16437.004072]
+  B02_reduction_vs_observed_legacy_bytes_per_row_percent_range: [49.851829, 49.857359]
+  interpretation: ONE_CANONICAL_COMBINED_TENSOR_REMOVES_DUPLICATED_BRANCH_TENSOR_STORAGE
+contract:
+  encoder: ResNet50 ImageNet1K V2
+  dtype: float32
+  combined_operation: torch.cat_dim_0
+  natural_wsi_shape: [1, P, 2048]
+  omic_shapes: [[1, 1, 1558], [1, 1, 21], [1, 1, 1333]]
+  healnet_output_shape: [1, 4]
+  all_smokes_finite: true
+  trained_prediction: false
+read_only_validation:
+  B02_manifest_sha256: 07bc593acf5cad0712154b7eb05771661439412047cc3a98a48c4c1ffb116dec
+  B02_combined_tensor_content_sha256: 2cbdc7ed988024ab6d52795c7a5d41b3a1a675039ddb6f9b5e628bec003aed8c
+  B02_validated_shape: [9020, 2048]
+  B02_validated_natural_shape: [1, 9020, 2048]
+  B02_validated_row_count: 9020
+  B01_manifest_sha256: f20556d3e64185879d6bc9a5f837dafc72ebb88835506fbc90fd4e5c61c2a90f
+  B01_validated_shape: [4742, 2048]
+  B01_validated_row_count: 4742
+  cuda_initialized: false
+source_bindings:
+  B02_result_sha256: 62fcf0b5a9971939ae87f380f90e8fd6e196034226c715279071ff31908d3640
+  B01_result_sha256: c4eb80a03ab36999ec29f495a565fdc90ca4dee9c507f8619bef5f5c703ddc57
+  Q25_result_sha256: 76df862c438f4d94e34342b54c80c0866a440af0574be9003444075d7073c6e4
+  Q50_result_sha256: 904ad3c7bef859f89fef6151014f9eb4b37b5af5d6668972feb19b0e656d263b
+  Q75_result_sha256: 2ecf8fc558ad295fc3cbdc2780f7fb9a7c9e93fa452fb70b833e7f1f6dc30460
+review_operations:
+  b03_downloads_or_opens: 0
+  pixel_reads: 0
+  coordinate_generations: 0
+  gpu_or_cuda_operations: 0
+  feature_extractions: 0
+  artifact_modifications_or_migrations: 0
+  deletions: 0
+  drive_operations: 0
+  b04_b06_patients_processed: 0
+  cohort_expansions: 0
+  training_runs: 0
+recommendation: PROCEED_TO_B03_ACQUISITION_AND_HEADER_ONLY_AFTER_EXPLICIT_AUTHORIZATION

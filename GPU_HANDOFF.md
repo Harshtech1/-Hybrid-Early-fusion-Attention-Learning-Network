@@ -1,5 +1,7 @@
 # GPU-machine handoff
 
+> Historical pre-extraction handoff. This procedure records the migration state before the successful GPU pilot and is superseded for current status by [reports/validated_pilot_baseline.md](reports/validated_pilot_baseline.md).
+
 This is the canonical restart guide for moving the supervisor-aligned HEALNet pilot to a machine with an NVIDIA GPU.
 
 ## Current stopping point

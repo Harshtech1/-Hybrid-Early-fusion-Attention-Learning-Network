@@ -1,0 +1,63 @@
+schema_version: 1
+status: B03_GPU_FEATURE_PILOT_AUTHORIZED
+executable: true
+cohort: TCGA-BRCA
+candidate: B03
+execution_mode: DETERMINISTIC_TESLA_T4_FLOAT32
+authorization:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: >-
+    I authorize the exact B03-only GPU feature pilot using the frozen verified
+    B03 coordinates: 8,875 scale-2x and 2,257 scale-4x patch reads; float32
+    ResNet50 ImageNet1K V2 feature extraction; natural row concatenation into
+    [11132,2048]; atomic compact artifact publication; and synthetic plus
+    real-feature four-modality HEALNet numerical smoke tests. No training,
+    backward pass, optimizer step, AMP, TF32, CPU fallback, coordinate
+    regeneration, B04–B06 processing, Q25/Q50/Q75/B01/B02 or BLCA changes,
+    Drive operations, deletion, cohort expansion, or official HEALNet
+    modification. Stop after artifact validation and reporting.
+  exact_statement_sha256: cd5655fd930baff34450553c503b3401b65e3722a7beb153499d073c81343b96
+  transport_normalization: TRAILING_HTML_SPACE_ENTITY_IGNORED
+scope:
+  patient_id: TCGA-AR-A1AY
+  slide_id: TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs
+  gdc_file_uuid: 266c3852-f5d0-4815-94d9-dac5b0ff8276
+  coordinate_manifest_sha256: cced78f863415ee12d57b905131e60758ba849645196c0a14309e9ab8d4e1ae5
+  scale_2x_patch_reads: 8875
+  scale_4x_patch_reads: 2257
+  total_patch_reads: 11132
+  combined_shape: [11132, 2048]
+  natural_healnet_wsi_shape: [1, 11132, 2048]
+  dtype: float32
+  encoder: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  compact_publication: true
+  synthetic_healnet_smoke: true
+  real_feature_healnet_smoke: true
+determinism:
+  device: cuda:0
+  gpu: Tesla T4
+  batch_size: 32
+  num_workers: 2
+  cublas_workspace_config: ":4096:8"
+  torch_deterministic_algorithms: true
+  cudnn_deterministic: true
+  cudnn_benchmark: false
+  automatic_mixed_precision: false
+  tf32: false
+  cpu_fallback: false
+prohibited:
+  training: true
+  backward_pass: true
+  optimizer_step: true
+  automatic_mixed_precision: true
+  tf32: true
+  cpu_fallback: true
+  coordinate_regeneration: true
+  b04_b06_processing: true
+  q25_q50_q75_b01_b02_or_blca_changes: true
+  drive_operations: true
+  deletion: true
+  cohort_expansion: true
+  official_healnet_modification: true
+required_stop: B03_COMPACT_ARTIFACT_VALIDATION_AND_REPORTING

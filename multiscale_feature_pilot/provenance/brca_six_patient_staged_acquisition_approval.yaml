@@ -1,0 +1,33 @@
+schema_version: 1
+status: SIX_PATIENT_BATCH_PLANNING_ACCEPTED_EXECUTION_LOCKED
+cohort: TCGA-BRCA
+recorded_at_utc: "2026-08-19T19:39:06Z"
+source_commit: d3619fd11f4b5851268db36c0ac29ae2bd6f4ba5
+user_statement_sha256: 84370be7c0a14a66b400a8deeed55b2fdb26c4fd3ddf3f7f84b7b8de7edca943
+accepted_patient_count: 6
+fixed_order: [B01, B02, B03, B04, B05, B06]
+total_declared_raw_bytes: 6062291600
+largest_declared_raw_bytes: 1691494753
+planning_outputs:
+  guarded_manifest_directory: multiscale_feature_pilot/provenance/brca_six_patient_batch_guarded
+  guarded_manifest_count: 6
+  combined_manifest_present: false
+  manifest_set_sha256: f912e931e09e15fa2bec03aa7d726e5a94e440c1ed91584305a5bfd49e6038b5
+  plan_path: multiscale_feature_pilot/config/brca_six_patient_staged_acquisition_plan.yaml
+  plan_sha256: 18249363bcd0505f18260c9c7144683c407c2a0ab95435960899d5aef7b455b2
+  report_path: reports/brca_six_patient_staged_acquisition_plan.md
+  report_sha256: d407e0a6fbf01a06181c9da811893f8b950661bc06527fe5cfa9eec46d61a025
+execution_counters:
+  downloads: 0
+  wsi_opens: 0
+  pixel_or_region_reads: 0
+  gpu_or_cuda_operations: 0
+  coordinate_generations: 0
+  feature_extractions: 0
+  deletions: 0
+  google_drive_operations: 0
+  additional_patients_processed: 0
+  training_runs: 0
+required_stop: PLANNING_PACKAGE_AND_GUARDED_MANIFESTS_ONLY
+required_stop_reached: true
+next_gate: EXPLICIT_B01_ACQUISITION_AND_HEADER_ONLY_AUTHORIZATION_OR_DECLINE

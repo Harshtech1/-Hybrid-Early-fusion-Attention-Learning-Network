@@ -1,0 +1,322 @@
+schema_version: 1
+protocol_id: BRCA_SURVIVAL_EVALUATION_PROTOCOL_DRAFT_V1
+status: DRAFT_REVIEW_REQUIRED_TRAINING_NOT_AUTHORIZED
+cohort: TCGA-BRCA
+recorded_date_utc: "2026-08-20"
+
+scope:
+  purpose: >-
+    Pre-training scientific protocol for the supervisor-aligned 894-patient
+    singleton BRCA engineering track.
+  execution_enabled: false
+  training_authorized: false
+  model_execution_performed_by_this_protocol: false
+  wsi_access_performed_by_this_protocol: false
+  gpu_or_cuda_performed_by_this_protocol: false
+
+source_evidence:
+  official_healnet:
+    tag: v0.1.0
+    peeled_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+    checkout_policy: read_only
+    files:
+      healnet/etl/loaders.py: c12e006e57e2c58948ec6e988518f2ed9327e06e70e413fa32109ecd204dfac3
+      healnet/main.py: 607f86a5475c5ea781a1755e652a1d2cdf5d5e0fcb3264ade80ae08f5d7d1a26
+      healnet/models/survival_loss.py: 63dcd4c83169dcddea68a3c623ba3486d4263956e14d1a3db9480304470fdd2f
+      healnet/models/healnet.py: 78e9c2b10455f6ad43a88ed4e0a646cbf6304bf52cac06a5140f49dbc4796820
+      config/main_gpu.yml: ca89f87211a26b61571b7e8deb2b4d0cf41dc03a209f7d81bb80179d5aafebe2
+      config/best_hyperparams.yml: 9c2698850c70dd3f87b0447f401c6bf187d749986fada54e534db3ae17574167
+  brca_alignment:
+    path: reports/brca_row_level_alignment.csv
+    sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  omic_archive:
+    path: >-
+      /teamspace/studios/this_studio/Author_Official_Repo_directery/healnet/data/tcga/omic/tcga_brca_all_clean.csv.zip
+    sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+    identity_columns: [case_id, slide_id]
+  project_contracts:
+    multiscale_feature_pilot/config/brca_pilot_config.yaml: 160137c69938a2dd1a31cfd83f1a20928bc929c43cce2a5194093566a5a09df2
+    multiscale_feature_pilot/provenance/supervisor_tensor_policy.yaml: f5f6129904941f646b39c1908663a32a52339254b217e22f2604a86630840b73
+    multiscale_feature_pilot/config/brca_894_singleton_streaming_policy.yaml: 9172449122f11cb17ef196d79911d1e5914125544531dd7b1eeeca6a11ae7b5f
+    tracks/paper_faithful/provenance/status.yaml: a71c43231881b04c72642bf1226ee3e8c38dfbd9665199fa245f635f26ec3fdc
+
+verified_cohort_contract:
+  omic_rows_total: 1022
+  exact_singleton_patients: 894
+  exact_singleton_slides: 894
+  excluded_ambiguous_multi_wsi_patients: 62
+  join_key: [case_id, slide_id]
+  require_exactly_one_omic_row_and_one_wsi_per_patient: true
+  row_order_join: prohibited
+  cross_patient_patch_concatenation: prohibited
+  patient_id_duplicates_in_retained_cohort: 0
+  slide_id_duplicates_in_retained_cohort: 0
+  modalities:
+    rna: {width: 1558, missing_values: 0, nonfinite_values: 0}
+    mutation: {width: 21, missing_values: 0, nonfinite_values: 0}
+    cnv: {width: 1333, missing_values: 0, nonfinite_values: 0}
+
+engineering_encoder:
+  status: FROZEN_FOR_ENGINEERING_TRACK
+  architecture: torchvision.models.resnet50
+  weights: ResNet50_Weights.IMAGENET1K_V2
+  classifier: identity
+  output_width: 2048
+  dtype: float32
+  checkpoint_bytes: 102540417
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  trainable_during_healnet_training: false
+  feature_reextraction_during_healnet_training: false
+  allowed_claim: supervisor_aligned_engineering_implementation
+  prohibited_claim: exact_paper_reproduction
+  paper_difference: paper_describes_Kather100K_pretraining
+
+paper_faithful_encoder_track:
+  architecture: ResNet50
+  pretraining: Kather100K
+  checkpoint: UNRESOLVED
+  physical_resolution_provenance: UNRESOLVED
+  status: BLOCKED_PENDING_AUTHORITATIVE_PROVENANCE
+  substitution_with_imagenet1k_v2: prohibited
+
+endpoint_contract:
+  endpoint_name: source_defined_time_to_event
+  time_column: survival_months
+  time_unit: months
+  event_indicator_formula: 1_minus_censorship
+  censorship_semantics:
+    0: observed_event
+    1: right_censored
+  label_as_overall_survival_without_source_confirmation: prohibited
+  validity_requirements:
+    time_finite: true
+    time_strictly_positive: true
+    censorship_allowed_values: [0, 1]
+    metadata_missing_values_allowed: false
+  verified_singleton_statistics:
+    patients: 894
+    observed_events: 126
+    right_censored: 768
+    censored_fraction: 0.8590604026845637
+    minimum_survival_months: 0.03
+    median_survival_months: 30.98
+    maximum_survival_months: 282.69
+
+split_protocol_draft:
+  status: PENDING_SUPERVISOR_APPROVAL
+  grouping_unit: patient_id
+  preferred_outer_partition:
+    source_column: train
+    development_value: 1
+    locked_test_value: 0
+    verified_development:
+      patients: 776
+      observed_events: 93
+      right_censored: 683
+    verified_locked_test:
+      patients: 118
+      observed_events: 33
+      right_censored: 85
+  preferred_inner_partition:
+    source_population: development_value_1_only
+    train_fraction: 0.85
+    validation_fraction: 0.15
+    proposed_seed: 20260820
+    stratification: censorship_with_survival_distribution_balance_check
+    exact_assignment: MUST_BE_MATERIALIZED_AND_HASHED_BEFORE_TRAINING
+  safeguards:
+    - one_patient_must_appear_in_exactly_one_partition
+    - all_modalities_and_all_patch_rows_follow_the_patient_partition
+    - no_test_patient_used_for_preprocessing_imputation_scaling_or_bin_cutoffs
+    - no_test_metric_used_for_hyperparameter_or_checkpoint_selection
+    - no_best_fold_selection_by_test_c_index
+    - locked_test_evaluated_once_after_model_and_checkpoint_are_frozen
+    - split_manifest_records_case_id_slide_id_partition_seed_and_sha256
+  alternative_requiring_supervisor_decision: >-
+    Replace the source train column with a newly generated patient-level
+    repeated split or cross-validation protocol; this changes the comparison
+    basis and must be approved before implementation.
+
+survival_discretization:
+  output_bins: 4
+  fit_population: observed_event_patients_in_training_partition_only
+  fit_indicator: censorship_equals_0
+  internal_cutpoints: training_event_time_quartiles_25_50_75_percent
+  bin_intervals: [negative_infinity_b1, b1_b2, b2_b3, b3_positive_infinity]
+  right_closed: false
+  apply_frozen_training_cutpoints_to_validation_and_test: true
+  validation_or_test_dependent_cutpoints: prohibited
+  fail_conditions:
+    - duplicate_internal_cutpoints
+    - nonfinite_cutpoints
+    - fewer_than_four_nonempty_training_bins
+    - missing_or_invalid_endpoint
+
+model_contract:
+  architecture: HEALNet
+  official_model_source_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  official_model_source_sha256: 78e9c2b10455f6ad43a88ed4e0a646cbf6304bf52cac06a5140f49dbc4796820
+  n_modalities: 4
+  input_order: [wsi, rna, mutation, cnv]
+  inputs:
+    wsi: {shape: "[1,P_i,2048]", spatial_axes: 1, variable_length: true}
+    rna: {shape: "[1,1,1558]", spatial_axes: 1}
+    mutation: {shape: "[1,1,21]", spatial_axes: 1}
+    cnv: {shape: "[1,1,1333]", spatial_axes: 1}
+  channel_dims: [2048, 1558, 21, 1333]
+  output_logits_shape: "[1,4]"
+  patient_batch_size: 1
+  padding: false
+  attention_mask: false
+  direct_wsi_omic_concatenation: prohibited
+  omic_modalities_merged: false
+  released_brca_hyperparameter_candidate:
+    num_freq_bands: 2
+    depth: 2
+    max_freq: 2.0
+    num_latents: 17
+    latent_dim: 126
+    cross_dim_head: 63
+    latent_dim_head: 20
+    cross_heads: 1
+    latent_heads: 8
+    attn_dropout: 0.45526926537716805
+    ff_dropout: 0.364741344399059
+    fourier_encode_data: true
+    self_per_cross_attn: 0
+    weight_tie_layers: false
+    snn: true
+    status: PENDING_SUPERVISOR_APPROVAL_FOR_FOUR_MODALITY_TRACK
+
+prediction_semantics:
+  logits: z_k
+  hazards: sigmoid_of_z_k
+  survival: cumulative_product_of_one_minus_hazard
+  scalar_risk_score: negative_sum_of_discrete_survival
+
+loss_protocol_draft:
+  primary: discrete_time_negative_log_likelihood
+  source_semantics: official_healnet_v0.1.0_nll_loss
+  alpha: 0.4
+  epsilon: 1.0e-7
+  recommended_bin_weighting: none
+  weighting_status: >-
+    PENDING_SUPERVISOR_DECISION because the released configuration selects
+    inverse weights while its comment says class weights are not relevant to
+    survival; any weights must be computed from training patients only.
+  cox_primary_loss: not_selected
+  ce_survival_primary_loss: not_selected
+
+optimization_draft:
+  status: PENDING_SUPERVISOR_AND_RUNTIME_APPROVAL
+  optimizer: Adam
+  released_learning_rate_candidate: 0.007765016508403882
+  scheduler: OneCycleLR
+  released_max_learning_rate_candidate: 0.008
+  maximum_epochs: 50
+  early_stopping:
+    enabled: true
+    monitor: validation_nll
+    mode: min
+    patience_epochs: 5
+    restore_best_validation_weights: true
+  test_based_early_stopping: prohibited
+  test_based_checkpoint_selection: prohibited
+  mixed_precision: PENDING_RUNTIME_DECISION
+  gradient_accumulation: PENDING_RUNTIME_DECISION
+
+evaluation_protocol_draft:
+  primary_metric:
+    name: Harrell_concordance_index
+    implementation_candidate: sksurv.metrics.concordance_index_censored
+    event_indicator: censorship_equals_0
+    time: survival_months
+    estimate: risk_equals_negative_sum_discrete_survival
+    tied_tolerance: 1.0e-8
+  required_reporting:
+    - locked_test_c_index
+    - patient_bootstrap_95_percent_confidence_interval
+    - validation_nll_at_selected_checkpoint
+    - locked_test_nll
+    - comparable_pairs_and_event_count
+    - censoring_fraction_per_partition
+  bootstrap:
+    unit: patient
+    proposed_replicates: 2000
+    proposed_seed: 20260821
+    failed_or_nonestimable_replicates: report_count_and_fraction
+  secondary_metrics_pending_estimability:
+    - ipcw_concordance_index
+    - cumulative_dynamic_auc_at_training_predeclared_horizons
+    - integrated_brier_score_over_training_supported_time_range
+    - calibration_at_training_predeclared_horizons
+  metric_horizon_rule: >-
+    Choose horizons using the training partition only, freeze them before
+    validation or test evaluation, and restrict IPCW metrics to supported
+    follow-up ranges.
+
+reproducibility_contract:
+  seed_all_random_generators: true
+  record_required:
+    - cohort_and_split_manifest_sha256
+    - endpoint_validation_report_sha256
+    - survival_cutpoints_and_training_source_sha256
+    - every_patient_compact_artifact_manifest_sha256
+    - encoder_checkpoint_sha256
+    - official_healnet_commit_and_model_source_sha256
+    - project_training_source_commit_and_file_hashes
+    - python_torch_cuda_cudnn_and_driver_versions
+    - device_identity
+    - optimizer_scheduler_and_hyperparameters
+    - epoch_history_and_selected_checkpoint_sha256
+    - final_predictions_risk_scores_and_metric_inputs
+  deterministic_algorithms: required_where_supported
+  nondeterministic_operations: identify_and_report_or_fail
+  feature_encoder_frozen: true
+  outcome_blind_wsi_preprocessing: required
+
+comparison_and_claim_policy:
+  permitted:
+    - engineering_performance_of_the_supervisor_aligned_imagenet1k_v2_track
+    - within_protocol_ablation_on_identical_patient_splits
+    - clearly_labeled_contextual_comparison_to_published_results
+  prohibited:
+    - claim_of_exact_healnet_paper_reproduction
+    - attributing_performance_difference_only_to_healnet_architecture
+    - direct_encoder_equivalence_between_imagenet1k_v2_and_kather100k
+    - selecting_or_tuning_on_locked_test_results
+  required_disclosure: >-
+    Results use frozen ImageNet1K V2 ResNet50 features and a four-modality
+    supervisor-aligned input contract; the paper-faithful Kather100K track is
+    unresolved and was not executed.
+
+unresolved_supervisor_decisions:
+  - approve_source_train_column_as_locked_outer_test_partition
+  - approve_or_replace_the_85_15_development_train_validation_split
+  - approve_single_split_versus_repeated_patient_level_cross_validation
+  - approve_nll_bin_weighting_none_versus_released_inverse_weight_behavior
+  - approve_released_brca_healnet_hyperparameters_for_four_separate_modalities
+  - approve_optimizer_scheduler_gradient_accumulation_and_precision_mode
+  - approve_primary_and_secondary_metrics_confidence_intervals_and_horizons
+  - confirm_source_defined_survival_months_is_the_intended_clinical_endpoint
+  - decide_whether_a_separate_kather100k_paper_faithful_experiment_is_required
+
+training_execution_gate:
+  current_state: CLOSED
+  required_before_opening:
+    - all_approved_cohort_feature_artifacts_verified_and_frozen
+    - final_eligible_patient_manifest_and_exclusion_reasons_frozen
+    - supervisor_approves_endpoint_split_loss_model_and_metric_protocol
+    - split_manifest_generated_once_validated_and_hashed
+    - training_only_bin_cutpoints_generated_validated_and_hashed
+    - training_runner_is_fail_closed_and_cpu_rehearsed
+    - runtime_storage_checkpoint_and_recovery_plan_approved
+    - separate_explicit_training_authorization_recorded
+  operations_not_authorized_by_this_draft:
+    - cohort_download_or_feature_extraction
+    - wsi_open_or_pixel_access
+    - gpu_or_cuda_execution
+    - healnet_training_or_inference
+    - backward_pass_or_optimizer_step
+    - test_set_evaluation
+    - artifact_deletion_or_drive_operation

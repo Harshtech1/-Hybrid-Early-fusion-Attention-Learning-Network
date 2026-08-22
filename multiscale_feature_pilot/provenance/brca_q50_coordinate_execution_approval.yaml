@@ -1,0 +1,81 @@
+schema_version: 1
+status: Q50_COORDINATE_EXECUTION_AUTHORIZED_CPU_ONLY
+cohort: TCGA-BRCA
+candidate: Q50
+recorded_at_utc: "2026-08-19T00:39:34Z"
+
+approval:
+  source: direct_user_instruction
+  user_statement: ok do it start it
+  bounded_scope: >-
+    One exact Q50 OpenSlide level-2 mask read, deterministic two-branch CPU
+    coordinate generation, atomic external artifact publication, validation,
+    and reporting. Stop before any level-0/level-1 patch reads, feature model,
+    HEALNet, Q75, Drive, or training operation.
+  authorization_config:
+    path: multiscale_feature_pilot/config/brca_q50_coordinate_execution_authorization.yaml
+    sha256: 9e580e6051ec911ad4366b3bace5f0a0352eb498a6c55359b160c106086e74dd
+
+supersession:
+  q50_policy_preexecution_record_preserved: true
+  prior_real_pixel_lock_superseded_only_for:
+    - exact_q50_level_2_mask_read
+    - exact_q50_coordinate_generation
+    - exact_q50_coordinate_artifact_publication
+  still_locked:
+    - q25_rerun_or_modification
+    - q50_level_0_or_level_1_patch_reads
+    - q50_resnet50
+    - q50_healnet
+    - q75
+    - training
+    - full_cohort_processing
+    - google_drive
+
+identity:
+  patient_id: TCGA-AR-A1AW
+  gdc_file_uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+  size_bytes: 975626387
+  md5: 304509e03f26cbecc9aee4ea691c8e5a
+  sha256: 6b960db7e6e5772f4f626daa7b023ffbb5e3b20f9f6ff5c7d52f4554cf33399b
+
+policy_identity:
+  policy_commit: bd2b73b4a38ee42e24fc6c596631888dbb09f137
+  scale_policy_status: RESOLVED_BRCA_Q50_SCALE_POLICY_V1
+  coordinate_policy_status: RESOLVED_BRCA_Q50_COORDINATE_POLICY_V1
+  scale_config_sha256: 979278fd97d79718464f5918e2250993addbf5638fa721390b09dbc0a74eae32
+  coordinate_config_sha256: e5cb83739d3d8fab04da8a63ae1560df04ccc547a79512c219eecb575c0c2114
+  coordinate_core_sha256: 7dd739667cb6fe0887f3452127c9ff4d43659831d17096922a9f62685149f892
+  reviewed_shared_algorithm_sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+  coordinate_artifact_publisher_sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+
+execution_implementation:
+  runner:
+    path: scripts/run_brca_q50_coordinate_gate.py
+    sha256: 91d239c4082268573296b756dd0cba6af8d43ff3415c2c0fdd882acbdd1992a0
+  tests:
+    path: multiscale_feature_pilot/tests/test_brca_q50_coordinate_runner.py
+    sha256: 6602c2dfd75b024f52040ed6e7745b520cd663ecb8fa7aca71b2272a5e1a5296
+  focused_tests_passed: 12
+  full_pilot_tests_passed: 347
+  diff_check: PASS
+
+execution_boundary:
+  cpu_only: true
+  maximum_mask_reads: 1
+  mask_level: 2
+  mask_level_dimensions: [6247, 4083]
+  coordinate_output: /teamspace/studios/this_studio/brca_pilot_data/Q50.coordinates
+  output_outside_git: true
+  patch_pixel_reads: prohibited
+  feature_extraction: prohibited
+  healnet: prohibited
+  q75: prohibited
+  training: prohibited
+  stop_after_coordinate_validation: true
+
+execution_at_record_time:
+  wsi_opened_by_this_transition: false
+  mask_pixels_read: false
+  coordinates_generated: false
+  artifacts_written: false

@@ -1,0 +1,65 @@
+schema_version: 1
+status: BRCA_COMPACT_COMPATIBILITY_CPU_READ_ONLY_PASS
+cohort: TCGA-BRCA
+authorization:
+  scope: CPU_ONLY_READ_ONLY_FROZEN_Q25_Q50_Q75
+  migration_authorized: false
+  pilot_modification_authorized: false
+results:
+  q25:
+    manifest_sha256: 88a3146d34cf907604cecf109ff3879b26afcf6458ce86a9e2e46a7e127dcc0f
+    shapes: [[7404, 2048], [1918, 2048], [9322, 2048]]
+    combined_content_sha256: 300196a20822060236f81a9158a1c54ea8193d6b8408ad4271f306b997ccf327
+    current_bytes: 153208853
+    removable_duplicate_branch_tensor_bytes: 76368978
+    canonical_tensor_plus_provenance_bytes: 76832419
+    exact_cat_equality: true
+    compatible: true
+  q50:
+    manifest_sha256: 1111f4bfd4ad1183896321c0121d4c92b830c5e327a58c2408ae19267292dae0
+    shapes: [[8580, 2048], [2213, 2048], [10793, 2048]]
+    combined_content_sha256: 5c3f37b406451eb10de4bf1b294c8fd018bb21e2685752182e8220dd0beee511
+    current_bytes: 177402321
+    removable_duplicate_branch_tensor_bytes: 88419410
+    canonical_tensor_plus_provenance_bytes: 88974882
+    exact_cat_equality: true
+    compatible: true
+  q75:
+    manifest_sha256: 589ce49baf2df0f41f345377229b661d05e6cc42399b8aa6545b1b3e30b09175
+    shapes: [[13487, 2048], [3458, 2048], [16945, 2048]]
+    combined_content_sha256: 6e01631d8a0a3ecb0dceefb29cd32866d49199a796ec78aaf00f2124c54a4637
+    current_bytes: 278525034
+    removable_duplicate_branch_tensor_bytes: 138816594
+    canonical_tensor_plus_provenance_bytes: 139699484
+    exact_cat_equality: true
+    compatible: true
+totals:
+  current_bytes: 609136208
+  removable_duplicate_branch_tensor_bytes: 303604982
+  exact_saving_percent: 49.841887251594805
+  canonical_tensor_plus_provenance_bytes: 305506785
+  projected_894_mean_before_compact_manifests_bytes: 91041021930
+operations:
+  unique_pilot_files_read: 18
+  pilot_files_written_or_modified: 0
+  pilot_files_deleted: 0
+  wsi_opens: 0
+  gpu_operations: 0
+  feature_extractions: 0
+  drive_operations: 0
+  training_runs: 0
+outputs:
+  compatibility_report_sha256: bf1e5a6a46fab366cb8c3afa1556f3355a6a7507d2fcfdcb923ae56d46008b7b
+  small_batch_report_sha256: 60a7ccb7435bf189e5f8d2f252787b38093be2c888ab80479314778ed25e2fd9
+  small_batch_tsv_sha256: 6133920baaccb73805d58daf53b8ffe93c30c49468a4a3e96a53bd8b960455d2
+  small_batch_config_sha256: 104bca7d69886a6579ea794be168cd67969ee8f41a601172a68bda2f7c3072e6
+validation:
+  original_project_validators: PASS
+  independent_tensor_cat_equality: PASS
+  independent_provenance_order: PASS
+  exact_file_hashes: PASS
+  exact_omic_matches_for_six_proposals: PASS
+  focused_tests: 24
+  yaml_safe_load: PASS
+  git_diff_check: PASS
+next_gate: SMALL_BATCH_PROPOSAL_REVIEW

@@ -1,0 +1,53 @@
+schema_version: 1
+status: AUTHORIZED_B02_ACQUISITION_AND_HEADER_ONLY
+executable: true
+cohort: TCGA-BRCA
+batch_label: B02
+execution_mode: CPU_ONLY_NO_CUDA
+approval:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: >-
+    I authorize downloading only BRCA validation-batch patient B02, UUID
+    c5331e5e-10b4-4979-958b-d4592a2805de (724,114,911 bytes), from GDC to
+    local persistent staging at concurrency one using its exact one-row
+    manifest. After download, perform only exact UUID/filename/size/MD5
+    verification, independent SHA256 calculation, partial/incomplete checks,
+    regular non-symlink SVS confirmation, exact Omic rematch, and OpenSlide
+    header-only inspection of MPP and every pyramid level. Do not call
+    read_region or access pixels; do not generate masks, coordinates, or
+    features; do not use GPU/CUDA, Drive, deletion, B03–B06 processing, cohort
+    expansion, or training. Stop after the B02 metadata report and wait for my
+    review.
+  exact_statement_sha256: 5a5ed9f4226814cca5a7a3869d222c0003c55574116b3dc5573ce6b9224ddfa1
+identity:
+  patient_id: TCGA-BH-A0BG
+  slide_id: TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+  filename: TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+  gdc_uuid: c5331e5e-10b4-4979-958b-d4592a2805de
+  declared_size_bytes: 724114911
+  expected_md5: a8c6e730df401ff67e1a1e52a6cb6307
+  state: released
+  omic_source_row_index: "472"
+execution:
+  gdc_client: /teamspace/studios/this_studio/tools/gdc-client/2.3.0/gdc-client
+  gdc_client_version: "2.3"
+  gdc_client_sha256: 1df9281cbacbb53413607a4b9b682947dcb48b6ac7fade6527748bc025ae8c96
+  active_patient_concurrency: 1
+  active_gdc_clients: 1
+  destination: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B02.incoming
+  authorized_manifest: multiscale_feature_pilot/provenance/brca_six_patient_batch_authorized/B02_TCGA-BH-A0BG_c5331e5e-10b4-4979-958b-d4592a2805de.AUTHORIZED_HEADER_ONLY.gdc.tsv
+  authorized_manifest_sha256: 8c398bab8159885645ca45006a78872db64234eb37be566631f3ebf1b593bf89
+  openslide_header_fields: [mpp_x, mpp_y, level_count, level_dimensions, level_downsamples]
+authority:
+  download_b02: true
+  openslide_header_only: true
+  read_region_or_pixel_access: false
+  masks_or_coordinates: false
+  features_or_models: false
+  gpu_or_cuda: false
+  deletion: false
+  google_drive: false
+  b03_b06_processing: false
+  cohort_expansion: false
+  training: false
+required_stop: B02_EXACT_FILE_OMIC_AND_HEADER_METADATA_REPORT

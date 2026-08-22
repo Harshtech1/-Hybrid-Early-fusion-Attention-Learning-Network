@@ -1,0 +1,42 @@
+schema_version: 1
+status: AUTHORIZED_P0002_P0008_EXACT_CPU_COORDINATE_PHASE
+executable: true
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+approval:
+  source: DIRECT_USER_AUTHORIZATION
+  received_at_utc: "2026-08-21T05:31:00Z"
+  exact_statement: >-
+    I authorize the exact P0002-P0008 CPU coordinate phase defined in `multiscale_feature_pilot/config/brca_p0002_p0008_coordinate_execution_request.yaml`: exactly one OpenSlide level-2 RGBA mask read per patient at its frozen tuple, with at most two CPU patient workers, followed by the frozen tissue segmentation and atomic no-overwrite publication and validation of each patient's 2x and 4x coordinate bags. No patch reads, feature extraction, ResNet50, HEALNet, GPU/CUDA, patients outside P0002-P0008, deletion, Drive operations, cohort expansion, or training. Stop after all seven coordinate results are validated and reported.
+  exact_statement_sha256: 057e9c42d68c200768696643edf53d0efeb41a4904b5661dfe2e61063366e01a
+request:
+  path: multiscale_feature_pilot/config/brca_p0002_p0008_coordinate_execution_request.yaml
+  sha256: 47805f82a8a727f6dc646860a109b8cd5d8c19a3213a8c18fba5c31fcd96ca6e
+authorized_execution:
+  exact_patient_labels: [P0002, P0003, P0004, P0005, P0006, P0007, P0008]
+  maximum_cpu_patient_workers: 2
+  exact_openslide_opens_per_patient: 1
+  exact_header_reads_per_patient: 1
+  exact_read_region_calls_per_patient: 1
+  exact_total_read_region_calls: 7
+  level_0_location: [0, 0]
+  level: 2
+  rgba_uint8: true
+  frozen_segmentation: true
+  atomic_no_overwrite_coordinate_publication: true
+  retain_raw_wsi: true
+authorized_outputs:
+  directory_pattern: /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_{patient_label}.coordinates
+  branches: [scale_2x, scale_4x]
+authority:
+  patch_reads: false
+  feature_extraction: false
+  resnet50: false
+  healnet: false
+  gpu_or_cuda: false
+  patients_outside_p0002_p0008: false
+  deletion: false
+  google_drive: false
+  cohort_expansion: false
+  training: false
+required_stop: ALL_SEVEN_COORDINATE_RESULTS_VALIDATED_AND_REPORTED

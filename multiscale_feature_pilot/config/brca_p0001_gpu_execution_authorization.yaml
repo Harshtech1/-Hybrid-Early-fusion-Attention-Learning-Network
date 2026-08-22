@@ -1,0 +1,89 @@
+schema_version: 1
+status: P0001_PRODUCTION_GPU_FEATURE_EXECUTION_AUTHORIZED
+executable: true
+cohort: TCGA-BRCA
+production_row: P0001
+execution_mode: DETERMINISTIC_TESLA_T4_FLOAT32
+
+authorization:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: >-
+    I authorize the exact P0001-only production GPU feature execution using the frozen verified P0001 coordinates: 13,372 scale-2x and 3,444 scale-4x patch reads; float32 ResNet50 ImageNet1K V2 feature extraction; natural row concatenation into [16816,2048]; atomic compact artifact publication; recovery-v2 GPU_AUTHORIZED and FEATURES_VERIFIED ledger recording; and synthetic plus real-feature four-modality HEALNet numerical smoke tests. No training, backward pass, optimizer step, AMP, TF32, CPU fallback, coordinate regeneration, P0002–P0008 processing, Q25/Q50/Q75/B01/B02/B03/B06 or BLCA changes, Drive operations, cohort expansion, raw/pre-existing/user/project/final-artifact deletion, or official HEALNet modification; only cleanup of runner-created ephemeral recovery staging is permitted. Stop after artifact validation, recovery recording, and reporting.
+  exact_statement_sha256: 86db1c4ddb2deead9ce8ca0d6282a890136c3e63451685aa862909a184867f48
+  transport_normalization:
+    escaped_markdown_underscores_removed: true
+    trailing_html_space_entity_ignored: true
+
+scope:
+  patient_id: TCGA-3C-AALK
+  slide_id: TCGA-3C-AALK-01Z-00-DX1.4E6EB156-BB19-410F-878F-FC0EA7BD0B53.svs
+  gdc_file_uuid: 93b26333-5723-4fa4-a4de-6124c04ab243
+  omic_source_row_index: "4"
+  coordinate_manifest_sha256: f1825acf7d0b96c92bfb66038d60af6e1572ea945490e2245d5e3ec222677d6e
+  scale_2x_patch_reads: 13372
+  scale_4x_patch_reads: 3444
+  total_patch_reads: 16816
+  scale_2x_feature_shape: [13372, 2048]
+  scale_4x_feature_shape: [3444, 2048]
+  combined_shape: [16816, 2048]
+  natural_healnet_wsi_shape: [1, 16816, 2048]
+  row_ranges:
+    scale_2x: [0, 13372]
+    scale_4x: [13372, 16816]
+  concatenation_order: [scale_2x, scale_4x]
+  pooling_performed: false
+  transpose_performed: false
+  dtype: float32
+  encoder: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  compact_publication:
+    required: true
+    atomic_no_overwrite: true
+    exact_file_count: 4
+  recovery_v2:
+    required: true
+    authorized_stage_successes: [GPU_AUTHORIZED, FEATURES_VERIFIED]
+    required_preexisting_prefix:
+      exact_events: 10
+      terminal_stage: COORDINATES_VERIFIED
+      bootstrap_authorized_by_this_statement: false
+  healnet_smoke_tests:
+    synthetic: true
+    real_feature: true
+    numerical_only: true
+
+determinism:
+  device: cuda:0
+  gpu: Tesla T4
+  compute_capability: [7, 5]
+  batch_size: 32
+  num_workers: 0
+  precision: float32
+  cublas_workspace_config: ":4096:8"
+  torch_deterministic_algorithms: true
+  cudnn_deterministic: true
+  cudnn_benchmark: false
+  automatic_mixed_precision: false
+  tf32: false
+  cpu_fallback: false
+
+permitted_cleanup:
+  runner_created_ephemeral_recovery_staging_only: true
+  preexisting_or_final_paths: false
+
+prohibited:
+  training: true
+  backward_pass: true
+  optimizer_step: true
+  automatic_mixed_precision: true
+  tf32: true
+  cpu_fallback: true
+  coordinate_regeneration: true
+  p0002_p0008_processing: true
+  q25_q50_q75_b01_b02_b03_b06_or_blca_changes: true
+  drive_operations: true
+  cohort_expansion: true
+  raw_preexisting_user_project_or_final_artifact_deletion: true
+  official_healnet_modification: true
+
+required_stop: P0001_ARTIFACT_VALIDATION_RECOVERY_RECORDING_AND_REPORTING

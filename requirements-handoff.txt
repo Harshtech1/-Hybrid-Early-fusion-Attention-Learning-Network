@@ -3,6 +3,7 @@
 einops==0.8.2
 h5py==3.16.0
 numpy==1.26.4
+opencv-python-headless==4.10.0.84
 openslide-python==1.4.6
 pandas==2.1.4
 Pillow==12.2.0

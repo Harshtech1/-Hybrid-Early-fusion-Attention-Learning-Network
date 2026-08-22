@@ -1,0 +1,49 @@
+schema_version: 1
+status: P0001_GPU_EXECUTION_AUTHORIZATION_RECORDED_PREEXECUTION_BLOCKED
+recorded_at_utc: "2026-08-20T23:28:22Z"
+cohort: TCGA-BRCA
+production_row: P0001
+authorization:
+  source: DIRECT_USER_AUTHORIZATION
+  statement_sha256: 86db1c4ddb2deead9ce8ca0d6282a890136c3e63451685aa862909a184867f48
+  config_path: multiscale_feature_pilot/config/brca_p0001_gpu_execution_authorization.yaml
+  config_sha256: f69561be5c822d7f1ecfb0b54a41789855376de31a90d942260c426900a4b753
+implementation:
+  base_commit: e7d0b4983de9d24330cab06106a8d6cfee4f3e16
+  runner_path: scripts/run_brca_p0001_gpu_production.py
+  runner_sha256: eb0299b259feb7e44fb9aef477511aa9802a0a99e73d01e1158e53838cba4d67
+  test_path: multiscale_feature_pilot/tests/test_brca_p0001_gpu_preexecution.py
+  test_sha256: 9a2f7a0919347c3611eca38e10277d632dd26c3a9b5871e073766f2476b30731
+security_contract:
+  wsi_held_o_nofollow_descriptor: true
+  wsi_stable_proc_fd_consumers: true
+  wsi_same_descriptor_pre_post_hashes: true
+  omic_held_o_nofollow_descriptor: true
+  checkpoint_held_o_nofollow_descriptor: true
+  exact_read_region_counting: true
+  patch_loader_workers: 0
+  exact_scale_2x_reads: 13372
+  exact_scale_4x_reads: 3444
+  atomic_no_overwrite_compact_publication: true
+  training_or_other_patient_scope: false
+validation:
+  focused_tests: 14
+  full_cpu_tests: 809
+  py_compile: PASS
+  diff_check: PASS
+execution_state:
+  cuda_device_verified: Tesla T4
+  gpu_process_started: false
+  wsi_opened: false
+  patch_reads: 0
+  feature_output_present: false
+  recovery_ledger_present: false
+blocking_prerequisite:
+  reason: >-
+    Recovery-v2 requires an exact 10-event prefix through
+    COORDINATES_VERIFIED. The received authorization names only
+    GPU_AUTHORIZED and FEATURES_VERIFIED, so it does not authorize post-hoc
+    creation of the five earlier stage successes.
+  required_action: SEPARATE_CPU_ONLY_APPEND_ONLY_PRIOR_LEDGER_BOOTSTRAP_AUTHORIZATION
+  raw_or_artifact_deletion_required: false
+next_gate: AUTHORIZE_AND_VALIDATE_EXACT_P0001_PRIOR_STAGE_LEDGER_PREFIX

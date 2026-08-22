@@ -1,0 +1,99 @@
+schema_version: 1
+phase: BRCA_Q50_SEQUENTIAL_ACQUISITION_GATE
+status: BRCA_Q50_LOCAL_GDC_ACQUISITION_READY
+cohort: TCGA-BRCA
+candidate: Q50
+
+approval_evidence:
+  source: DIRECT_USER_AUTHORIZATION
+  user_statement: >-
+    Authorize and start the Q50-only BRCA pilot. Do not train or process Q75
+    yet.
+  storage_statement: >-
+    can we do without Google drive if possible for now
+  approval_identity_sha256: 36d82521bd3dada2219452a19844cdf033bf73149571251e0d884fd3fedb0599
+
+predecessor:
+  q25_status: BRCA_Q25_GPU_FEATURE_PILOT_SUCCESS
+  q25_result_sha256: 76df862c438f4d94e34342b54c80c0866a440af0574be9003444075d7073c6e4
+  q25_feature_manifest_sha256: 88a3146d34cf907604cecf109ff3879b26afcf6458ce86a9e2e46a7e127dcc0f
+  q25_result_commit: 7f44db0388b059c289ffa4510f9944e62eb2724b
+  q25_rerun_authorized: false
+
+authorized_object:
+  patient_id: TCGA-AR-A1AW
+  uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+  filename: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+  declared_bytes: 975626387
+  expected_md5: 304509e03f26cbecc9aee4ea691c8e5a
+  state: released
+  exact_singleton_case_and_slide_match: true
+  omic_source_index: "370"
+  omic_shapes:
+    rna: [1, 1, 1558]
+    mutation: [1, 1, 21]
+    cnv: [1, 1, 1333]
+
+authorized_manifest:
+  path: >-
+    multiscale_feature_pilot/provenance/brca_phase2_q50_authorized/Q50_TCGA-AR-A1AW_5c1216f3-19ec-4d3c-9bb0-9bd740b79f62.AUTHORIZED_Q50_ONLY.gdc.tsv
+  sha256: 1028665e49bab6895a47947d069e225c2d6b4b90f420f7a9dc916ca9313a6062
+  rows: 1
+  combined_manifest_present: false
+  authorization_record_path: >-
+    multiscale_feature_pilot/provenance/brca_phase2_q50_authorized/MANIFEST_SET.AUTHORIZED_Q50.yaml
+  authorization_record_sha256: 749abb29845a88b282e81fddd44bab3b11d0bcce7bf4264bb60b2a2cda553c5f
+
+source_bindings:
+  authorization_config_sha256: 00e2d41323f44a8deec97d3dad3d83bb87ef6700b6a2408253976257e52fec40
+  proposal_sha256: b1bbeb06bb200813122e0b1a88a3d0258660eaff067d35f1d8de1dd6d79badb2
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  filtered_gdc_manifest_sha256: ac1b4d591ce255a7d4e6bde3778a041b107576693657ee296fe6eb36c4e79a92
+  guarded_q50_manifest_sha256: 1028665e49bab6895a47947d069e225c2d6b4b90f420f7a9dc916ca9313a6062
+
+gdc_client:
+  path: /teamspace/studios/this_studio/tools/gdc-client/2.3.0/gdc-client
+  version_output: "2.3"
+  size_bytes: 22168960
+  sha256: 1df9281cbacbb53413607a4b9b682947dcb48b6ac7fade6527748bc025ae8c96
+  platform: linux_x86_64_elf
+
+storage_preflight:
+  google_drive_required: false
+  google_drive_operations_authorized: false
+  local_destination: /teamspace/studios/this_studio/brca_pilot_data/Q50.incoming
+  local_destination_state: ABSENT
+  existing_brca_pilot_data_bytes: 801470077
+  filesystem_available_bytes_observed: 350888206336
+  logical_project_limit_bytes_user_reported: 200000000000
+  declared_q50_wsi_bytes: 975626387
+  sufficient_for_one_local_q50_stage: true
+
+authorization_boundary:
+  current_executable_scope: Q50_ONLY
+  metadata_after_exact_size_and_md5: HEADER_ONLY
+  q75_status: NOT_AUTHORIZED
+  pixel_or_region_reads: NOT_AUTHORIZED
+  coordinate_generation: NOT_AUTHORIZED
+  feature_extraction: NOT_AUTHORIZED
+  healnet_real_input_execution: NOT_AUTHORIZED
+  training: NOT_AUTHORIZED
+  raw_wsi_deletion: NOT_AUTHORIZED
+  stop_after: Q50_EXACT_FILE_VERIFICATION_AND_HEADER_METADATA_REPORT
+
+validation:
+  focused_tests_passed: 12
+  full_tests_passed: 318
+  failed: 0
+  git_diff_check: passed
+  network_requests_during_authorization_build: 0
+  wsi_downloads_during_authorization_build: 0
+  wsi_opens_during_authorization_build: 0
+
+implementation_identity:
+  multiscale_feature_pilot/config/brca_q50_acquisition_authorization.yaml: 00e2d41323f44a8deec97d3dad3d83bb87ef6700b6a2408253976257e52fec40
+  multiscale_feature_pilot/src/brca_q50_authorized_manifest.py: 24f91950806ec1d7b8553ac209c5eebaf00c7e6087ed96f28e394f95afa17638
+  multiscale_feature_pilot/tests/test_brca_q50_authorized_manifest.py: 71937b5cbe0062a41cd1a7c042429d9de83167883129ff4062f8dcc51448abc5
+  scripts/build_brca_q50_authorized_manifest.py: 25521dd13eb51fb44c3cbe063ebdfce43f2c3bb9561e120603674a8e4ea7fd3b
+
+next_action: SELECTIVE_SOURCE_COMMIT_THEN_EXACT_ONE_ROW_GDC_DOWNLOAD

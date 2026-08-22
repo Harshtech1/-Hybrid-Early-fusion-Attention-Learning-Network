@@ -1,0 +1,115 @@
+schema_version: 1
+status: BRCA_Q50_EXACT_FILE_AND_HEADER_METADATA_VERIFIED
+cohort: TCGA-BRCA
+candidate: Q50
+recorded_at_utc: "2026-08-19T00:04:33Z"
+
+authorization:
+  source_commit: 23223cfa01875d9c242ee3916dd4d554d65d7293
+  authorization_config_sha256: 00e2d41323f44a8deec97d3dad3d83bb87ef6700b6a2408253976257e52fec40
+  authorized_manifest_sha256: 1028665e49bab6895a47947d069e225c2d6b4b90f420f7a9dc916ca9313a6062
+  authorization_record_sha256: 749abb29845a88b282e81fddd44bab3b11d0bcce7bf4264bb60b2a2cda553c5f
+  current_scope: Q50_ONLY
+
+identity:
+  patient_id: TCGA-AR-A1AW
+  uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+  filename: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+  path: >-
+    /teamspace/studios/this_studio/brca_pilot_data/Q50.incoming/5c1216f3-19ec-4d3c-9bb0-9bd740b79f62/TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+  regular_file: true
+  symlink: false
+  expected_size_bytes: 975626387
+  actual_size_bytes: 975626387
+  size_match: true
+  expected_md5: 304509e03f26cbecc9aee4ea691c8e5a
+  actual_md5: 304509e03f26cbecc9aee4ea691c8e5a
+  md5_match: true
+  sha256: 6b960db7e6e5772f4f626daa7b023ffbb5e3b20f9f6ff5c7d52f4554cf33399b
+  partial_files_present: false
+
+acquisition:
+  source: NCI_GDC
+  manifest_rows: 1
+  client_version: "2.3"
+  client_sha256: 1df9281cbacbb53413607a4b9b682947dcb48b6ac7fade6527748bc025ae8c96
+  executor: USER_LIGHTNING_TERMINAL
+  reported_result: "Successfully downloaded: 1"
+  google_drive_used: false
+  related_files_requested: false
+  annotations_requested: false
+  checksum_verification_disabled: false
+  tls_verification_disabled: false
+
+header_metadata:
+  collection_method: OPENSLIDE_HEADER_ONLY
+  openslide_python: 1.4.6
+  openslide_library: 3.4.1
+  raw_mpp_x: "0.24679999999999999"
+  raw_mpp_y: "0.24679999999999999"
+  parsed_mpp_x: 0.2468
+  parsed_mpp_y: 0.2468
+  level_count: 4
+  level_dimensions:
+    - [99960, 65334]
+    - [24990, 16333]
+    - [6247, 4083]
+    - [3123, 2041]
+  level_downsamples:
+    - 1.0
+    - 4.000061225739301
+    - 16.001375061204985
+    - 32.009231974117526
+  level_0_pixel_count: 6530786640
+  native_mpp_from_reported_scalar_downsample:
+    - [0.2468, 0.2468]
+    - [0.9872151105124595, 0.9872151105124595]
+    - [3.9491393651053903, 3.9491393651053903]
+    - [7.899878451212205, 7.899878451212205]
+  per_axis_dimension_ratios:
+    - [1.0, 1.0]
+    - [4.0, 4.000122451478602]
+    - [16.001280614695054, 16.001469507714916]
+    - [32.00768491834774, 32.01077902988731]
+  read_region_calls: 0
+  pixel_reads: 0
+  associated_image_reads: 0
+  slide_closed: true
+
+scale_mapping_observation:
+  status: PROPOSED_FROM_Q50_METADATA_NOT_EXECUTION_AUTHORIZED
+  q25_level_mapping_reused_silently: false
+  approximately_0_5_mpp_candidate:
+    source_level: 0
+    source_footprint: [512, 512]
+    proposed_output_patch: [256, 256]
+    proposed_resampling_factor: 2.0
+    effective_mpp: [0.4936, 0.4936]
+    target_relative_error_fraction: [0.0128, 0.0128]
+  approximately_1_0_mpp_candidate:
+    source_level: 1
+    native_patch: [256, 256]
+    effective_mpp: [0.9872151105124595, 0.9872151105124595]
+    target_relative_error_fraction: [0.0127848894875405, 0.0127848894875405]
+  interpolation_lattice_mask_and_boundary_policy: NOT_YET_FROZEN_FOR_Q50
+
+storage_postcondition:
+  q50_incoming_apparent_bytes: 975685263
+  filesystem_available_bytes_observed: 349897109504
+  user_reported_organization_storage: 5.08_GB_OF_200_GB
+  raw_wsi_retained: true
+  raw_wsi_deletions: 0
+
+safety_postconditions:
+  q25_reruns: 0
+  q75_operations: 0
+  google_drive_operations: 0
+  coordinate_generation_runs: 0
+  feature_extraction_runs: 0
+  healnet_runs: 0
+  training_runs: 0
+  backward_passes: 0
+  optimizer_steps: 0
+  required_stop_reached: true
+
+next_gate: REVIEW_AND_FREEZE_Q50_SPECIFIC_SCALE_AND_COORDINATE_POLICY

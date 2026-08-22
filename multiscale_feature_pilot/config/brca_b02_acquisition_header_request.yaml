@@ -1,0 +1,68 @@
+schema_version: 1
+status: AWAITING_EXPLICIT_B02_ACQUISITION_AND_HEADER_AUTHORIZATION
+executable: false
+cohort: TCGA-BRCA
+batch_label: B02
+preparation_authority:
+  statement: >-
+    I authorize a CPU-only review of the completed B01 compact GPU pilot
+    against Q25, Q50, and Q75, followed by preparation of the B02 acquisition
+    and header-only authorization package. Do not download or open the B02
+    WSI, use GPU/CUDA, generate coordinates or features, delete files, access
+    Drive, process B03–B06, expand the cohort, or train a model.
+  interpretation: PACKAGE_PREPARATION_ONLY_NO_B02_EXECUTION
+  statement_sha256: 363677d1bb65f6e8c402a29b5a4d7e99ad708e21ec233cca57c0769a1b84a6af
+identity:
+  patient_id: TCGA-BH-A0BG
+  slide_id: TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+  filename: TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+  gdc_uuid: c5331e5e-10b4-4979-958b-d4592a2805de
+  expected_size_bytes: 724114911
+  expected_md5: a8c6e730df401ff67e1a1e52a6cb6307
+  state: released
+  omic_source_row_index: "472"
+  exact_case_and_full_slide_match_locally_reverified: true
+manifest:
+  path: multiscale_feature_pilot/provenance/brca_six_patient_batch_guarded/B02_TCGA-BH-A0BG_c5331e5e-10b4-4979-958b-d4592a2805de.NOT_AUTHORIZED.gdc.tsv
+  sha256: 8c398bab8159885645ca45006a78872db64234eb37be566631f3ebf1b593bf89
+  exact_rows: 1
+  remains_not_authorized: true
+future_execution_if_separately_authorized:
+  mode: CPU_ONLY_NO_CUDA
+  source: NCI_GDC
+  concurrency: 1
+  destination: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B02.incoming
+  checks: [uuid, filename, byte_size, md5, independent_sha256, no_partial_or_incomplete_files, regular_non_symlink_svs, exact_omic_rematch]
+  openslide_header_fields: [mpp_x, mpp_y, level_count, level_dimensions, level_downsamples]
+  read_region_calls: 0
+  pixel_access: false
+storage:
+  expected_raw_bytes: 724114911
+  conservative_required_available_bytes: 21448229822
+  available_bytes_at_package_preparation: 345399492608
+  preflight_must_be_repeated_before_download: true
+authority_now:
+  download: false
+  wsi_open_or_header_read: false
+  pixel_or_region_read: false
+  gpu_or_cuda: false
+  coordinate_generation: false
+  feature_extraction: false
+  deletion: false
+  drive_operations: false
+  b03_b06_processing: false
+  cohort_expansion: false
+  training: false
+future_exact_authorization_text: >-
+  I authorize downloading only BRCA validation-batch patient B02, UUID
+  c5331e5e-10b4-4979-958b-d4592a2805de (724,114,911 bytes), from GDC to local
+  persistent staging at concurrency one using its exact one-row manifest.
+  After download, perform only exact UUID/filename/size/MD5 verification,
+  independent SHA256 calculation, partial/incomplete checks, regular
+  non-symlink SVS confirmation, exact Omic rematch, and OpenSlide header-only
+  inspection of MPP and every pyramid level. Do not call read_region or access
+  pixels; do not generate masks, coordinates, or features; do not use
+  GPU/CUDA, Drive, deletion, B03–B06 processing, cohort expansion, or training.
+  Stop after the B02 metadata report and wait for my review.
+future_exact_authorization_text_sha256: 5a5ed9f4226814cca5a7a3869d222c0003c55574116b3dc5573ce6b9224ddfa1
+next_decision: AUTHORIZE_OR_DECLINE_EXACT_B02_ACQUISITION_AND_HEADER_ONLY_TEXT

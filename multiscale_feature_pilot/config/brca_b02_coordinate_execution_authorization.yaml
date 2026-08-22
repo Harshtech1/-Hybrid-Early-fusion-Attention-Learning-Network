@@ -1,0 +1,47 @@
+schema_version: 1
+status: AUTHORIZED_B02_SINGLE_MASK_READ_AND_COORDINATE_PUBLICATION
+executable: true
+cohort: TCGA-BRCA
+batch_label: B02
+mode: CPU_ONLY_EXACTLY_ONE_LEVEL2_MASK_READ
+approval:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement: >-
+    I authorize one B02-only CPU coordinate execution: exactly one OpenSlide
+    level-2 mask read at (0,0), size (5580,4560), using the frozen B02 scale
+    and coordinate policy, followed by tissue segmentation and atomic
+    publication of the 2× and 4× coordinate bags. No patch reads, feature
+    extraction, ResNet50, HEALNet, GPU/CUDA, B03–B06 processing,
+    Q25/Q50/Q75/B01 or BLCA changes, Drive operations, deletion, cohort
+    expansion, or training. Stop after coordinate validation and reporting.
+  exact_statement_sha256: ce4ae545431cdcc968f38341611831ba543db35685443dbc5c2485d3341a01b8
+identity:
+  patient_id: TCGA-BH-A0BG
+  slide_id: TCGA-BH-A0BG-01Z-00-DX1.0838FB7F-8C85-4687-9F70-D136A1063383.svs
+  gdc_uuid: c5331e5e-10b4-4979-958b-d4592a2805de
+  size_bytes: 724114911
+  md5: a8c6e730df401ff67e1a1e52a6cb6307
+  sha256: df85b3c048b18ae0a5b9414e7e220110d98891f73f28189849e6e602d1743741
+authorized_read:
+  openslide_open_count: 1
+  read_region_count: 1
+  level_0_location: [0, 0]
+  level: 2
+  size_at_level: [5580, 4560]
+authorized_outputs:
+  destination: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B02.coordinates
+  branches: [scale_2x, scale_4x]
+  atomic_no_overwrite_publication: true
+authority:
+  patch_reads: false
+  feature_extraction: false
+  resnet50: false
+  healnet: false
+  gpu_or_cuda: false
+  b03_b06_processing: false
+  q25_q50_q75_b01_or_blca_changes: false
+  drive_operations: false
+  deletion: false
+  cohort_expansion: false
+  training: false
+required_stop: B02_COORDINATE_VALIDATION_AND_REPORTING

@@ -1,0 +1,40 @@
+schema_version: 1
+status: FIRST_EIGHT_CPU_PHASE_BARRIER_SYNTHETICALLY_VALIDATED
+recorded_at_utc: "2026-08-20T23:40:00Z"
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+policy:
+  path: multiscale_feature_pilot/config/brca_first_eight_phase_barrier_policy.yaml
+  sha256: 31212a8128249ccfbc6033adab528933179d0f9a66fcef6a489d0118b41caaaa
+validator:
+  path: multiscale_feature_pilot/src/brca_first_eight_phase_barrier.py
+  sha256: 1e465d852969e21ee137d024ef6cab1b9a1f5043e9b7a4c27440188ad4e64135
+binding:
+  exact_indices: [1, 2, 3, 4, 5, 6, 7, 8]
+  exact_patients: 8
+  exact_request_only_manifests: 8
+  exact_raw_wsi_bytes: 8297129620
+  p0002_p0008_raw_wsi_bytes: 6527281524
+scheduling:
+  download_concurrency: 1
+  maximum_cpu_patient_workers: 2
+  gpu_concurrency: 0
+  singleton_patient_transactions: true
+  stop_on_first_drift: true
+synthetic_schedule_tests:
+  one_download_plus_one_other_patient_policy_worker: PASS
+  more_than_two_cpu_workers_rejected: PASS
+  two_concurrent_downloads_rejected: PASS
+  pixel_operation_rejected: PASS
+locks:
+  pixel_and_read_region: LOCKED
+  mask_and_coordinate_generation: LOCKED
+  gpu_and_cuda: LOCKED
+  feature_extraction_and_healnet: LOCKED
+  deletion_drive_cohort_expansion_training: LOCKED
+execution_state:
+  p0002_p0008_downloads_started_by_this_package: 0
+  wsi_opens: 0
+  pixel_reads: 0
+  gpu_operations: 0
+next_gate: CPU_PHASE_EXECUTION_UNDER_SERIAL_DOWNLOAD_AND_TWO_WORKER_BARRIER

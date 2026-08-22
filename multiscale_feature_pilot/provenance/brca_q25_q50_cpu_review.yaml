@@ -1,0 +1,313 @@
+schema_version: 1
+status: BRCA_Q25_Q50_CPU_REVIEW_COMPLETE
+cohort: TCGA-BRCA
+recorded_utc_date: 2026-08-19
+mode: CPU_ONLY_LOCAL_RECORD_REVIEW
+recommendation: RUN_Q75_PILOT_RECOMMENDED
+
+scope:
+  q25_or_q50_rerun: false
+  external_feature_artifact_rehash: false
+  q75_wsi_downloaded: false
+  q75_wsi_opened: false
+  q75_pixels_or_regions_read: false
+  gpu_work: false
+  full_cohort_processing: false
+  google_drive_operations: false
+  raw_wsi_deletion: false
+  training: false
+
+frozen_sources:
+  q25_gpu_report:
+    path: reports/brca_q25_gpu_pilot_result.md
+    sha256: 4adfe5673b2e69267738756173f6266d0c7895412950715667893f5e94fc8a46
+  q25_gpu_provenance:
+    path: multiscale_feature_pilot/provenance/brca_q25_gpu_pilot_result.yaml
+    sha256: 76df862c438f4d94e34342b54c80c0866a440af0574be9003444075d7073c6e4
+  q50_gpu_report:
+    path: reports/brca_q50_gpu_pilot_result.md
+    sha256: ff21444147734234b3d4d6fbf9a6fd7fce1ee81ce58d7508a1d5dc848efe5ae3
+  q50_gpu_provenance:
+    path: multiscale_feature_pilot/provenance/brca_q50_gpu_pilot_result.yaml
+    sha256: 904ad3c7bef859f89fef6151014f9eb4b37b5af5d6668972feb19b0e656d263b
+  q25_coordinate_provenance:
+    path: multiscale_feature_pilot/provenance/brca_q25_coordinate_gate.yaml
+    sha256: 7d757fe6973123b3f8b90f3276245fde392e513f784d6c50764f42493218828c
+  q50_coordinate_provenance:
+    path: multiscale_feature_pilot/provenance/brca_q50_coordinate_gate.yaml
+    sha256: 98f142a291f674a0c35b6af823c6f252ced4b9ed36e04fd85458bf1de3153f54
+  q25_scale_approval_provenance:
+    path: multiscale_feature_pilot/provenance/brca_q25_scale_approval.yaml
+    sha256: 6be21ecf25cd2eb9589109feef9657537f99c8968500c0fdf68adc5ac86435e1
+  q50_policy_preexecution_provenance:
+    path: multiscale_feature_pilot/provenance/brca_q50_policy_preexecution.yaml
+    sha256: e387430c028a8c6f791477b12a17027c92da3e0f2b498eb43d0312716baf0bce
+
+comparison:
+  q25:
+    patient_id: TCGA-LL-A6FP
+    slide_id: TCGA-LL-A6FP-01Z-00-DX1.6261398A-7288-4924-BBE2-FC1949256E40.svs
+    gdc_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+    raw_wsi_size_bytes: 648046947
+    level_0_dimensions: [65736, 67406]
+    level_0_pixel_count: 4431000816
+    native_mpp: [0.2525, 0.2525]
+    level_dimensions:
+      - [65736, 67406]
+      - [16434, 16851]
+      - [4108, 4212]
+      - [2054, 2106]
+    level_downsamples:
+      - 1.0
+      - 4.00005934365913
+      - 16.002635628163056
+      - 32.00527125632611
+    scale_2x:
+      effective_mpp: [0.505, 0.505]
+      source_level: 0
+      source_patch: [512, 512]
+      output_patch: [256, 256]
+      interpolation: PIL.Image.Resampling.LANCZOS
+      patch_count: 7404
+      feature_shape: [7404, 2048]
+      streaming_seconds: 114.42982402400003
+      model_forward_seconds: 20.26405061340332
+    scale_4x:
+      effective_mpp: [1.0100149842739303, 1.0100149842739303]
+      source_level: 1
+      source_patch: [256, 256]
+      output_patch: [256, 256]
+      interpolation: none
+      patch_count: 1918
+      feature_shape: [1918, 2048]
+      streaming_seconds: 20.25732625699993
+      model_forward_seconds: 5.154315444946289
+    total_patch_count: 9322
+    coordinate_generation_seconds: 5.915405671999906
+    complete_coordinate_gate_seconds: 8.646961141999782
+    recorded_branch_extraction_wall_sum_seconds: 134.687150281
+    top_level_sequential_extraction_seconds: NOT_RETAINED
+    total_gpu_runtime_seconds: 155.79171268499977
+    resnet_peak_gpu_memory_bytes: 481334784
+    healnet_peak_gpu_memory_bytes: 266871808
+    retained_feature_artifact_bytes: 153208853
+    tissue_contours: 3
+    retained_holes: 4
+    healnet:
+      wsi_input_shape: [1, 9322, 2048]
+      rna_input_shape: [1, 1, 1558]
+      mutation_input_shape: [1, 1, 21]
+      cnv_input_shape: [1, 1, 1333]
+      synthetic_output_shape: [1, 4]
+      real_feature_output_shape: [1, 4]
+      wsi_attention_shape: [1, 2, 9322]
+      omic_attention_shape_each: [1, 2, 1]
+      output_and_attention_finite: true
+      random_initialized: true
+      training: false
+  q50:
+    patient_id: TCGA-AR-A1AW
+    slide_id: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+    gdc_uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+    raw_wsi_size_bytes: 975626387
+    level_0_dimensions: [99960, 65334]
+    level_0_pixel_count: 6530786640
+    native_mpp: [0.2468, 0.2468]
+    level_dimensions:
+      - [99960, 65334]
+      - [24990, 16333]
+      - [6247, 4083]
+      - [3123, 2041]
+    level_downsamples:
+      - 1.0
+      - 4.000061225739301
+      - 16.001375061204985
+      - 32.009231974117526
+    scale_2x:
+      effective_mpp: [0.4936, 0.4936]
+      source_level: 0
+      source_patch: [512, 512]
+      output_patch: [256, 256]
+      interpolation: PIL.Image.Resampling.LANCZOS
+      patch_count: 8580
+      feature_shape: [8580, 2048]
+      streaming_seconds: 124.72181307
+      model_forward_seconds: 24.0247815323
+    scale_4x:
+      effective_mpp: [0.9872151105124595, 0.9872151105124595]
+      source_level: 1
+      source_patch: [256, 256]
+      output_patch: [256, 256]
+      interpolation: none
+      patch_count: 2213
+      feature_shape: [2213, 2048]
+      streaming_seconds: 22.166922364
+      model_forward_seconds: 6.33044137955
+    total_patch_count: 10793
+    coordinate_generation_seconds: 9.504482766000365
+    complete_coordinate_gate_seconds: 17.141911094000534
+    recorded_branch_extraction_wall_sum_seconds: 146.888735434
+    top_level_sequential_extraction_seconds: 148.39458222
+    total_gpu_runtime_seconds: 171.42871093199983
+    resnet_peak_gpu_memory_bytes: 481334784
+    healnet_peak_gpu_memory_bytes: 301068288
+    retained_feature_artifact_bytes: 177402321
+    tissue_contours: 4
+    retained_holes: 2
+    healnet:
+      wsi_input_shape: [1, 10793, 2048]
+      rna_input_shape: [1, 1, 1558]
+      mutation_input_shape: [1, 1, 21]
+      cnv_input_shape: [1, 1, 1333]
+      synthetic_output_shape: [1, 4]
+      real_feature_output_shape: [1, 4]
+      wsi_attention_shape: [1, 2, 10793]
+      omic_attention_shape_each: [1, 2, 1]
+      output_and_attention_finite: true
+      random_initialized: true
+      training: false
+  delta_q50_vs_q25_percent:
+    raw_wsi_size: 50.5487205081
+    level_0_pixels: 47.3885226204
+    scale_2x_patches: 15.8833063209
+    scale_4x_patches: 15.3806047967
+    total_patches: 15.7798755632
+    total_gpu_runtime: 10.0371181352
+    healnet_peak_gpu_memory: 12.8138225826
+    retained_feature_artifacts: 15.7911684124
+  interpretation:
+    raw_svs_bytes_are_reliable_compute_proxy: false
+    batch_fixed_resnet_peak_was_equal: true
+    variable_length_four_modality_contract_passed_for_two_patients: true
+    scientific_or_predictive_validation: false
+
+q75_verified_metadata:
+  selection_quantile: 0.75
+  one_based_rank_of_singletons: 671
+  singleton_population: 894
+  patient_id: TCGA-E2-A154
+  slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  gdc_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  gdc_state: released
+  declared_size_bytes: 1360743825
+  expected_md5_from_manifest: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+  local_wsi_present: false
+  local_wsi_sha256: NOT_AVAILABLE_BECAUSE_NOT_DOWNLOADED
+  expected_size_and_md5_locally_verified: false
+  exact_case_and_full_slide_omic_match: true
+  patient_wsi_count: 1
+  patient_omic_count: 1
+  omic_source_index: 771
+  omic_physical_csv_line: 773
+  omic_tensors:
+    rna_shape: [1, 1, 1558]
+    mutation_shape: [1, 1, 21]
+    cnv_shape: [1, 1, 1333]
+    dtype: float32
+    all_finite: true
+  absent_local_outputs:
+    staging_directory: true
+    coordinates: true
+    features: true
+    authorized_manifest: true
+  guarded_manifest:
+    path: multiscale_feature_pilot/provenance/brca_phase2_manifests/Q75_TCGA-E2-A154_25aec062-60d1-446e-a1c6-0c79cc74a770.NOT_AUTHORIZED.gdc.tsv
+    status: NOT_AUTHORIZED
+    rows: 1
+    sha256: 8e2a17e21c6dafbae384ea729ed24b7c769df7510df0b318ee6ce15e2169553a
+  source_hashes:
+    row_level_alignment:
+      path: reports/brca_row_level_alignment.csv
+      sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+    official_filtered_manifest:
+      logical_path: data/tcga/gdc_manifests/filtered/brca_wsi_manifest_filtered.txt
+      sha256: ac1b4d591ce255a7d4e6bde3778a041b107576693657ee296fe6eb36c4e79a92
+    materialized_clean_omic_archive:
+      logical_path: data/tcga/omic/tcga_brca_all_clean.csv.zip
+      local_path: /teamspace/studios/this_studio/Author_Official_Repo_directery/healnet/data/tcga/omic/tcga_brca_all_clean.csv.zip
+      size_bytes: 4081277
+      sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+
+q75_planning_estimates:
+  status: ESTIMATED_NOT_VERIFIED
+  basis: Q25_AND_Q50_RATIOS_ONLY
+  native_mpp: UNKNOWN
+  level_dimensions: UNKNOWN
+  level_downsamples: UNKNOWN
+  level_0_pixels_range: [9110000000, 9300000000]
+  total_patch_count_range: [15053, 19574]
+  scale_2x_patch_count_range: [11962, 15554]
+  scale_4x_patch_count_range: [3092, 4020]
+  retained_feature_artifact_bytes_range: [247000000, 322000000]
+  coordinate_artifact_bytes_range: [280000, 370000]
+  total_t4_gpu_runtime_seconds_range: [239, 327]
+  operational_runtime_plan_minutes: [4, 7]
+  resnet_peak_gpu_memory_bytes_if_batch_32: 481000000
+  healnet_peak_gpu_memory_bytes_range: [400000000, 505000000]
+  current_pilot_tree_apparent_bytes: 1954756342
+  retained_tree_after_q75_range_bytes: [3562780167, 3637870167]
+  conservative_temporary_peak_range_bytes: [4923523992, 4998613992]
+  caveats:
+    - raw_file_bytes_do_not_determine_tissue_fraction
+    - scanner_compression_can_break_pixel_estimate
+    - q75_pyramid_and_mpp_are_unknown
+    - two_point_runtime_and_memory_extrapolations_are_not_guarantees
+    - q75_selection_by_svs_bytes_does_not_guarantee_worst_compute_case
+
+engineering_assessment:
+  q75_declared_bytes_above_q50_percent: 39.4738644969
+  q75_declared_bytes_above_q25_percent: 109.9761184432
+  additional_coverage:
+    - upper_quartile_transfer_and_temporary_storage
+    - third_slide_pyramid_and_mpp_variation
+    - larger_expected_coordinate_and_feature_publication
+    - longer_expected_variable_wsi_token_bag
+    - healnet_attention_memory_stress
+  scientific_evidence_added: false
+  worst_case_compute_guaranteed: false
+  conclusion: RUN_Q75_PILOT_RECOMMENDED
+
+next_gate:
+  request_path: multiscale_feature_pilot/config/brca_q75_acquisition_request.yaml
+  status: AWAITING_EXPLICIT_USER_AUTHORIZATION
+  acquisition_or_execution_authorized_by_this_review: false
+  stop_if_authorized: EXACT_FILE_VERIFICATION_AND_OPENSLIDE_HEADER_METADATA_ONLY
+  later_separate_gates_required:
+    - q75_scale_policy_review
+    - q75_cpu_mask_and_coordinate_authorization
+    - q75_gpu_feature_and_healnet_smoke_authorization
+
+repository_protection:
+  official_healnet_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  official_healnet_modified: false
+  frozen_blca_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+  frozen_blca_modified_by_review: false
+  protected_user_dirty_path: reports/blca_one_patient_multiscale_pilot.md
+  protected_user_dirty_path_touched: false
+
+validation:
+  yaml_safe_load:
+    review_provenance: PASS
+    q75_acquisition_request: PASS
+  semantic_assertions:
+    exact_recommendation: PASS
+    q75_request_non_executable: PASS
+    guarded_manifest_content_and_sha256: PASS
+    unauthorized_boundaries: PASS
+  git_diff_check: PASS
+  no_index_whitespace_checks: PASS
+  full_cpu_synthetic_suite:
+    command: /home/zeus/miniconda3/envs/cloudspace/bin/python -m pytest -q multiscale_feature_pilot/tests
+    result: PASS
+    passed: 396
+    failed: 0
+  gpu_test_or_real_data_execution: false
+  git_status_snapshot:
+    branch: brca-phase2-metadata-preflight
+    preexisting_modified:
+      - reports/blca_one_patient_multiscale_pilot.md
+    package_untracked:
+      - multiscale_feature_pilot/config/brca_q75_acquisition_request.yaml
+      - multiscale_feature_pilot/provenance/brca_q25_q50_cpu_review.yaml
+      - reports/brca_q25_q50_cpu_review.md
+    other_changes: []

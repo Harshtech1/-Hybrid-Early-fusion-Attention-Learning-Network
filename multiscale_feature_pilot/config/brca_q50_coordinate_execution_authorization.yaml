@@ -1,0 +1,131 @@
+schema_version: 1
+cohort: TCGA-BRCA
+candidate_label: Q50
+phase: BRCA_Q50_COORDINATE_GATE
+status: AUTHORIZED_Q50_MASK_READ_AND_COORDINATES_ONLY
+
+approval_evidence:
+  source: direct_user_instruction
+  preceding_requested_boundary: >-
+    The next real action is one Q50 level-2 mask read and CPU coordinate
+    generation/publication, stopping before GPU feature extraction.
+  user_statement: ok do it start it
+  bounded_interpretation: >-
+    Authorize the exact next milestone described immediately before the user
+    instruction: reverify the Q50 identity and frozen source policy, open only
+    the exact Q50 SVS, read one native level-2 tissue-mask image, generate the
+    two deterministic coordinate bags on CPU, atomically publish and validate
+    Q50.coordinates outside Git, and stop. This does not authorize level-0 or
+    level-1 patch reads, ResNet50, HEALNet, Q75, Drive, or training.
+
+q50_identity:
+  patient_id: TCGA-AR-A1AW
+  slide_id: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+  gdc_file_uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+  filename: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+  size_bytes: 975626387
+  md5: 304509e03f26cbecc9aee4ea691c8e5a
+  sha256: 6b960db7e6e5772f4f626daa7b023ffbb5e3b20f9f6ff5c7d52f4554cf33399b
+  exact_path: >-
+    /teamspace/studios/this_studio/brca_pilot_data/Q50.incoming/5c1216f3-19ec-4d3c-9bb0-9bd740b79f62/TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+
+bound_policy_identity:
+  policy_commit: bd2b73b4a38ee42e24fc6c596631888dbb09f137
+  metadata_evidence:
+    path: multiscale_feature_pilot/provenance/brca_q50_metadata_gate.yaml
+    sha256: 1d912d81416ad4cc41c128f82e6ac8a02ae4315cd99b1ba098ea1024383efb7a
+  policy_preexecution_record:
+    path: multiscale_feature_pilot/provenance/brca_q50_policy_preexecution.yaml
+    sha256: e387430c028a8c6f791477b12a17027c92da3e0f2b498eb43d0312716baf0bce
+  scale_policy_config:
+    path: multiscale_feature_pilot/config/brca_q50_scale_policy.yaml
+    sha256: 979278fd97d79718464f5918e2250993addbf5638fa721390b09dbc0a74eae32
+  scale_policy_evaluator:
+    path: multiscale_feature_pilot/src/brca_q50_scale_policy.py
+    sha256: d54fccccaca2271552eaccf02fcbb7eaf1561a10a2c07da3d53e6ab4f1951a0c
+  coordinate_policy_config:
+    path: multiscale_feature_pilot/config/brca_q50_coordinate_policy.yaml
+    sha256: e5cb83739d3d8fab04da8a63ae1560df04ccc547a79512c219eecb575c0c2114
+  coordinate_policy_core:
+    path: multiscale_feature_pilot/src/brca_q50_coordinates.py
+    sha256: 7dd739667cb6fe0887f3452127c9ff4d43659831d17096922a9f62685149f892
+  reviewed_shared_coordinate_algorithm:
+    path: multiscale_feature_pilot/src/brca_q25_coordinates.py
+    sha256: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+  coordinate_artifact_publisher:
+    path: multiscale_feature_pilot/src/brca_coordinate_artifacts.py
+    sha256: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+
+prerequisites:
+  exact_regular_non_symlink_wsi: required
+  no_partial_file: required
+  exact_size_md5_sha256: required
+  exact_header_metadata: required
+  critical_sources_byte_equal_to_execution_commit: required
+  official_healnet_clean_and_pinned: required
+  frozen_blca_tag_unchanged: required
+  storage_recheck: required
+  final_output_directory_absent: required
+  sibling_staging_and_lock_absent: required
+  output_outside_git: required
+
+authorized_operations:
+  openslide_open_exact_q50: true
+  header_metadata_read: true
+  mask_pixel_read:
+    maximum_calls: 1
+    level: 2
+    level_0_location: [0, 0]
+    size_at_level: [6247, 4083]
+  mask_processing: resolved_brca_q50_coordinate_policy_v1
+  coordinate_generation:
+    branches: [scale_2x, scale_4x]
+    coordinate_space: level_0_x_y
+  artifact_publication:
+    exact_output_directory: /teamspace/studios/this_studio/brca_pilot_data/Q50.coordinates
+    atomic_directory_transaction: required
+    no_overwrite: true
+
+execution_policy:
+  tissue_mask_level: 2
+  tissue_mask_is_shared_by_branches: true
+  scale_2x:
+    level_0_footprint: [512, 512]
+    level_0_step: [512, 512]
+    later_output_patch: [256, 256]
+    later_interpolation: PIL.Image.Resampling.LANCZOS
+    later_effective_mpp: [0.4936, 0.4936]
+  scale_4x:
+    level_0_declared_footprint: [1024, 1024]
+    level_0_step: [1024, 1024]
+    later_read_level: 1
+    later_read_size: [256, 256]
+    later_effective_mpp: [0.9872151105124595, 0.9872151105124595]
+  grid_anchor: [0, 0]
+  reject_incomplete_footprints: true
+  coordinate_order: row_major_y_then_x
+  require_nonempty: true
+  require_unique: true
+
+explicitly_prohibited:
+  - q25_rerun_or_modification
+  - level_0_or_level_1_patch_pixel_read
+  - patch_resampling_execution
+  - associated_image_or_thumbnail_read
+  - resnet50_feature_extraction
+  - pt_feature_generation
+  - healnet_execution
+  - model_training
+  - q75_download_open_or_processing
+  - full_cohort_download_or_processing
+  - google_drive_mount_upload_or_delete
+  - raw_wsi_deletion
+  - official_healnet_modification
+  - frozen_blca_modification
+  - git_tracking_of_wsi_hdf5_or_feature_artifacts
+
+required_stop:
+  after: Q50_COORDINATE_ARTIFACT_VALIDATION_AND_REPORT
+  gpu_feature_extraction_authorized_by_this_record: false
+  q75_authorized: false
+  training_authorized: false

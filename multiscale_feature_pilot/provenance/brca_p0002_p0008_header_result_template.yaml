@@ -1,0 +1,27 @@
+schema_version: 1
+status: TEMPLATE_NOT_EXECUTION_RESULT
+patient_label: P000X
+identity:
+  patient_id: BOUND_FROM_FROZEN_FIRST_EIGHT
+  slide_id: BOUND_FROM_AUTHORIZED_ONE_ROW_MANIFEST
+  gdc_uuid: BOUND_FROM_AUTHORIZED_ONE_ROW_MANIFEST
+  size_bytes: BOUND_FROM_AUTHORIZED_ONE_ROW_MANIFEST
+  md5: BOUND_FROM_AUTHORIZED_ONE_ROW_MANIFEST
+  sha256: COMPUTED_INDEPENDENTLY_FROM_HELD_DESCRIPTOR
+omic:
+  source_row_index: BOUND_FROM_FROZEN_FIRST_EIGHT
+  content_sha256: {rna: VERIFIED, mutation: VERIFIED, cnv: VERIFIED}
+header:
+  inspection: OPENSLIDE_HEADER_ONLY_NO_PIXEL_ACCESS
+  mpp_x: VERIFIED
+  mpp_y: VERIFIED
+  level_count: VERIFIED
+  levels: ALL_LEVELS_RECORDED
+operations:
+  read_region_or_pixel_calls: 0
+  mask_or_coordinate_generations: 0
+  patch_or_feature_extractions: 0
+  healnet_executions: 0
+  gpu_or_cuda_operations: 0
+  deletions: 0
+required_stop_reached: true

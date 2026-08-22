@@ -1,0 +1,53 @@
+schema_version: 1
+status: PRODUCTION_BLOCK_READY_FOR_EXECUTION_REVIEW_NOT_AUTHORIZED
+block_id: BRCA_PRODUCTION_BLOCK_0001_0008
+cohort: TCGA-BRCA
+classification: FIRST_PRODUCTION_BLOCK_NOT_SCIENTIFIC_PILOT
+
+binding:
+  frozen_cohort_order_sha256: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+  exact_cohort_indices: [1, 2, 3, 4, 5, 6, 7, 8]
+  source_tsv: reports/brca_first_eight_canary_proposal.tsv
+  source_tsv_sha256: 940b8fd1f7d194c2c9b7c69ddae58ffff3c55196b6841ac859c60cbc01095dfd
+  exact_patients: 8
+  exact_raw_wsi_bytes: 8297129620
+  manifests_directory: multiscale_feature_pilot/provenance/brca_first_eight_production_manifests
+
+execution_contract:
+  strict_order: true
+  patient_concurrency: 1
+  download_concurrency: 1
+  gpu_concurrency: 1
+  transaction_size_patients: 1
+  recovery_ledger: BRCA_STREAMING_RECOVERY_V2
+  validate_and_terminally_record_before_next_patient: true
+  stop_block_on_first_failure_or_drift: true
+  retain_all_eight_raw_through_block_review: true
+  stages:
+    - PLANNED
+    - ACQUISITION_AUTHORIZED
+    - RAW_VERIFIED
+    - HEADER_POLICY_VERIFIED
+    - COORDINATES_VERIFIED
+    - GPU_AUTHORIZED
+    - FEATURES_VERIFIED
+    - TERMINAL_RECORDED
+
+authorization_strategy:
+  administrative_block_approval: required
+  acquisition: exact_patient_specific_or_exact_block_manifest_release_required
+  header_only: exact_patient_specific_bounds_required
+  coordinate_execution: exact_single_mask_read_after_metadata_policy_required
+  gpu_features: exact_patch_counts_after_coordinates_required
+  raw_release: prohibited_during_first_block
+
+authorization:
+  download: false
+  wsi_open_or_pixels: false
+  coordinates: false
+  gpu_or_cuda: false
+  feature_extraction: false
+  healnet: false
+  raw_deletion: false
+  training: false
+next_gate: REVIEW_AND_AUTHORIZE_EXACT_SERIAL_ACQUISITION_FOR_ROWS_1_8

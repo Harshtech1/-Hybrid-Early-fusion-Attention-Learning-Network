@@ -1,0 +1,155 @@
+schema_version: 1
+status: BRCA_BATCH_B06_HEADER_METADATA_VERIFIED
+cohort: TCGA-BRCA
+batch_label: B06
+recorded_at_utc: '2026-08-20T12:28:14.972529+00:00'
+execution:
+  mode: CPU_ONLY_ACQUISITION_INTEGRITY_AND_HEADER_ONLY
+  source_commit: eb9fac6563d43df4f6af0b8e57b7b662d058d6a6
+  total_seconds: 36.97115891600015
+  authorization_path: multiscale_feature_pilot/config/brca_b06_acquisition_header_authorization.yaml
+  authorization_sha256: 985beef75ee3cbfdb6751dd015b7b4567f3ae377a305e662b7e9fb50ecbc339c
+  authorization_statement_sha256: ad53ad4399ce7c7abe96651da9db68348427a0f7c37e537c24664cd541925f35
+  authorized_manifest_sha256: 2616a09f26ee75460ca19dd1529c12b37981943256edbcf1f175dd50dfb3b3bb
+  gdc_client_version: '2.3'
+  gdc_client_sha256: 1df9281cbacbb53413607a4b9b682947dcb48b6ac7fade6527748bc025ae8c96
+  concurrency: 1
+  successful_download_count: 1
+  download_seconds: 26.845068696999988
+  download_argv:
+  - /teamspace/studios/this_studio/tools/gdc-client/2.3.0/gdc-client
+  - download
+  - --no-related-files
+  - --no-annotations
+  - -m
+  - /teamspace/studios/this_studio/healnet_pilot/multiscale_feature_pilot/provenance/brca_six_patient_batch_authorized/B06_TCGA-EW-A1OY_00e926c5-d65d-42e5-8ba4-afaab66db47c.AUTHORIZED_HEADER_ONLY.gdc.tsv
+  - -d
+  - /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B06.incoming
+  download_timeout_seconds: 10800
+identity:
+  patient_id: TCGA-EW-A1OY
+  slide_id: TCGA-EW-A1OY-01Z-00-DX1.42AF5C9A-A90F-4A58-B5D4-B615F8CD4333.svs
+  filename: TCGA-EW-A1OY-01Z-00-DX1.42AF5C9A-A90F-4A58-B5D4-B615F8CD4333.svs
+  gdc_file_uuid: 00e926c5-d65d-42e5-8ba4-afaab66db47c
+  path: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B06.incoming/00e926c5-d65d-42e5-8ba4-afaab66db47c/TCGA-EW-A1OY-01Z-00-DX1.42AF5C9A-A90F-4A58-B5D4-B615F8CD4333.svs
+  size_bytes: 1691494753
+  md5: dbb9edd8528f25bbcaaee907b1b1ab68
+  sha256: 505e237c82a266abffe451f07bbd75911d7a34263c9f980cfb5e6a2dc3509924
+  regular_non_symlink: true
+  partial_or_incomplete_files_absent: true
+  held_o_nofollow_descriptor_used: true
+  same_descriptor_md5_sha256_rechecked_after_header: true
+download_tree:
+  entries:
+  - 00e926c5-d65d-42e5-8ba4-afaab66db47c/TCGA-EW-A1OY-01Z-00-DX1.42AF5C9A-A90F-4A58-B5D4-B615F8CD4333.svs
+  - 00e926c5-d65d-42e5-8ba4-afaab66db47c/logs/TCGA-EW-A1OY-01Z-00-DX1.42AF5C9A-A90F-4A58-B5D4-B615F8CD4333.svs.parcel
+  parcel_size_bytes: 101979
+  parcel_sha256: 5b346f70206d66e66b16baf9d9d24912653dd0a97dfd6daa09647975d64a734f
+  total_regular_file_bytes: 1691596732
+header:
+  inspection: OPENSLIDE_HEADER_ONLY_NO_PIXEL_ACCESS
+  held_o_nofollow_descriptor: true
+  stable_proc_fd_path: true
+  mpp_x: 0.2485
+  mpp_y: 0.2485
+  level_count: 4
+  levels:
+  - level: 0
+    dimensions:
+    - 114910
+    - 80587
+    downsample: 1.0
+  - level: 1
+    dimensions:
+    - 28727
+    - 20146
+    downsample: 4.000109266924847
+  - level: 2
+    dimensions:
+    - 7181
+    - 5036
+    downsample: 16.002066931213214
+  - level: 3
+    dimensions:
+    - 3590
+    - 2518
+    downsample: 32.006362546213225
+  read_region_calls: 0
+  thumbnail_calls: 0
+  associated_image_accesses: 0
+omic:
+  source_row_index: '897'
+  exact_case_and_full_slide_match: true
+  archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  rna:
+    shape:
+    - 1
+    - 1
+    - 1558
+    dtype: float32
+    content_sha256: 9e1127119a2c050e26f940fb33bc1ef66cdbc7b4f9a0a9b93f7706c71b6e6e2d
+  mutation:
+    shape:
+    - 1
+    - 1
+    - 21
+    dtype: float32
+    content_sha256: 0973e00346a13b12d400440ad7c0b817960575385e84c16abaf69f91aa5a2a90
+  cnv:
+    shape:
+    - 1
+    - 1
+    - 1333
+    dtype: float32
+    content_sha256: 653f04eb009b5dd73c78f06a9bdd55577c455aa906adc97efc8e5826e793d5f1
+storage:
+  filesystem_before_download:
+    total_bytes: 395184570368
+    used_bytes: 31243399168
+    available_bytes: 343791947776
+  gdc_client_version: '2.3'
+  filesystem_after_header:
+    total_bytes: 395184570368
+    used_bytes: 32950665216
+    available_bytes: 342084681728
+  available_bytes_delta: -1707266048
+  raw_wsi_retained: true
+source:
+  source_commit: eb9fac6563d43df4f6af0b8e57b7b662d058d6a6
+  critical_file_sha256:
+    multiscale_feature_pilot/config/brca_b06_acquisition_header_authorization.yaml: 985beef75ee3cbfdb6751dd015b7b4567f3ae377a305e662b7e9fb50ecbc339c
+    ? multiscale_feature_pilot/provenance/brca_six_patient_batch_authorized/B06_TCGA-EW-A1OY_00e926c5-d65d-42e5-8ba4-afaab66db47c.AUTHORIZED_HEADER_ONLY.gdc.tsv
+    : 2616a09f26ee75460ca19dd1529c12b37981943256edbcf1f175dd50dfb3b3bb
+    multiscale_feature_pilot/config/brca_b06_acquisition_header_request.yaml: b80416857b416a41cf070e2b21a2c75285953e5e652656869371e7eb64849251
+    scripts/run_brca_b06_header_gate.py: 4096ff10e91f3d4002d00488bc0d5d0a224e4a1f15b1f1a9c4fe689494e9f3af
+    multiscale_feature_pilot/__init__.py: f05f42721ce2380799c1e655e85d267b73bdf54eec02bcd6a7afaaf42faf93d3
+    multiscale_feature_pilot/src/__init__.py: 1f56e6eecfd95b2d6fdc69114a616edf4cf87d6174958bfd2cc58cb79b6605dd
+    multiscale_feature_pilot/src/brca_omic.py: 5061039913cb0dd4e8e30958c8b4b76f088396f7841255dd94234c3b462d5a5d
+validations:
+  committed_critical_source_files_head_equal: PASS
+  exact_authorization_and_one_row_manifest: PASS
+  fresh_conservative_storage_gate: PASS
+  single_gdc_client_concurrency: PASS
+  exact_uuid_filename_size_md5_sha256: PASS
+  partial_or_incomplete_files_absent: PASS
+  regular_non_symlink_svs_and_parcel: PASS
+  same_held_descriptor_hash_before_after_header: PASS
+  exact_omic_row_rematched: PASS
+  finite_positive_complete_openslide_header: PASS
+operations:
+  read_region_or_pixel_calls: 0
+  mask_generations: 0
+  coordinate_generations: 0
+  patch_reads: 0
+  feature_extractions: 0
+  healnet_executions: 0
+  gpu_or_cuda_operations: 0
+  other_patient_operations: 0
+  deletions_of_user_or_raw_files: 0
+  drive_operations: 0
+  cohort_expansions: 0
+  training_runs: 0
+required_stop: B06_EXACT_FILE_OMIC_AND_HEADER_METADATA_REPORT
+required_stop_reached: true
+scientific_interpretation: EXACT_FILE_OMIC_AND_PYRAMID_METADATA_ONLY_NO_PIXELS_OR_MODEL_OUTPUT
+next_gate: USER_REVIEW_REQUIRED_BEFORE_ANY_B06_PIXEL_ACCESS_OR_SCALE_POLICY

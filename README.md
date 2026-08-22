@@ -6,12 +6,13 @@ This repository does not redistribute TCGA WSI data, generated coordinate/featur
 
 ## Start here
 
-- [GPU-machine handoff and exact restart procedure](GPU_HANDOFF.md)
-- [Short restart checklist](TOMORROW_START.md)
+- [Validated BLCA pilot baseline](reports/validated_pilot_baseline.md)
+- [KIRP cohort-readiness audit](reports/kirp_cohort_readiness.md)
 - [Supervisor-aligned architecture](SUPERVISOR_PIPELINE.md)
 - [Current project state](PROJECT_STATE.md)
 - [Multiscale adapter design](multiscale_feature_pilot/reports/adapter_design.md)
-- [Next real extraction plan](multiscale_feature_pilot/reports/next_real_multiscale_extraction.md)
+- [Historical GPU-machine handoff](GPU_HANDOFF.md)
+- [Historical extraction plan](multiscale_feature_pilot/reports/next_real_multiscale_extraction.md)
 - [GitHub inclusion/exclusion boundary](GITHUB_CONTENTS.md)
 
 ## Fixed architecture
@@ -41,14 +42,15 @@ WSI is never directly concatenated with Omic values. Only the two WSI feature ba
 |---|---|
 | Patient identity rule | Verified |
 | BLCA WSI/Omic exact match | Verified for `TCGA-2F-A9KT` |
-| Two-scale tensor/provenance/padding adapter | Implemented |
-| Synthetic WSI + RNA + mutation + CNV HEALNet forward | Finite `[1,4]` |
-| Tests | 24 passed |
-| Real ResNet50 feature extraction | Not started |
-| Runtime gate | `BLOCKED_NO_GPU` on source machine |
+| 2x / 4x ResNet50 features | `[35534,2048]` / `[8911,2048]`, verified |
+| Combined WSI feature bag | `[44445,2048]`, verified |
+| Real-input random-weight HEALNet interface smoke | Finite `[1,4]` |
+| Tests | 66 passed at freeze validation |
+| BLCA one-patient pilot | `BLCA_ONE_PATIENT_PILOT_SUCCESS` |
 | HEALNet training | Not started |
+| KIRP acquisition | Not started; deterministic row-level selection manifest required |
 
-The code handoff is ready for a GPU machine, but it is not a completed push-button extraction pipeline. It includes the strict adapter, synthetic interface tests, readiness checker, and runbook. The real extraction runner and final 2x coordinate-generation details remain the next implementation step.
+The one-patient implementation is frozen as a reproducible engineering reference. The HEALNet smoke used random initialization, so its output is not a trained survival prediction or scientific result. See the validated baseline for immutable input, feature, provenance, and implementation hashes.
 
 ## Repository layout
 
@@ -61,7 +63,8 @@ healnet_pilot/
 │   ├── src/
 │   └── tests/
 ├── scripts/
-│   └── check_gpu_readiness.py
+│   ├── check_gpu_readiness.py
+│   └── run_blca_one_patient_pilot.py
 ├── reports/                  # audit/history documents
 ├── shared/provenance/
 ├── tracks/                   # paper/released-code provenance
@@ -79,7 +82,7 @@ Keep a clean official HEALNet `v0.1.0` checkout in a sibling directory named `he
 python -m pytest multiscale_feature_pilot/tests -q
 ```
 
-See [GPU_HANDOFF.md](GPU_HANDOFF.md) for environment, data-transfer, hash-verification, and GPU-gate instructions.
+See [reports/validated_pilot_baseline.md](reports/validated_pilot_baseline.md) for the frozen reference contract and [GPU_HANDOFF.md](GPU_HANDOFF.md) for the historical machine-migration procedure.
 
 ## Reproducibility rules
 
@@ -89,7 +92,7 @@ See [GPU_HANDOFF.md](GPU_HANDOFF.md) for environment, data-transfer, hash-verifi
 - Do not label `0.4554` or `0.9108 µm/px` as exact `0.5` or `1.0`.
 - Do not modify the official HEALNet checkout for this pilot.
 - Do not commit `.svs`, `.h5`, `.pt`, `.pth`, `.ckpt`, credentials, OAuth/rclone files, caches, or nested third-party repositories.
-- Stop after the first real one-patient forward; do not scale or train until it passes.
+- Do not scale or train until the KIRP row-level cohort selection is independently reproducible and approved.
 
 ## Official sources
 

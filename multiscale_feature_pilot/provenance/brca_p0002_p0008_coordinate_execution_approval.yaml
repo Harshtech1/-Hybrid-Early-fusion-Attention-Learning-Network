@@ -1,0 +1,58 @@
+schema_version: 1
+status: P0002_P0008_COORDINATE_EXECUTION_PACKAGE_VALIDATED_EXECUTION_PENDING_COMMIT
+recorded_at_utc: "2026-08-21T05:45:00Z"
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+authorization:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_statement_sha256: 057e9c42d68c200768696643edf53d0efeb41a4904b5661dfe2e61063366e01a
+  path: multiscale_feature_pilot/config/brca_p0002_p0008_coordinate_execution_authorization.yaml
+  sha256: 970c1585555664e7cfbcddd4a25667ca7556d8c8cd50b3d8adf29e5debb58250
+request:
+  path: multiscale_feature_pilot/config/brca_p0002_p0008_coordinate_execution_request.yaml
+  sha256: 47805f82a8a727f6dc646860a109b8cd5d8c19a3213a8c18fba5c31fcd96ca6e
+package:
+  base_commit: e22cfe76d64b3a3fbb568450deae1e0c283f4f57
+  runner:
+    path: scripts/run_brca_p0002_p0008_coordinate_phase.py
+    sha256: f1a41bf6c87f00ed7d59cbb1c40184f0329401864cba1b4895e25c417e154ef9
+  implementation:
+    path: multiscale_feature_pilot/src/brca_p0002_p0008_coordinate_phase.py
+    sha256: a5850ec1cd89d9605308174c6ba64885c57c169ec7625946198ac7284747503c
+  test:
+    path: multiscale_feature_pilot/tests/test_brca_p0002_p0008_coordinate_phase.py
+    sha256: decab99a761a00c6a43889923aba65925e083e9d9c980abde307b15c64648751
+execution_contract:
+  patient_labels: [P0002, P0003, P0004, P0005, P0006, P0007, P0008]
+  maximum_cpu_patient_workers: 2
+  rolling_admission_after_success_only: true
+  stop_admitting_patients_after_failure: true
+  exact_openslide_opens: 7
+  exact_read_region_calls: 7
+  exact_four_file_coordinate_destinations: 7
+  atomic_no_overwrite: true
+  zero_delete_publisher: true
+  held_o_nofollow_descriptor: true
+  openslide_proc_fd_path: true
+  wsi_md5_sha256_before_and_after_read: true
+validation:
+  focused_tests: 12
+  full_project_tests: 875
+  focused_result: PASS
+  full_project_result: PASS
+  py_compile: PASS
+  diff_check: PASS
+  synthetic_open_and_read_count: PASS
+  synthetic_maximum_worker_count: PASS
+  synthetic_failure_admission_barrier: PASS
+  synthetic_atomic_publication_and_no_overwrite: PASS
+operations_not_performed_during_package_validation:
+  wsi_open_or_pixel_access: 0
+  masks_or_coordinates: 0
+  gpu_or_cuda: 0
+  feature_extraction: 0
+  healnet: 0
+  deletion: 0
+  drive: 0
+  training: 0
+next_gate: COMMIT_PACKAGE_AND_EXECUTE_WITH_EXACT_SOURCE_COMMIT

@@ -1,0 +1,40 @@
+schema_version: 1
+status: PROPOSAL_ONLY_NO_DELETION_AUTHORIZED
+policy_id: BRCA_STREAMING_RAW_WSI_LIFECYCLE_V1
+scope: TCGA-BRCA_894_SINGLETON_PRODUCTION
+
+retention:
+  b06: RETAIN_INDEFINITELY_PENDING_SEPARATE_DECISION
+  first_production_block_rows_1_8: RETAIN_THROUGH_FORMAL_BLOCK_REVIEW
+  full_cohort: STREAM_ONE_PATIENT_AT_A_TIME_WITH_RECOVERY_BOUND_RELEASE_GATE
+
+safe_to_release_local_raw_gate:
+  all_required: true
+  requirements:
+    - exact_patient_index_case_slide_uuid_size_md5_sha256_revalidated
+    - exact_omic_row_rematched
+    - coordinate_artifacts_reopened_and_strictly_validated
+    - compact_feature_artifacts_reopened_and_strictly_validated
+    - compact_tensor_and_row_provenance_hashes_recomputed
+    - features_verified_stage_terminally_recorded_in_recovery_v2_ledger
+    - no_pending_failed_or_ambiguous_transaction_state
+    - recovery_source_or_separately_approved_retained_copy_verified
+    - lifecycle_policy_sha256_bound_to_terminal_record
+    - patient_specific_deletion_authorization_present
+  automatic_release_after_feature_extraction: prohibited
+  batch_or_glob_deletion: prohibited
+  deletion_of_b06: prohibited
+
+proposed_release_operation:
+  status: REQUIRES_SEPARATE_IMPLEMENTATION_REVIEW_AND_AUTHORIZATION
+  exact_single_patient_identity_only: true
+  held_o_nofollow_descriptor_and_path_token_required: true
+  dry_run_and_revalidation_required: true
+  append_only_release_result_required: true
+  failure_or_drift_action: RETAIN_AND_STOP
+
+authorization:
+  delete_or_move_any_raw_wsi: false
+  cleanup_existing_files: false
+  drive_or_network_copy: false
+next_gate: SUPERVISOR_SELECT_RECOVERY_SOURCE_THEN_AUTHORIZE_EACH_IDENTITY_BOUND_RELEASE_SEPARATELY

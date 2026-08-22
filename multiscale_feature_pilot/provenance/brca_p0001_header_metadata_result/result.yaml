@@ -1,0 +1,185 @@
+schema_version: 1
+status: BRCA_PRODUCTION_P0001_HEADER_METADATA_VERIFIED
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+cohort_index: 1
+patient_label: P0001
+frozen_cohort_order_sha256: 1c97fa4f8305185f2da191f5ebaed603db7d2bdd11c89a580e784ef46655af5a
+recorded_at_utc: '2026-08-20T13:43:39.399770+00:00'
+execution:
+  mode: CPU_ONLY_ACQUISITION_INTEGRITY_AND_HEADER_ONLY
+  source_commit: 5115bded90e891a2b5c9ece52cac4c09b9229bf0
+  total_seconds: 42.756201139999575
+  authorization_path: multiscale_feature_pilot/config/brca_p0001_acquisition_header_authorization.yaml
+  authorization_sha256: 691a8d536c9a614a326d26f971f586b7e5ab441a5efea189e347f2c4d664d61a
+  authorization_statement_sha256: 1d755c3432c29450ba40520287f28b1c6273c6969af1962b9345f6aededf824b
+  authorized_manifest_sha256: 1c05dc64b6af54604648b52e688e02f611f8e42aaf82cf911c81035b3fc385f2
+  gdc_client_version: '2.3'
+  gdc_client_sha256: 1df9281cbacbb53413607a4b9b682947dcb48b6ac7fade6527748bc025ae8c96
+  concurrency: 1
+  strict_serial_order: true
+  later_patient_started: false
+  successful_download_count: 1
+  download_seconds: 32.81181807200028
+  download_argv:
+  - /teamspace/studios/this_studio/tools/gdc-client/2.3.0/gdc-client
+  - download
+  - --no-related-files
+  - --no-annotations
+  - -m
+  - /teamspace/studios/this_studio/healnet_pilot/multiscale_feature_pilot/provenance/brca_first_eight_production_manifests/P0001_93b26333-5723-4fa4-a4de-6124c04ab243.REQUEST_ONLY.gdc.tsv
+  - -d
+  - /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_P0001.incoming
+  download_timeout_seconds: 10800
+identity:
+  patient_id: TCGA-3C-AALK
+  slide_id: TCGA-3C-AALK-01Z-00-DX1.4E6EB156-BB19-410F-878F-FC0EA7BD0B53.svs
+  filename: TCGA-3C-AALK-01Z-00-DX1.4E6EB156-BB19-410F-878F-FC0EA7BD0B53.svs
+  gdc_file_uuid: 93b26333-5723-4fa4-a4de-6124c04ab243
+  path: /teamspace/studios/this_studio/brca_pilot_data/BRCA_PRODUCTION_P0001.incoming/93b26333-5723-4fa4-a4de-6124c04ab243/TCGA-3C-AALK-01Z-00-DX1.4E6EB156-BB19-410F-878F-FC0EA7BD0B53.svs
+  size_bytes: 1769848096
+  md5: 3d63b3311612d763525b6edb0848b986
+  sha256: f43597a87463d8d15007918dd5174ff966aa28dcb0de71cdc5752576cd7c2b5b
+  regular_non_symlink: true
+  partial_or_incomplete_files_absent: true
+  held_o_nofollow_descriptor_used: true
+  same_descriptor_md5_sha256_rechecked_after_header: true
+download_tree:
+  entries:
+  - 93b26333-5723-4fa4-a4de-6124c04ab243/TCGA-3C-AALK-01Z-00-DX1.4E6EB156-BB19-410F-878F-FC0EA7BD0B53.svs
+  - 93b26333-5723-4fa4-a4de-6124c04ab243/logs/TCGA-3C-AALK-01Z-00-DX1.4E6EB156-BB19-410F-878F-FC0EA7BD0B53.svs.parcel
+  directories:
+  - 93b26333-5723-4fa4-a4de-6124c04ab243
+  - 93b26333-5723-4fa4-a4de-6124c04ab243/logs
+  parcel_size_bytes: 106452
+  parcel_sha256: b666d63039457d08f381f5682c3e4b4a40953e4d3ec7e9e977703fd5b289537d
+  total_regular_file_bytes: 1769954548
+header:
+  inspection: OPENSLIDE_HEADER_ONLY_NO_PIXEL_ACCESS
+  held_o_nofollow_descriptor: true
+  stable_proc_fd_path: true
+  mpp_x: 0.25
+  mpp_y: 0.25
+  level_count: 4
+  levels:
+  - level: 0
+    dimensions:
+    - 95488
+    - 81920
+    downsample: 1.0
+  - level: 1
+    dimensions:
+    - 23872
+    - 20480
+    downsample: 4.0
+  - level: 2
+    dimensions:
+    - 5968
+    - 5120
+    downsample: 16.0
+  - level: 3
+    dimensions:
+    - 2984
+    - 2560
+    downsample: 32.0
+  read_region_calls: 0
+  thumbnail_calls: 0
+  associated_image_accesses: 0
+omic:
+  source_row_index: '4'
+  exact_case_and_full_slide_match: true
+  archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  rna:
+    shape:
+    - 1
+    - 1
+    - 1558
+    dtype: float32
+    content_sha256: 1894e15a5dbba2559c61e8521394599153a0ada90cf482fd9eb0c45347f5082a
+  mutation:
+    shape:
+    - 1
+    - 1
+    - 21
+    dtype: float32
+    content_sha256: 33767ff31d3c7c11a69ba46c746125f679492e03f5dec7c48f8117aa2a6b3c52
+  cnv:
+    shape:
+    - 1
+    - 1
+    - 1333
+    dtype: float32
+    content_sha256: a0ef410e624c698475b78dc0270bf2613e2e320ba4935f8580cb0867d41bfd50
+storage:
+  filesystem_before_download:
+    total_bytes: 395184570368
+    used_bytes: 33354297344
+    available_bytes: 341681049600
+  gdc_client_version: '2.3'
+  filesystem_after_header:
+    total_bytes: 395184570368
+    used_bytes: 35124281344
+    available_bytes: 339911065600
+  available_bytes_delta: -1769984000
+  raw_wsi_retained: true
+source:
+  source_commit: 5115bded90e891a2b5c9ece52cac4c09b9229bf0
+  critical_file_sha256:
+    multiscale_feature_pilot/config/brca_p0001_acquisition_header_authorization.yaml: 691a8d536c9a614a326d26f971f586b7e5ab441a5efea189e347f2c4d664d61a
+    ? multiscale_feature_pilot/provenance/brca_first_eight_production_manifests/P0001_93b26333-5723-4fa4-a4de-6124c04ab243.REQUEST_ONLY.gdc.tsv
+    : 1c05dc64b6af54604648b52e688e02f611f8e42aaf82cf911c81035b3fc385f2
+    multiscale_feature_pilot/config/brca_first_eight_production_execution_request.yaml: 04da2f211bfae390ec94ec2dd082ed032204d9c3b81424c6273e33679b14134b
+    reports/brca_first_eight_canary_proposal.tsv: 940b8fd1f7d194c2c9b7c69ddae58ffff3c55196b6841ac859c60cbc01095dfd
+    multiscale_feature_pilot/config/brca_894_production_adapter_policy.yaml: 78c24ea714814c9775b1f6c1268179d3fe47c89c55391485bdb65691f51dddd8
+    multiscale_feature_pilot/provenance/brca_894_survival_split.tsv: 3e519a26eaa24852862bf368a48cceffaf26783c73e80007737134ae6ed626ad
+    ? multiscale_feature_pilot/provenance/brca_first_eight_production_manifests/P0002_fd6a8fe0-50d8-4f69-b678-1a884e1c5d3d.REQUEST_ONLY.gdc.tsv
+    : b15b39701d3365503e9b2f340c6e451b04cf97bc03f171c62f7b0e21b386a4f0
+    ? multiscale_feature_pilot/provenance/brca_first_eight_production_manifests/P0003_b3780253-78fe-4907-9f5a-230b2bb4b24e.REQUEST_ONLY.gdc.tsv
+    : 339b2d52fb8948c088cd4ddc79ebb2cbaadeabdee98d03ac44b5702ff90bf982
+    ? multiscale_feature_pilot/provenance/brca_first_eight_production_manifests/P0004_4eec69ca-381b-4c17-b3e9-49492d71560e.REQUEST_ONLY.gdc.tsv
+    : 3692ecd473064cf13850beb4b1ad7a1131669419687a852cb793c65f30ed955c
+    ? multiscale_feature_pilot/provenance/brca_first_eight_production_manifests/P0005_cfe3c99d-0c00-4360-b768-2cb4fbd1040a.REQUEST_ONLY.gdc.tsv
+    : 0287e08038054bedfac19065016161267a0ade08123ea91b5e3866b52c33384a
+    ? multiscale_feature_pilot/provenance/brca_first_eight_production_manifests/P0006_cea82b7d-135a-49d5-b4f6-3fb0215f7188.REQUEST_ONLY.gdc.tsv
+    : ce31dd16674f4ec1928bec81aba0f621baba9925c9cbf8038a1e38a81f1afec3
+    ? multiscale_feature_pilot/provenance/brca_first_eight_production_manifests/P0007_0a9ea7ac-9d51-4ff7-b40b-659a57e64945.REQUEST_ONLY.gdc.tsv
+    : c28311d8b4a459167e3f9d1b552af61b8a01135a1f731b5297d7447214c31b06
+    ? multiscale_feature_pilot/provenance/brca_first_eight_production_manifests/P0008_53f1310d-cea9-4179-ad5c-3a257fcc7ed3.REQUEST_ONLY.gdc.tsv
+    : c33cfc39a9c708cc2ddca6ab42447923cd959b6a847a22634fc9d970a26ce931
+    scripts/run_brca_p0001_header_gate.py: a9b920357cfa19fd2bf2e960791b58a2d73530fdec857da532ede14e50f35b4b
+    multiscale_feature_pilot/__init__.py: f05f42721ce2380799c1e655e85d267b73bdf54eec02bcd6a7afaaf42faf93d3
+    multiscale_feature_pilot/src/__init__.py: 1f56e6eecfd95b2d6fdc69114a616edf4cf87d6174958bfd2cc58cb79b6605dd
+    multiscale_feature_pilot/src/brca_omic.py: 5061039913cb0dd4e8e30958c8b4b76f088396f7841255dd94234c3b462d5a5d
+    multiscale_feature_pilot/src/brca_streaming_production_adapter.py: a5021d765ca3ab99eec1f0fc701cea8b5374062afedf59d8f38fc4128123825d
+    multiscale_feature_pilot/src/brca_singleton_streaming_policy.py: 7bace651ec207448604d29cb5dad2ef55d0fc111726272a8e0e54f8b0d3005b2
+    multiscale_feature_pilot/src/brca_streaming_executor_v2.py: bff584b18a9ea3a652b69cc883aecbeeed9ff88401ae6d3217e72565383fcecb
+    multiscale_feature_pilot/src/brca_streaming_recovery_v2.py: 4986390d37c17307d53843aefe66c105f2abd7d67cd9fb6b70708a52d20b03d6
+validations:
+  committed_critical_source_files_head_equal: PASS
+  exact_authorization_and_one_row_manifest: PASS
+  exact_eight_manifest_block_and_p0001_order: PASS
+  fresh_conservative_storage_gate: PASS
+  single_gdc_client_concurrency: PASS
+  exact_uuid_filename_size_md5_sha256: PASS
+  partial_or_incomplete_files_absent: PASS
+  regular_non_symlink_svs_and_parcel: PASS
+  same_held_descriptor_hash_before_after_header: PASS
+  exact_omic_row_rematched: PASS
+  finite_positive_complete_openslide_header: PASS
+operations:
+  read_region_or_pixel_calls: 0
+  mask_generations: 0
+  coordinate_generations: 0
+  patch_reads: 0
+  feature_extractions: 0
+  healnet_executions: 0
+  gpu_or_cuda_operations: 0
+  later_patient_operations: 0
+  deletions_of_user_or_raw_files: 0
+  drive_operations: 0
+  cohort_expansions: 0
+  training_runs: 0
+required_stop: P0001_EXACT_FILE_OMIC_AND_HEADER_METADATA_REPORT
+required_stop_reached: true
+scientific_interpretation: EXACT_FILE_OMIC_AND_PYRAMID_METADATA_ONLY_NO_PIXELS_OR_MODEL_OUTPUT
+next_gate: USER_REVIEW_REQUIRED_BEFORE_P0001_SCALE_OR_PIXEL_POLICY; P0002_NOT_STARTED

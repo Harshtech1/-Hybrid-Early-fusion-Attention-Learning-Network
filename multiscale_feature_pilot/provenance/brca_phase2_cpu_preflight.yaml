@@ -1,0 +1,112 @@
+schema_version: 1
+phase: BRCA_PHASE_2_CPU_PREFLIGHT
+status: CPU_PREFLIGHT_READY_ACQUISITION_BLOCKED
+recorded_utc_date: 2026-08-18
+
+repository_identity:
+  pilot_branch: brca-phase2-metadata-preflight
+  phase_1_commit: 9b61ea99719c5dcca24078ba38f33128a0f2f2e0
+  frozen_blca_tag: blca-one-patient-pilot-v1
+  frozen_blca_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+  official_healnet_tag: v0.1.0
+  official_healnet_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  official_checkout_clean: true
+
+gdc_client:
+  path: /teamspace/studios/this_studio/tools/gdc-client/2.3.0/gdc-client
+  official_release: 2.3.0
+  runtime_version: '2.3'
+  platform: linux_x86_64_elf
+  binary_bytes: 22168960
+  binary_sha256: 1df9281cbacbb53413607a4b9b682947dcb48b6ac7fade6527748bc025ae8c96
+  outer_archive_bytes: 21987739
+  outer_archive_md5: 18591d74de07cdcd396dab71c52663da
+  outer_archive_sha256: 5805635e5551962280589f5a59d047bde93b380c653de2b9b62460e7336c8189
+  dataset_download_performed: false
+
+manifest_set:
+  directory: multiscale_feature_pilot/provenance/brca_phase2_manifests
+  authorization_status: NOT_AUTHORIZED
+  manifest_count: 3
+  rows_per_manifest: 1
+  combined_manifest_present: false
+  download_command_present: false
+  total_declared_wsi_bytes: 2984417159
+  manifests:
+    - label: Q25
+      patient_id: TCGA-LL-A6FP
+      uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+      sha256: 95bb1c4491497c265b868e96698cef3c3dd501458f801dae3c1dd702f3efa297
+    - label: Q50
+      patient_id: TCGA-AR-A1AW
+      uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+      sha256: 1028665e49bab6895a47947d069e225c2d6b4b90f420f7a9dc916ca9313a6062
+    - label: Q75
+      patient_id: TCGA-E2-A154
+      uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+      sha256: 8e2a17e21c6dafbae384ea729ed24b7c769df7510df0b318ee6ce15e2169553a
+
+metadata_policy:
+  status: PENDING_SUPERVISOR_APPROVAL
+  supplied_values_only: true
+  openslide_imported: false
+  file_opening_supported: false
+  targets_mpp:
+    scale_2x: 0.5
+    scale_4x: 1.0
+  proposed_per_axis_tolerance_fraction: 0.10
+  native_levels_only: true
+  silent_resampling: prohibited
+  real_slide_authorized_by_success: false
+
+preflight_result:
+  cpu_preflight_ready: true
+  frozen_sources_verified: true
+  acquisition_authorized: false
+  ready_to_download: false
+  focused_tests_passed: 82
+  full_suite_passed: 203
+  mode: LOCAL_READ_ONLY_NO_NETWORK_NO_WSI
+  blockers:
+    - exact_three_acquisition_approval_not_recorded
+    - mpp_and_resampling_policy_pending_supervisor_approval
+    - candidate_manifests_not_authorized
+
+implementation_identity:
+  manifest_set_record_sha256: bcb5c45961556fceb4e0575d3ea3fa35867d5825c85164175287964be9ce1957
+  files:
+    multiscale_feature_pilot/config/brca_phase2_authorization.yaml: cd35150d32b42c42506c2bfb5a7ec726be3afd0e1e2ec5e37074266a0d97fcf4
+    multiscale_feature_pilot/config/brca_phase2_metadata_policy.yaml: 922d22625b99fcb28fcb094d5a47c1c8ed6df1b5bc4dca81c9ea90594c55a637
+    multiscale_feature_pilot/src/brca_one_row_manifest.py: 7efe1d454110e5514eccff1bf246b24aee5fc19a9117e29d05839a0b54ba4238
+    multiscale_feature_pilot/src/brca_phase2_preflight.py: e6f6e79455bb5262c9197c713be09c135d16c1aa644bd3e62c9bb1558e120518
+    multiscale_feature_pilot/src/wsi_metadata_policy.py: b244ad1d46b009b079c19218b4f591a8f4bd05afe88464660453fc799a7e0a77
+    multiscale_feature_pilot/tests/test_brca_one_row_manifest.py: 07812b61e397a55e36a6d9f42add8235f73a05051641f54dd1ec685cf094edc3
+    multiscale_feature_pilot/tests/test_brca_phase2_preflight.py: 01ef7d106555e87dcb72cc3b033146cfe59aa4f583ba55094b3b2d6fcab20cbc
+    multiscale_feature_pilot/tests/test_wsi_metadata_policy.py: 434fe206cfb0624761469b8cc581a7c7c966b7cdb96d6a8a41dbc534903292c0
+    scripts/build_brca_phase2_manifests.py: c1f46577432a5e68da9ef12b58f1e514b07fa11750c1e2d0a32123c0e4cbc047
+    scripts/check_brca_phase2_preflight.py: 1b0476b6ad68500c7f1ae1870d2a8637bc414d34e9d16d5cf968675c7c95e915
+
+safety:
+  network_requests_performed: false
+  wsi_downloaded: false
+  wsi_opened: false
+  coordinates_generated: false
+  features_extracted: false
+  real_input_healnet_executed: false
+  training_performed: false
+  gpu_required_now: false
+
+storage:
+  lightning_persistent_quota_bytes: 200000000000
+  mandatory_safety_floor_bytes: 20000000000
+  provisional_training_hold_bytes: 5000000000
+  proposed_raw_bytes: 2984417159
+  largest_proposed_wsi_bytes: 1360743825
+  conservative_reference_peak_bytes: 28666606029
+  initial_concurrency: 1
+
+next_gate:
+  status: SUPERVISOR_DECISION_REQUIRED
+  begin_with: Q25
+  stop_after: size_md5_and_mpp_pyramid_report
+  gpu_switch_before: resnet50_feature_extraction

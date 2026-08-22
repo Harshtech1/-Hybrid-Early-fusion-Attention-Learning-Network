@@ -1,0 +1,218 @@
+schema_version: 1
+phase: BRCA_Q75_ACQUISITION_AND_HEADER_METADATA_GATE
+status: AUTHORIZED_Q75_ACQUISITION_AND_HEADER_METADATA_ONLY
+cohort: TCGA-BRCA
+candidate: Q75
+execution_mode: CPU_LOGIC_ONLY_CUDA_NOT_REQUIRED
+
+approval_record:
+  source: DIRECT_USER_AUTHORIZATION
+  exact_user_statement: |
+    I authorize downloading only BRCA Q75 UUID `25aec062-60d1-446e-a1c6-0c79cc74a770` (`1,360,743,825` bytes) from GDC to local persistent staging at concurrency one.
+
+    After download, perform only:
+
+    * exact UUID and filename verification;
+    * exact byte-size verification;
+    * MD5 verification against `a8c4b68fb6e0ab3e862efe3ed1fe10d7`;
+    * independent SHA256 calculation;
+    * partial/incomplete-download checks;
+    * confirmation that the file is a regular non-symlink SVS;
+    * OpenSlide **header-only** inspection for native MPP, pyramid level count, level dimensions, and level downsample values.
+
+    Do **not** perform:
+
+    * `read_region` or any pixel/region access;
+    * tissue-mask generation;
+    * coordinate generation;
+    * patch extraction;
+    * ResNet50 inference;
+    * HEALNet execution;
+    * Q75 feature generation;
+    * Q75 raw-file deletion;
+    * Google Drive operations;
+    * full-cohort processing;
+    * Q25/Q50 modification;
+    * BLCA modification;
+    * training.
+
+    Reverify that the exact Q75 slide still matches patient `TCGA-E2-A154` and the exact Omic row before recording the metadata result.
+
+    Fail closed on any UUID, filename, size, MD5, SHA256, file-type, OpenSlide-header, or patient/slide identity mismatch.
+
+    After the header-only inspection, stop and report:
+
+    * local WSI path;
+    * exact size, MD5, and SHA256;
+    * native `mpp-x` and `mpp-y`;
+    * level count;
+    * dimensions and downsample values for every pyramid level;
+    * whether the approximately `0.5` and `1.0 µm/px` targets appear natively achievable or would require controlled resampling;
+    * disk usage before/after;
+    * Git status;
+    * tests/validation performed;
+    * files created or modified.
+
+    Do not infer or approve the Q75 scale policy automatically. Stop after the metadata report and wait for my review.
+  exact_user_statement_sha256: b43031fe0a9df8e5c44f35f9666567b202e4eb80ecb816386679a856a013bf01
+  cpu_directive: >-
+    Stay on CPU logic even though the Studio may physically have a GPU
+    attached; this Q75 stage does not need CUDA.
+
+frozen_review_predecessor:
+  commit: 69d89a5df986b129fd0b9dc4dcc1e8534627093e
+  commit_subject: "docs: review BRCA pilots and prepare Q75 gate"
+  request_path: multiscale_feature_pilot/config/brca_q75_acquisition_request.yaml
+  request_sha256: ee2c5147c0900c524daf8a7d8af468f5c71a536d1fc6d4f31e8e32ae6bb66c3c
+  review_report_path: reports/brca_q25_q50_cpu_review.md
+  review_report_sha256: b9ad7c8cd271e769f1365a53c6b5e5ba3db951748e2e14b0d36f01e802a3a927
+  review_provenance_path: multiscale_feature_pilot/provenance/brca_q25_q50_cpu_review.yaml
+  review_provenance_sha256: fc6784c891938c8213ec6e6468ca24d949fc0de4adcde62da6a5fbf48afe7a45
+  recommendation: RUN_Q75_PILOT_RECOMMENDED
+
+successful_predecessors:
+  q25:
+    result_path: multiscale_feature_pilot/provenance/brca_q25_gpu_pilot_result.yaml
+    result_sha256: 76df862c438f4d94e34342b54c80c0866a440af0574be9003444075d7073c6e4
+    result_commit: 7f44db0388b059c289ffa4510f9944e62eb2724b
+    status: BRCA_Q25_GPU_FEATURE_PILOT_SUCCESS
+    required_stop_reached: true
+    frozen_no_rerun: true
+  q50:
+    result_path: multiscale_feature_pilot/provenance/brca_q50_gpu_pilot_result.yaml
+    result_sha256: 904ad3c7bef859f89fef6151014f9eb4b37b5af5d6668972feb19b0e656d263b
+    result_commit: 42bb373ca206d0bc7dcc67cf0206d7022ef260e9
+    status: BRCA_Q50_GPU_FEATURE_PILOT_SUCCESS
+    required_stop_reached: true
+    frozen_no_rerun: true
+
+authority:
+  exact_wsi_download:
+    status: APPROVED_Q75_ONLY
+    source: NCI_GDC
+    manifest_rows: 1
+    patient_concurrency: 1
+    active_gdc_client_processes: 1
+    gdc_internal_transfer_processes: client_supported_default_minimum_3
+    pass_n_processes_1: false
+    current_executable_scope: Q75_DOWNLOAD_AND_HEADER_ONLY
+  post_download_verification:
+    status: REQUIRED_BEFORE_OPENSLIDE_CONSTRUCTION
+    required_checks:
+      - exact_uuid
+      - exact_filename
+      - exact_byte_size
+      - expected_md5
+      - independent_sha256
+      - partial_or_incomplete_download_absent
+      - regular_file
+      - non_symlink
+      - svs_filename_suffix
+  wsi_header_read:
+    status: APPROVED_Q75_HEADER_ONLY_AFTER_ALL_FILE_CHECKS
+    allowed_fields:
+      - mpp_x
+      - mpp_y
+      - level_count
+      - level_dimensions
+      - level_downsamples
+    openslide_construction_allowed: true
+    read_region_or_pixel_access: NOT_AUTHORIZED
+  omic_identity_reverification:
+    status: REQUIRED_BEFORE_METADATA_PUBLICATION
+  scale_policy_inference_or_approval:
+    status: NOT_AUTHORIZED
+  tissue_mask_generation:
+    status: NOT_AUTHORIZED
+  coordinate_generation:
+    status: NOT_AUTHORIZED
+  patch_extraction:
+    status: NOT_AUTHORIZED
+  resnet50_inference:
+    status: NOT_AUTHORIZED
+  healnet_execution:
+    status: NOT_AUTHORIZED
+  q75_feature_generation:
+    status: NOT_AUTHORIZED
+  full_cohort_processing:
+    status: NOT_AUTHORIZED
+  training:
+    status: NOT_AUTHORIZED
+
+authorized_q75:
+  patient_id: TCGA-E2-A154
+  wsi_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  filename: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  declared_bytes: 1360743825
+  md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+  state: released
+  selection_quantile: 0.75
+  singleton_rank: 671
+  singleton_population: 894
+  omic_source_index: 771
+  omic_physical_csv_line: 773
+  exact_case_and_full_slide_match: true
+  patient_wsi_count: 1
+  patient_omic_count: 1
+  omic_shapes:
+    rna: [1, 1, 1558]
+    mutation: [1, 1, 21]
+    cnv: [1, 1, 1333]
+  omic_dtype: float32
+  omic_all_finite: true
+
+source_bindings:
+  guarded_q75_manifest_path: >-
+    multiscale_feature_pilot/provenance/brca_phase2_manifests/Q75_TCGA-E2-A154_25aec062-60d1-446e-a1c6-0c79cc74a770.NOT_AUTHORIZED.gdc.tsv
+  guarded_q75_manifest_sha256: 8e2a17e21c6dafbae384ea729ed24b7c769df7510df0b318ee6ce15e2169553a
+  proposal_sha256: b1bbeb06bb200813122e0b1a88a3d0258660eaff067d35f1d8de1dd6d79badb2
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  filtered_gdc_manifest_sha256: ac1b4d591ce255a7d4e6bde3778a041b107576693657ee296fe6eb36c4e79a92
+  clean_omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+
+storage_contract:
+  download_destination: /teamspace/studios/this_studio/brca_pilot_data/Q75.incoming
+  local_persistent_staging_required: true
+  process_directly_from_rclone_mount: false
+  google_drive_required: false
+  google_drive_operations_authorized: false
+  raw_wsi_deletion_authorized: false
+  retain_raw_wsi_after_metadata_gate: true
+
+execution_contract:
+  one_row_manifest_only: true
+  one_patient_at_a_time: true
+  one_active_gdc_client_process: true
+  gdc_internal_transfer_processes: client_supported_default_minimum_3
+  pass_n_processes_1: false
+  require_no_partial_or_incomplete_download_artifacts: true
+  require_regular_non_symlink_svs: true
+  require_exact_uuid_filename_size_and_md5_before_openslide: true
+  require_independent_sha256_before_openslide: true
+  prohibit_read_region_and_pixel_access: true
+  require_exact_omic_rematch_before_recording: true
+  allow_only_header_property_access: true
+  infer_or_approve_scale_policy: false
+  use_cuda: false
+  stop_after: Q75_EXACT_FILE_VERIFICATION_AND_HEADER_METADATA_REPORT
+
+prohibited_actions:
+  - read_region_or_any_pixel_region_access
+  - tissue_mask_generation
+  - coordinate_generation
+  - patch_extraction
+  - resnet50_inference
+  - healnet_execution
+  - q75_feature_generation
+  - q75_raw_file_deletion
+  - google_drive_operations
+  - full_cohort_processing
+  - q25_or_q50_modification_or_rerun
+  - blca_modification
+  - official_healnet_modification
+  - training_backward_or_optimizer_execution
+  - automatic_q75_scale_policy_inference_or_approval
+
+required_stop:
+  state: WAIT_FOR_USER_REVIEW_AFTER_METADATA_REPORT
+  later_work_authorized: false

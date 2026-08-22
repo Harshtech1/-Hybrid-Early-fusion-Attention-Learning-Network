@@ -1,0 +1,40 @@
+schema_version: 1
+status: B06_HEADER_ACCEPTED_PIXEL_WORK_SKIPPED_RAW_RETAINED
+cohort: TCGA-BRCA
+batch_label: B06
+recorded_date_utc: "2026-08-20"
+
+decision:
+  source: DIRECT_USER_DECISION
+  accepted_header_result: true
+  disposition: SKIP_B06_PIXEL_WORK
+  raw_wsi_retained: true
+  raw_wsi_deletion_authorized: false
+
+evidence:
+  result_path: multiscale_feature_pilot/provenance/brca_b06_header_metadata_result/result.yaml
+  result_sha256: c1728f20868aa1cc5295d927c547b62ce14b9a5c880d496c0138288477d38ef6
+  patient_id: TCGA-EW-A1OY
+  slide_id: TCGA-EW-A1OY-01Z-00-DX1.42AF5C9A-A90F-4A58-B5D4-B615F8CD4333.svs
+  gdc_uuid: 00e926c5-d65d-42e5-8ba4-afaab66db47c
+  size_bytes: 1691494753
+  md5: dbb9edd8528f25bbcaaee907b1b1ab68
+  sha256: 505e237c82a266abffe451f07bbd75911d7a34263c9f980cfb5e6a2dc3509924
+  native_mpp: [0.2485, 0.2485]
+  effective_2x_mpp_if_policy_were_applied: [0.497, 0.497]
+  native_level_1_effective_mpp: [0.9940271528308244, 0.9940271528308244]
+  geometry_already_covered_by_validated_policy_family: true
+
+operations_authorized_by_this_decision:
+  metadata_disposition_recording: true
+  pixel_access: false
+  masks_or_coordinates: false
+  patch_reads: false
+  gpu_or_cuda: false
+  feature_or_healnet_execution: false
+  deletion: false
+  drive: false
+  training: false
+
+required_stop: B06_RAW_RETAINED_WITH_NO_PIXEL_OR_MODEL_WORK
+required_stop_reached: true

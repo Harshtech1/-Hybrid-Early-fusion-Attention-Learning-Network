@@ -1,0 +1,94 @@
+schema_version: 1
+status: CPU_VALIDATED_READY_FOR_EXECUTION_REVIEW
+recorded_date_utc: '2026-08-20'
+base_commit: 44b046805cd59d50c7fa2289769d7fd37eb8c660
+cohort: TCGA-BRCA
+
+scope:
+  first_eight_are_production_block_not_scientific_pilot: true
+  production_operations_executed: 0
+  training_runs_executed: 0
+  gpu_or_cuda_operations: 0
+
+scientific_freeze:
+  endpoint: source_defined_time_to_event
+  source_time_column: survival_months
+  event_indicator: 1-censorship
+  patients: 894
+  observed_events: 126
+  right_censored: 768
+  partitions:
+    training: {patients: 660, observed_events: 79, right_censored: 581}
+    validation: {patients: 116, observed_events: 14, right_censored: 102}
+    locked_test: {patients: 118, observed_events: 33, right_censored: 85}
+  training_only_internal_cutpoints_months: [22.505, 44.84, 67.940]
+  split_manifest_sha256: 3e519a26eaa24852862bf368a48cceffaf26783c73e80007737134ae6ed626ad
+  cutpoints_sha256: 77b514098387f883a7bc5205ef191ff321aff94e6c874442f7ccc65ff9059d6d
+
+production_block:
+  id: BRCA_PRODUCTION_BLOCK_0001_0008
+  frozen_indices: [1, 2, 3, 4, 5, 6, 7, 8]
+  patients: 8
+  raw_wsi_bytes: 8297129620
+  exact_request_only_manifests: 8
+  executable_now: false
+  retain_raw_through_block_review: true
+
+training_readiness:
+  training_package_cpu_validated: true
+  execution_locked: true
+  feature_registry_status: MISSING_UNTIL_894_PRODUCTION_FEATURES_COMPLETE
+  checkpoint_schema: BRCA_HEALNET_CHECKPOINT_V1
+  append_only_epoch_recovery_validated: true
+  locked_test_one_use_marker_validated: true
+  atomic_training_result_validated: true
+  complete_894_feature_registry_required_before_training: true
+
+files:
+  multiscale_feature_pilot/config/brca_survival_evaluation_protocol.yaml: 4bdbc0e92f3db35b115d030a6b2341f5c1c5c391b505a2a50339b1d855b687a8
+  multiscale_feature_pilot/provenance/brca_894_survival_split.tsv: 3e519a26eaa24852862bf368a48cceffaf26783c73e80007737134ae6ed626ad
+  multiscale_feature_pilot/provenance/brca_894_survival_cutpoints.json: 77b514098387f883a7bc5205ef191ff321aff94e6c874442f7ccc65ff9059d6d
+  multiscale_feature_pilot/src/brca_survival_protocol.py: 4859d849d9bacc1253448af7abfd3d991cb149ada708107c721c5a286301b902
+  multiscale_feature_pilot/src/brca_healnet_training_contract.py: 29df9d4f9ec15ef378b456d5a418b843a9fbd945d263d3d732b9d1d57ff55550
+  multiscale_feature_pilot/src/brca_healnet_training_runtime.py: 95bd9c709f355137b44eb518f23318fb63d152386b630d972cde1c7eb29ddad2
+  multiscale_feature_pilot/src/brca_training_checkpoint.py: 5eba48f86f794b6d96770b32dbb8b61913b36f5232c4141b69cd28f9f0156789
+  multiscale_feature_pilot/src/brca_training_result.py: ff2b7e5039db01ae78fb772525c7a7bb9b6420ed06cd1932e5fb23eb26eb8660
+  scripts/run_brca_894_healnet_training.py: 93f1ef892528fa081dd66cac083bd95fd501495415d8698b9ec402d70a265432
+  multiscale_feature_pilot/config/brca_894_healnet_training_execution_request.yaml: 2aadab3d8c4ecfd0a51e7846d341d4e01282fc2ab769cc5fee14c7d05266a219
+  multiscale_feature_pilot/config/brca_first_eight_production_execution_request.yaml: 04da2f211bfae390ec94ec2dd082ed032204d9c3b81424c6273e33679b14134b
+  multiscale_feature_pilot/config/brca_raw_wsi_lifecycle_proposal.yaml: 143662b1ff8a77823e0e37aed19a53f0d088cf96267ea749f830a7199a027c86
+  reports/brca_accelerated_production_training_readiness.md: 8cd980148009d6d99ef88d0834a1e5ee8fdc9063a8cdd56a069a21622727c3d4
+
+validation:
+  focused_tests: 31
+  focused_result: PASS
+  full_cpu_tests: 765
+  full_cpu_result: PASS
+  full_cpu_cuda_visible_devices: empty
+  py_compile: PASS
+  runner_real_blocked_cli: PASS
+  exact_first_eight_manifests: PASS
+  yaml_json_tsv_semantics: PASS
+  no_prohibited_operation: PASS
+
+operations_not_performed:
+  downloads: 0
+  wsi_opens: 0
+  pixel_reads: 0
+  masks_or_coordinates: 0
+  feature_extractions: 0
+  healnet_forwards: 0
+  backward_passes: 0
+  optimizer_steps: 0
+  checkpoint_publications: 0
+  locked_test_evaluations: 0
+  raw_deletions: 0
+  drive_operations: 0
+
+remaining_gates:
+  - exact_first_eight_serial_acquisition_and_stage_execution_authorization
+  - formal_post_block_review_then_rows_9_894_release
+  - verified_raw_recovery_source_and_patient_specific_lifecycle_authorizations
+  - complete_validated_894_compact_feature_registry
+  - exact_training_run_authorization_after_registry_freeze
+next_gate: EXECUTION_REVIEW_FOR_FIRST_PRODUCTION_BLOCK

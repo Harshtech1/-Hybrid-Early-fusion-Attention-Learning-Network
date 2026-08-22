@@ -1,0 +1,84 @@
+{
+  "endpoint": "source_defined_time_to_event",
+  "event_indicator": "1-censorship",
+  "fit_partition": "training",
+  "fit_population": "observed_event_patients_only",
+  "internal_cutpoints_months": [
+    "22.505",
+    "44.84",
+    "67.940"
+  ],
+  "internal_quantiles": [
+    "0.25",
+    "0.50",
+    "0.75"
+  ],
+  "intervals": [
+    "[-inf,b1)",
+    "[b1,b2)",
+    "[b2,b3)",
+    "[b3,+inf]"
+  ],
+  "maximum_allowed_train_validation_survival_ks": "0.15",
+  "partition_counts": {
+    "locked_test": {
+      "bin_counts": [
+        44,
+        25,
+        9,
+        40
+      ],
+      "event_bin_counts": [
+        6,
+        4,
+        3,
+        20
+      ],
+      "observed_events": 33,
+      "patients": 118,
+      "right_censored": 85
+    },
+    "training": {
+      "bin_counts": [
+        272,
+        158,
+        93,
+        137
+      ],
+      "event_bin_counts": [
+        20,
+        19,
+        20,
+        20
+      ],
+      "observed_events": 79,
+      "patients": 660,
+      "right_censored": 581
+    },
+    "validation": {
+      "bin_counts": [
+        40,
+        38,
+        19,
+        19
+      ],
+      "event_bin_counts": [
+        2,
+        8,
+        3,
+        1
+      ],
+      "observed_events": 14,
+      "patients": 116,
+      "right_censored": 102
+    }
+  },
+  "quantile_method": "Hyndman_Fan_type_7_linear",
+  "schema": "BRCA_SURVIVAL_CUTPOINTS_V1",
+  "split_manifest_sha256": "3e519a26eaa24852862bf368a48cceffaf26783c73e80007737134ae6ed626ad",
+  "split_seed": 20260820,
+  "time_column": "survival_months",
+  "time_unit": "months",
+  "train_validation_survival_ks": "0.0968652037617554858934169279",
+  "training_event_patients": 79
+}

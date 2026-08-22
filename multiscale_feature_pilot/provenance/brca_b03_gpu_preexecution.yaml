@@ -1,0 +1,96 @@
+schema_version: 1
+status: B03_GPU_PREEXECUTION_CPU_VALIDATED_EXECUTION_LOCKED
+cohort: TCGA-BRCA
+batch_label: B03
+recorded_at_utc: "2026-08-20T11:23:32Z"
+preparation_source_commit: 002fce1c0d6cc7f00143500fc178b56742fbb7cc
+
+preparation_authority:
+  source: DIRECT_USER_AUTHORIZATION
+  statement_sha256: b5093856973405fcd4546bd7d7ae8ec54a320c0e9165f1f44620936f339f2a68
+  config_path: multiscale_feature_pilot/config/brca_b03_gpu_preexecution.yaml
+  config_sha256: dfe141dba83a781f2a342042bcc1db9ec08e0edbd9437ec149eb397c79cf1b57
+
+implementation:
+  runner_path: scripts/run_brca_b03_gpu_pilot.py
+  runner_sha256: d7dae0f09f15171593e386e9c2d266ce69b9b54d419bec61daa0863486199502
+  preparation_test_path: multiscale_feature_pilot/tests/test_brca_b03_gpu_preexecution.py
+  preparation_test_sha256: 32516dcd4af741bda52af7a651e9de7422402443c9e41f0c50b46b80b36644ad
+  report_path: reports/brca_b03_gpu_preexecution.md
+  report_sha256: 6b35819c2a57349a2431cbbe19a9f0d74129a496cacf06643bf62b50aeb4c4d1
+  bound_source_count: 14
+  every_bound_source_equal_to_preparation_commit: true
+
+verified_frozen_contract:
+  patient_id: TCGA-AR-A1AY
+  slide_id: TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs
+  gdc_uuid: 266c3852-f5d0-4815-94d9-dac5b0ff8276
+  coordinate_result_sha256: 06782acd34b83dbb8cd58e25c1a73dacaf752864826e6b32548cdfab1ce4c371
+  coordinate_manifest_sha256: cced78f863415ee12d57b905131e60758ba849645196c0a14309e9ab8d4e1ae5
+  coordinate_artifact_validation: PASS
+  scale_2x_rows: 8875
+  scale_4x_rows: 2257
+  combined_shape: [11132, 2048]
+  natural_healnet_wsi_shape: [1, 11132, 2048]
+  omic_row: "372"
+  omic_shapes: [[1, 1, 1558], [1, 1, 21], [1, 1, 1333]]
+  checkpoint_identity: torchvision.models.resnet50+ResNet50_Weights.IMAGENET1K_V2+fc_identity
+  checkpoint_size_bytes: 102540417
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  checkpoint_local_regular_non_symlink: true
+  engineering_checkpoint_decision: IMAGENET1K_V2_FROZEN_BY_USER
+  paper_encoder_difference_disclosed: true
+
+future_gpu_contract:
+  gpu: Tesla T4
+  device: cuda:0
+  dtype: float32
+  branch_order: [scale_2x, scale_4x]
+  batch_size: 32
+  num_workers: 2
+  deterministic_algorithms: true
+  cublas_workspace_config: ":4096:8"
+  amp: false
+  tf32: false
+  cpu_fallback: false
+  pooling: false
+  transpose: false
+  compact_artifact_schema: BRCA_COMPACT_FEATURE_ARTIFACT_SET_V1
+  compact_artifact_publisher_sha256: dcc1a1d2073a3be1b4ee7b54e22d2d379cdba97b6d86dd5192d14b481ea62af3
+
+estimates_not_measurements:
+  gpu_wall_seconds_range: [160, 200]
+  raw_combined_tensor_bytes: 91193344
+  compact_artifact_bytes_range: [91600000, 91800000]
+  peak_gpu_memory_bytes_range: [481000000, 485000000]
+  measured_b03_gpu_result_exists: false
+
+cpu_validation:
+  py_compile: PASS
+  focused_tests_passed: 18
+  full_tests_passed: 678
+  locked_cli_rehearsal: PASS
+  locked_cli_status: BLOCKED
+  executable_authorization_present: false
+  feature_output_present: false
+  wsi_opens: 0
+  patch_reads: 0
+  feature_rows: 0
+  cuda_operations: 0
+  healnet_executions: 0
+  feature_publications: 0
+  b04_b06_operations: 0
+  drive_operations: 0
+  deletions: 0
+  cohort_expansions: 0
+  training_runs: 0
+
+execution_lock:
+  execution_authorized_in_runner: false
+  authorization_sha256: PENDING_SEPARATE_EXACT_B03_GPU_AUTHORIZATION
+  future_authorization_text_sha256: cd5655fd930baff34450553c503b3401b65e3722a7beb153499d073c81343b96
+  stop_before_gpu_execution: true
+
+required_stop: B03_FAIL_CLOSED_GPU_PACKAGE_TESTS_AND_ESTIMATES
+required_stop_reached: true
+next_gate: SEPARATE_EXACT_B03_GPU_EXECUTION_AUTHORIZATION_OR_DECLINE

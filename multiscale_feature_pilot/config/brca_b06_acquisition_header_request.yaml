@@ -1,0 +1,107 @@
+schema_version: 1
+status: AWAITING_EXPLICIT_B06_ACQUISITION_AND_HEADER_AUTHORIZATION
+executable: false
+cohort: TCGA-BRCA
+batch_label: B06
+prepared_at_utc: "2026-08-20T11:51:46Z"
+
+scope:
+  purpose: B06_ACQUISITION_AND_HEADER_ONLY_REQUEST_PREPARATION
+  interpretation: LOCAL_METADATA_REVIEW_AND_NONEXECUTABLE_REQUEST_ONLY
+  b04_b05_skipped: true
+  no_b06_execution_authorized_by_this_file: true
+
+identity:
+  patient_id: TCGA-EW-A1OY
+  slide_id: TCGA-EW-A1OY-01Z-00-DX1.42AF5C9A-A90F-4A58-B5D4-B615F8CD4333.svs
+  filename: TCGA-EW-A1OY-01Z-00-DX1.42AF5C9A-A90F-4A58-B5D4-B615F8CD4333.svs
+  gdc_uuid: 00e926c5-d65d-42e5-8ba4-afaab66db47c
+  expected_size_bytes: 1691494753
+  expected_md5: dbb9edd8528f25bbcaaee907b1b1ab68
+  state: released
+  omic_source_row_index: "897"
+  alignment_disposition: KEEP
+  alignment_reason: EXACT_SINGLETON_CASE_AND_SLIDE_MATCH
+  exact_case_and_full_slide_match_in_frozen_alignment: true
+
+manifest:
+  path: multiscale_feature_pilot/provenance/brca_six_patient_batch_guarded/B06_TCGA-EW-A1OY_00e926c5-d65d-42e5-8ba4-afaab66db47c.NOT_AUTHORIZED.gdc.tsv
+  sha256: 2616a09f26ee75460ca19dd1529c12b37981943256edbcf1f175dd50dfb3b3bb
+  exact_rows: 1
+  remains_not_authorized: true
+  executable: false
+
+storage:
+  expected_raw_bytes: 1691494753
+  conservative_formula: 2 * expected_raw_bytes + 20000000000
+  conservative_required_available_bytes: 23382989506
+  available_bytes_at_request_preparation: 344027402240
+  estimated_headroom_after_conservative_reservation_bytes: 320644412734
+  filesystem_snapshot_is_advisory: true
+  preflight_must_be_repeated_immediately_before_any_download: true
+
+future_execution_if_separately_authorized:
+  mode: CPU_ONLY_NO_CUDA
+  source: NCI_GDC
+  concurrency: 1
+  destination: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B06.incoming
+  checks:
+    - exact_uuid
+    - exact_filename
+    - exact_byte_size
+    - exact_manifest_md5
+    - independent_sha256
+    - no_partial_or_incomplete_files
+    - regular_non_symlink_svs
+    - exact_omic_rematch
+  openslide_header_fields:
+    - mpp_x
+    - mpp_y
+    - level_count
+    - level_dimensions
+    - level_downsamples
+  read_region_calls: 0
+  pixel_access: false
+  stop_after: B06_EXACT_FILE_AND_HEADER_METADATA_REPORT
+
+source_bindings:
+  preparation_commit: ecd6f555d7fe121f26570bc95162b69cc90caa64
+  staged_plan_path: multiscale_feature_pilot/config/brca_six_patient_staged_acquisition_plan.yaml
+  staged_plan_sha256: 18249363bcd0505f18260c9c7144683c407c2a0ab95435960899d5aef7b455b2
+  guarded_manifest_set_path: multiscale_feature_pilot/provenance/brca_six_patient_batch_guarded/MANIFEST_SET.NOT_AUTHORIZED.yaml
+  guarded_manifest_set_sha256: f912e931e09e15fa2bec03aa7d726e5a94e440c1ed91584305a5bfd49e6038b5
+  small_batch_proposal_path: reports/brca_small_batch_proposal.tsv
+  small_batch_proposal_sha256: 6133920baaccb73805d58daf53b8ffe93c30c49468a4a3e96a53bd8b960455d2
+  alignment_path: reports/brca_row_level_alignment.csv
+  alignment_sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  download_plan_path: reports/brca_download_plan.tsv
+  download_plan_sha256: ef32418e6551ded13bab3e7d1f5c2760d628b348c59c394ebdd6865e60372a82
+
+authority_now:
+  download: false
+  wsi_open_or_header_read: false
+  pixel_or_region_read: false
+  gpu_or_cuda: false
+  mask_or_coordinate_generation: false
+  feature_extraction: false
+  model_execution: false
+  deletion: false
+  drive_operations: false
+  b04_b05_processing: false
+  additional_patient_or_cohort_processing: false
+  training: false
+
+future_exact_authorization_text: >-
+  I authorize downloading only BRCA validation-batch patient B06, UUID
+  00e926c5-d65d-42e5-8ba4-afaab66db47c (1,691,494,753 bytes), from GDC to
+  local persistent staging at concurrency one using its exact one-row
+  manifest. After download, perform only exact UUID/filename/size/MD5
+  verification, independent SHA256 calculation, partial/incomplete checks,
+  regular non-symlink SVS confirmation, exact Omic rematch, and OpenSlide
+  header-only inspection of MPP and every pyramid level. Do not call
+  read_region or access pixels; do not generate masks, coordinates, or
+  features; do not use GPU/CUDA, Drive, deletion, additional-patient
+  processing, cohort expansion, or training. Stop after the B06 metadata
+  report and wait for my review.
+future_exact_authorization_text_sha256: 5ed2efd99e047bac82f50b2a896703ebde7aa91d6c97228462adb12756fe0d14
+next_decision: AUTHORIZE_OR_DECLINE_EXACT_B06_ACQUISITION_AND_HEADER_ONLY_TEXT

@@ -6,7 +6,8 @@ This repository publishes only portable source code, tests, small configuration/
 
 - multiscale tensor, provenance, padding, and patient-matched Omic adapters;
 - synthetic unit/interface tests;
-- read-only GPU/source/data/checkpoint readiness checker;
+- read-only GPU/source/data/checkpoint readiness checker and the one-patient extraction runner;
+- real-pilot unit/contract tests and reviewed hash-only baseline reports;
 - GPU restart documentation and dependency snapshot;
 - small YAML/Markdown provenance;
 - explicitly reviewed public TCGA identifier/checksum metadata; and
@@ -30,4 +31,4 @@ This repository publishes only portable source code, tests, small configuration/
 5. Run the full synthetic test suite and YAML validation.
 6. Record the branch, commit, and pushed remote without claiming that excluded data were published.
 
-The GPU handoff intentionally requires secure out-of-band transfer or targeted Git LFS retrieval of the verified BLCA inputs. See [GPU_HANDOFF.md](GPU_HANDOFF.md).
+The raw inputs and generated outputs remain external. Their immutable identities are recorded in [reports/validated_pilot_baseline.md](reports/validated_pilot_baseline.md); no data or model artifact is published by Git.

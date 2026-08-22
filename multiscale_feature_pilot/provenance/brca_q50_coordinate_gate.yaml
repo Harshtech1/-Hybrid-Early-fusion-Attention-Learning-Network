@@ -1,0 +1,161 @@
+schema_version: 1
+status: BRCA_Q50_COORDINATES_VERIFIED
+cohort: TCGA-BRCA
+candidate: Q50
+patient_id: TCGA-AR-A1AW
+gdc_file_uuid: 5c1216f3-19ec-4d3c-9bb0-9bd740b79f62
+started_at_utc: "2026-08-19T00:42:40.592125+00:00"
+finished_at_utc: "2026-08-19T00:42:57.734061+00:00"
+
+authorization:
+  direct_user_statement: ok do it start it
+  authorization_config_sha256: 9e580e6051ec911ad4366b3bace5f0a0352eb498a6c55359b160c106086e74dd
+  execution_approval_sha256: 39d9d509daccc3e1bcf6a33c8f462901ccb796118a3930888aae6179b88f3a64
+  bounded_scope: ONE_Q50_LEVEL2_MASK_READ_AND_CPU_COORDINATES_ONLY
+
+execution_source:
+  commit: 4ae95dadeb44ef82d10263b5729b83cd8ce62482
+  runner:
+    path: scripts/run_brca_q50_coordinate_gate.py
+    sha256: 91d239c4082268573296b756dd0cba6af8d43ff3415c2c0fdd882acbdd1992a0
+  official_healnet_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  frozen_blca_tag_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+  critical_files_byte_equal_to_execution_commit: true
+  repositories_unchanged_before_publication: true
+
+wsi:
+  slide_id: TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+  path: >-
+    /teamspace/studios/this_studio/brca_pilot_data/Q50.incoming/5c1216f3-19ec-4d3c-9bb0-9bd740b79f62/TCGA-AR-A1AW-01Z-00-DX1.E527CA46-D83F-4055-8C7E-AEFEF13C1E29.svs
+  size_bytes: 975626387
+  md5: 304509e03f26cbecc9aee4ea691c8e5a
+  sha256: 6b960db7e6e5772f4f626daa7b023ffbb5e3b20f9f6ff5c7d52f4554cf33399b
+  regular_non_symlink: true
+  partial_siblings: []
+  retained_after_run: true
+
+header:
+  mpp_x: 0.2468
+  mpp_y: 0.2468
+  level_dimensions:
+    - [99960, 65334]
+    - [24990, 16333]
+    - [6247, 4083]
+    - [3123, 2041]
+  openslide_level_downsamples:
+    - 1.0
+    - 4.000061225739301
+    - 16.001375061204985
+    - 32.009231974117526
+
+mask:
+  openslide_open_count: 1
+  read_region_calls: 1
+  location_level_0: [0, 0]
+  level: 2
+  size_at_level: [6247, 4083]
+  channels: 4
+  dtype: uint8
+  hash_serialization: contiguous_uint8_C_order_raw_bytes
+  sha256: 86434ebab952209699798c3129d3ee8fbd8126dffd34705ead0d478c29e77601
+  contour_count: 4
+  retained_hole_count: 2
+  slide_closed: true
+
+coordinate_artifacts:
+  directory: /teamspace/studios/this_studio/brca_pilot_data/Q50.coordinates
+  external_to_git: true
+  exact_file_count: 4
+  total_file_bytes: 198681
+  manifest:
+    filename: coordinate_manifest.json
+    size_bytes: 6558
+    sha256: a79179e7fe3a0cf6bdda5089da11910c0db6b1f4bcab9a15c6d5b8e7ec43e485
+  manifest_sidecar:
+    filename: coordinate_manifest.json.sha256
+    size_bytes: 91
+    sha256: ffb4efd17440bf4161e2e8cb50a3e87e498f8af3e4b505f8fae2ea30b28123b3
+  scale_2x:
+    filename: scale_2x_coordinates.h5
+    size_bytes: 146952
+    sha256: f412b3e04e11c7e2dbfd2db3da70c5eda45a1634e7a48aa322796f007c5b1050
+    shape: [8580, 2]
+    dtype: int64
+    coordinate_content_sha256: 9775ccdb9aec661021b26e2a2e005ccd5d9bbf528578bbebd1fc5b8aa303084f
+    minimum_xy: [1536, 8192]
+    maximum_xy: [96768, 60416]
+    level_0_footprint: [512, 512]
+    level_0_step: [512, 512]
+    effective_mpp: [0.4936, 0.4936]
+  scale_4x:
+    filename: scale_4x_coordinates.h5
+    size_bytes: 45080
+    sha256: f4032dd245359694e59bff8356cb4f0b673f2e71c44fac7f19f1873da9685479
+    shape: [2213, 2]
+    dtype: int64
+    coordinate_content_sha256: 8bb20dbd7bb876f339b1ba85beed95922d732c36c037273f22f68f46069b0b7b
+    minimum_xy: [2048, 8192]
+    maximum_xy: [96256, 60416]
+    level_0_footprint: [1024, 1024]
+    level_0_step: [1024, 1024]
+    effective_mpp: [0.9872151105124595, 0.9872151105124595]
+  combined_future_feature_rows_if_separately_authorized: 10793
+  branch_order_if_separately_authorized: [scale_2x, scale_4x]
+
+validation:
+  project_strict_validator: PASS
+  manifest_sidecar: PASS
+  exact_file_set: PASS
+  all_regular_non_symlink: true
+  unique_coordinates:
+    scale_2x: 8580
+    scale_4x: 2213
+  duplicate_coordinates:
+    scale_2x: 0
+    scale_4x: 0
+  row_major_y_then_x: PASS
+  lattice_and_complete_bounds: PASS
+  lock_present_after_run: false
+  staging_present_after_run: false
+  preexecution_full_test_suite: 347 passed
+
+runtime:
+  python_executable: /home/zeus/miniconda3/envs/cloudspace/bin/python
+  python: 3.12.11
+  numpy: 1.26.4
+  opencv: 4.10.0
+  h5py: 3.16.0
+  openslide_python: 1.4.6
+  openslide_library: 3.4.1
+  timings_seconds:
+    wsi_identity_and_hash: 2.3141903850000745
+    openslide_header_and_mask_read: 2.700955688000249
+    segmentation_and_coordinate_generation: 9.504482766000365
+    atomic_publication_and_validation: 0.06001082400052837
+    total: 17.141911094000534
+
+storage:
+  physical_filesystem_available_bytes_at_execution: 349028126720
+  physical_measurement_is_not_logical_quota: true
+  user_reported_lightning_usage: 5.08_GB_OF_200_GB
+
+operations_not_performed:
+  level_0_or_level_1_patch_pixel_reads: 0
+  thumbnail_reads: 0
+  associated_image_reads: 0
+  patch_resampling: 0
+  resnet50_feature_extraction: 0
+  pt_generation: 0
+  healnet_execution: 0
+  q25_reruns: 0
+  q75_operations: 0
+  full_cohort_operations: 0
+  google_drive_operations: 0
+  raw_wsi_deletions: 0
+  training_runs: 0
+  backward_passes: 0
+  optimizer_steps: 0
+
+required_stop_reached: true
+gpu_feature_extraction_authorized_by_this_record: false
+next_gate: SEPARATE_Q50_GPU_FEATURE_EXTRACTION_AUTHORIZATION_REQUIRED

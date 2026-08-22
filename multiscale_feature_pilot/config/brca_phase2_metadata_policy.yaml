@@ -1,0 +1,85 @@
+schema_version: 1
+cohort: TCGA-BRCA
+phase: 2
+status: APPROVED_NATIVE_LEVEL_METADATA_GATE_V1
+
+authority:
+  real_wsi_access: Q25_METADATA_ONLY_AFTER_EXACT_SIZE_MD5
+  slide_opening: Q25_METADATA_ONLY_AFTER_EXACT_SIZE_MD5
+  pixel_or_region_read: NOT_AUTHORIZED
+  feature_extraction: NOT_AUTHORIZED
+  training: NOT_AUTHORIZED
+
+real_metadata_collection_boundary:
+  authorized_label: Q25
+  exact_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+  prerequisite: exact_size_and_md5_match
+  allowed_operations:
+    - openslide_open
+    - read_mpp_x
+    - read_mpp_y
+    - read_level_dimensions
+    - read_level_downsamples
+    - openslide_close
+  prohibited_operations:
+    - read_region
+    - read_associated_image_pixels
+    - coordinate_generation
+    - feature_extraction
+
+input_contract:
+  supplied_metadata_values_only: true
+  accepted_fields:
+    - mpp_x
+    - mpp_y
+    - level_dimensions
+    - level_downsamples
+  file_path_input: prohibited
+  file_opening: prohibited
+  openslide_import: prohibited
+
+pyramid_validation:
+  mpp_axes: [x, y]
+  require_positive_finite_mpp: true
+  require_positive_integer_dimensions: true
+  require_positive_finite_downsamples: true
+  require_matching_level_counts: true
+  require_level_0_downsample: 1.0
+  require_strictly_increasing_downsamples: true
+  prohibit_growing_dimensions: true
+  prohibit_duplicate_native_dimensions: true
+  dimension_consistency_rule: >-
+    Each native width and height must equal the floor or ceiling of the
+    corresponding level-0 dimension divided by the reported scalar downsample.
+  native_mpp_formula:
+    x: mpp_x * level_downsample
+    y: mpp_y * level_downsample
+
+target_policy:
+  status: APPROVED
+  targets_micrometers_per_pixel:
+    scale_2x: 0.5
+    scale_4x: 1.0
+  approved_per_axis_relative_tolerance_fraction: 0.10
+  tolerance_must_be_explicit_at_call: true
+  nearest_level_rule: independently_minimize_relative_error_on_each_axis
+  tie_break_rule: lower_native_level_index
+  reject_if_axis_nearest_levels_disagree: true
+  require_distinct_native_level_per_target: true
+  missing_metadata_action: reject
+  invalid_metadata_action: reject
+  ambiguous_mapping_action: reject
+  out_of_tolerance_action: reject
+
+resampling_policy:
+  status: APPROVED_NATIVE_ONLY_NO_RESAMPLING
+  silent_resampling: prohibited
+  resampling_performed_by_preflight: false
+  native_level_only: true
+
+result_contract:
+  validates_and_reports_metadata_only: true
+  real_slide_authorized_by_success: false
+  execution_enabled: true
+  pixel_read_enabled: false
+  stop_after_q25_metadata_report: true

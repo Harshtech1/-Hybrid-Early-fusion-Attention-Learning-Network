@@ -1,0 +1,93 @@
+schema_version: 1
+status: BRCA_BATCH_B03_HEADER_METADATA_VERIFIED
+cohort: TCGA-BRCA
+batch_label: B03
+recorded_at_utc: "2026-08-20T10:52:50Z"
+execution:
+  mode: CPU_ONLY_ACQUISITION_INTEGRITY_AND_HEADER_ONLY
+  source_commit: 917c57826934ca3a49c35312cff6a94040797830
+  authorization_path: multiscale_feature_pilot/config/brca_b03_acquisition_header_authorization.yaml
+  authorization_statement_sha256: b494b11bb3de4ac31c610328045f0d8ea631d7c714ac6a55c5ce45d607056096
+  gdc_client_version: "2.3"
+  gdc_client_sha256: 1df9281cbacbb53413607a4b9b682947dcb48b6ac7fade6527748bc025ae8c96
+  concurrency: 1
+  successful_download_count: 1
+  download_client_reported_seconds: 25
+identity:
+  patient_id: TCGA-AR-A1AY
+  slide_id: TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs
+  filename: TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs
+  gdc_file_uuid: 266c3852-f5d0-4815-94d9-dac5b0ff8276
+  path: /teamspace/studios/this_studio/brca_pilot_data/BRCA_BATCH_B03.incoming/266c3852-f5d0-4815-94d9-dac5b0ff8276/TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs
+  size_bytes: 918454431
+  md5: 1980b183d5bb948c2fc263af62a4b1b4
+  sha256: 4ef4ac79ce3cc0bfc5a4ea62985f080f0f877dca4c7e43191a04a35b2eba8228
+  regular_non_symlink: true
+  partial_or_incomplete_files_absent: true
+  held_o_nofollow_descriptor_used: true
+  same_descriptor_sha256_rechecked_after_header: true
+download_tree:
+  exact_payload_files: 2
+  entries:
+    - 266c3852-f5d0-4815-94d9-dac5b0ff8276/TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs
+    - 266c3852-f5d0-4815-94d9-dac5b0ff8276/logs/TCGA-AR-A1AY-01Z-00-DX1.6AC0BE3B-FFC5-4EDA-9E40-B18CAAC52B81.svs.parcel
+  parcel_size_bytes: 55285
+  parcel_sha256: 0b85bab6359b670616f9499089128a55a1aa2d5ac4577e6fbc495a701d136a4b
+  total_regular_file_bytes: 918509716
+header:
+  inspection: OPENSLIDE_HEADER_ONLY_NO_PIXEL_ACCESS
+  held_o_nofollow_descriptor: true
+  stable_proc_fd_path: true
+  mpp_x: 0.2468
+  mpp_y: 0.2468
+  level_count: 4
+  levels:
+    - {level: 0, dimensions: [93296, 58121], downsample: 1.0}
+    - {level: 1, dimensions: [23324, 14530], downsample: 4.000034411562285}
+    - {level: 2, dimensions: [5831, 3632], downsample: 16.00123898678414}
+    - {level: 3, dimensions: [2915, 1816], downsample: 32.00522239895422}
+  read_region_calls: 0
+  thumbnail_calls: 0
+  associated_image_accesses: 0
+geometry_observation_not_policy:
+  level_1_physical_mpp_from_openslide_scalar: [0.9872084927735719, 0.9872084927735719]
+  level_1_dimension_ratios_xy: [4.0, 4.00006882312457]
+  approximately_1_mpp_native_level_present: true
+  approximately_0_5_mpp_native_level_present: false
+  approximately_0_5_mpp_would_require_controlled_resampling_from_level_0: true
+  scale_policy_approved: false
+omic:
+  source_row_index: "372"
+  exact_case_and_full_slide_match: true
+  archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  rna: {shape: [1, 1, 1558], dtype: float32, content_sha256: 463b056072b280c951cf2626f6ca80e5d30014133c486f8d51423695f9869dfa}
+  mutation: {shape: [1, 1, 21], dtype: float32, content_sha256: 7a67b8d094d93c2f5998b5384fdc07f07b46acc587e059aea33c60b7e9bd3afd}
+  cnv: {shape: [1, 1, 1333], dtype: float32, content_sha256: 21fdf23ebbe236f295337f497620bd522df309a81b071395a09b22800c7285b3}
+storage:
+  total_bytes: 395184570368
+  available_bytes_before_download: 338799800320
+  available_bytes_after_download: 337877794816
+  available_bytes_delta: -922005504
+  raw_wsi_retained: true
+runtime_versions:
+  openslide_python: 1.4.6
+  openslide_library: 3.4.1
+postconditions:
+  pilot_repository_source_commit: 917c57826934ca3a49c35312cff6a94040797830
+  official_healnet_observed_commit: 90459b65a3d4a4ef9fd405671c457b5a1163cc7d
+  official_healnet_clean: true
+  frozen_blca_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+  protected_existing_user_modifications_preserved: true
+  pixel_reads: 0
+  coordinate_generations: 0
+  feature_extractions: 0
+  gpu_or_cuda_operations: 0
+  other_patient_operations: 0
+  deletions: 0
+  drive_operations: 0
+  cohort_expansions: 0
+  training_runs: 0
+required_stop: B03_EXACT_FILE_OMIC_AND_HEADER_METADATA_REPORT
+required_stop_reached: true
+scientific_interpretation: EXACT_FILE_OMIC_AND_PYRAMID_METADATA_ONLY_NO_PIXELS_OR_MODEL_OUTPUT
+next_gate: USER_REVIEW_REQUIRED_BEFORE_ANY_B03_PIXEL_ACCESS_OR_SCALE_POLICY

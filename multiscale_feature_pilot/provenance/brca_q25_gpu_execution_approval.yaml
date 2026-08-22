@@ -1,0 +1,97 @@
+schema_version: 1
+status: BRCA_Q25_GPU_EXECUTION_AUTHORIZED_NOT_YET_RUN
+historical_snapshot: true
+superseded_by:
+  incident: multiscale_feature_pilot/provenance/brca_q25_gpu_attempt_1.yaml
+  corrective_authorization: multiscale_feature_pilot/provenance/brca_q25_gpu_corrective_authorization.yaml
+cohort: TCGA-BRCA
+candidate: Q25
+recorded_at_utc: "2026-08-18T23:20:00Z"
+
+approval:
+  supervisor_cohort_statement: Go with brca, blca
+  user_gpu_transition_statement: switched to GPU Now !
+  authorization_config:
+    path: multiscale_feature_pilot/config/brca_q25_gpu_execution_authorization.yaml
+    sha256: 0195f1f2d631a3a29c01077aa455b8a0f20a6b2c885988fcb162ba7b1bfd8805
+  bounded_scope: >-
+    Read only the already-selected Q25 level-0 and level-1 patch footprints,
+    extract deterministic float32 ImageNet1K V2 ResNet50 patch embeddings for
+    the two approved branches, concatenate all scale-2x rows before scale-4x
+    rows, atomically publish and validate the external feature artifacts, run
+    one random-initialized natural-layout four-modality HEALNet interface
+    smoke, and stop without training.
+
+supersession:
+  coordinate_gate_feature_prohibition_superseded_only_for:
+    - exact_q25_level_0_and_level_1_patch_reads
+    - exact_q25_two_branch_resnet50_feature_extraction
+    - exact_q25_feature_artifact_publication
+    - exact_q25_natural_layout_healnet_smoke
+  still_locked:
+    - model_training
+    - q50
+    - q75
+    - full_brca_cohort
+    - kirp
+    - google_drive_operations
+    - raw_wsi_deletion
+    - official_healnet_modification
+    - frozen_blca_modification
+
+gpu_preflight:
+  status: PASSED
+  device: Tesla T4
+  device_count: 1
+  compute_capability: [7, 5]
+  memory_total_mib: 15360
+  driver: 580.173.02
+  torch: 2.8.0+cu128
+  torchvision: 0.23.0+cu128
+  cuda_tensor_probe: PASSED
+  execution_context_note: >-
+    CUDA is available in the approved elevated execution context; restricted
+    sandbox subprocesses cannot see the device and must not be used for the
+    real model run.
+
+q25_contract:
+  patient_id: TCGA-LL-A6FP
+  gdc_file_uuid: dd3158fb-e1bc-4aac-a742-ca3fc86ed9f6
+  wsi_sha256: ac852be806eb0d91214145983319b604919a8e1d16bd59378a3dba69a600979c
+  coordinate_manifest_sha256: 7d64ec37595792994e61ab3bf60461498e805bbff0429599f0328b49c93d2ad2
+  checkpoint_sha256: 11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca
+  omic_archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  branch_order: [scale_2x, scale_4x]
+  scale_2x_shape: [7404, 2048]
+  scale_4x_shape: [1918, 2048]
+  combined_shape: [9322, 2048]
+  model_wsi_shape: [1, 9322, 2048]
+  wsi_transpose: prohibited
+  omic_shapes:
+    rna: [1, 1, 1558]
+    mutation: [1, 1, 21]
+    cnv: [1, 1, 1333]
+  expected_interface_output: [1, 4]
+  output_interpretation: random_weight_interface_and_numerical_smoke_not_prediction
+
+implementation_identity:
+  authorization_sha256: 0195f1f2d631a3a29c01077aa455b8a0f20a6b2c885988fcb162ba7b1bfd8805
+  files:
+    scripts/run_brca_q25_gpu_pilot.py: cb5d2226b908b31d961e7a6720ad0554875d352285ea9114e774d8048dbc7401
+    multiscale_feature_pilot/src/brca_q25_feature_extraction.py: 14c0eba94e49fabc37fc40e4018490a818b64db7a0eb83f54f6ce5c04cfa2e3a
+    multiscale_feature_pilot/src/brca_q25_feature_artifacts.py: 1269727809a008e563fa70331472fd68d58cae780cc9355f6cd7fc815beecea5
+    multiscale_feature_pilot/tests/test_brca_q25_gpu_runner.py: 59978cc87c6bcc709f345ca27cc289d6fe71f469769f6e2ddea7b9bb59522296
+    multiscale_feature_pilot/tests/test_brca_q25_feature_extraction.py: 63cee7e63d19ab4083d7abaf525fa6bc09f1333891feeb08cb960309db86cf24
+    multiscale_feature_pilot/tests/test_brca_q25_feature_artifacts.py: eaa00b860bda4b4f4dc24ef988f98a276befedf81d3110bdeb357c03044db3dd
+
+verification:
+  focused_gpu_gate_tests: 38 passed
+  full_synthetic_suite: 303 passed
+  independent_adversarial_review: passed
+  real_patch_reads_at_record_time: 0
+  real_feature_artifacts_at_record_time: 0
+  training_at_record_time: false
+
+required_stop:
+  after: VALIDATED_Q25_FEATURE_ARTIFACTS_AND_HEALNET_SMOKE
+  training_authorized: false

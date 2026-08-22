@@ -1,5 +1,7 @@
 # Pilot-side multiscale WSI adapter design
 
+> Historical adapter milestone. It records the pre-extraction 24-test state and is superseded for current status by [../../reports/validated_pilot_baseline.md](../../reports/validated_pilot_baseline.md).
+
 **Final status: `READY_FOR_GPU_MULTISCALE_EXTRACTION`**
 
 ## Result

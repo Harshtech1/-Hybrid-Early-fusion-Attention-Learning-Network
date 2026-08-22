@@ -1,0 +1,152 @@
+schema_version: 1
+phase: BRCA_Q75_ACQUISITION_AND_HEADER_METADATA_REQUEST
+status: AWAITING_EXPLICIT_USER_AUTHORIZATION
+executable: false
+cohort: TCGA-BRCA
+candidate: Q75
+recommendation_source:
+  decision: RUN_Q75_PILOT_RECOMMENDED
+  report_path: reports/brca_q25_q50_cpu_review.md
+  report_sha256: b9ad7c8cd271e769f1365a53c6b5e5ba3db951748e2e14b0d36f01e802a3a927
+  provenance_path: multiscale_feature_pilot/provenance/brca_q25_q50_cpu_review.yaml
+  provenance_sha256: fc6784c891938c8213ec6e6468ca24d949fc0de4adcde62da6a5fbf48afe7a45
+
+authority_now:
+  q75_download: NOT_AUTHORIZED
+  q75_wsi_open_or_header_read: NOT_AUTHORIZED
+  q75_pixel_or_region_read: NOT_AUTHORIZED
+  coordinate_generation: NOT_AUTHORIZED
+  gpu_feature_extraction: NOT_AUTHORIZED
+  healnet_execution: NOT_AUTHORIZED
+  full_cohort_processing: NOT_AUTHORIZED
+  google_drive_operations: NOT_AUTHORIZED
+  raw_wsi_deletion: NOT_AUTHORIZED
+  training: NOT_AUTHORIZED
+
+requested_future_scope:
+  activated_only_by_exact_explicit_user_authorization: true
+  source: NCI_GDC
+  manifest_rows: 1
+  concurrency: 1
+  download_only_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  destination: /teamspace/studios/this_studio/brca_pilot_data/Q75.incoming
+  after_download_allowed_checks:
+    - exact_filename
+    - exact_size
+    - exact_md5
+    - computed_sha256
+    - openslide_header_mpp_x_y
+    - openslide_header_level_dimensions
+    - openslide_header_level_downsamples
+  pixel_or_region_read_allowed: false
+  stop_after: EXACT_FILE_VERIFICATION_AND_OPENSLIDE_HEADER_METADATA
+  no_action_is_authorized_by_this_request_file: true
+
+exact_required_user_statement: >-
+  I authorize downloading only BRCA Q75 UUID
+  25aec062-60d1-446e-a1c6-0c79cc74a770 (1,360,743,825 bytes) from GDC to
+  local persistent staging at concurrency one, followed only by exact
+  filename/size/MD5/SHA256 verification and OpenSlide header metadata
+  collection. No pixel or region reads, coordinates, feature extraction,
+  HEALNet execution, Drive, raw deletion, full-cohort processing, or training.
+
+q75_identity:
+  selection_quantile: 0.75
+  singleton_rank: 671
+  singleton_population: 894
+  patient_id: TCGA-E2-A154
+  slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  gdc_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  declared_size_bytes: 1360743825
+  expected_md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+  gdc_state: released
+  expected_values_are_manifest_metadata_not_local_file_verification: true
+
+same_patient_omic_binding:
+  exact_case_and_full_slide_match: true
+  patient_wsi_count: 1
+  patient_omic_count: 1
+  omic_source_index: 771
+  physical_csv_line: 773
+  expected_shapes:
+    rna: [1, 1, 1558]
+    mutation: [1, 1, 21]
+    cnv: [1, 1, 1333]
+  locally_loaded_dtype: float32
+  locally_loaded_all_finite: true
+
+prepared_guarded_one_row_manifest:
+  path: multiscale_feature_pilot/provenance/brca_phase2_manifests/Q75_TCGA-E2-A154_25aec062-60d1-446e-a1c6-0c79cc74a770.NOT_AUTHORIZED.gdc.tsv
+  status: NOT_AUTHORIZED
+  executable: false
+  rows: 1
+  sha256: 8e2a17e21c6dafbae384ea729ed24b7c769df7510df0b318ee6ce15e2169553a
+  content: |
+    id	filename	md5	size	state
+    25aec062-60d1-446e-a1c6-0c79cc74a770	TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs	a8c4b68fb6e0ab3e862efe3ed1fe10d7	1360743825	released
+  existing_file_is_the_prepared_one_row_manifest: true
+  authorized_copy_created: false
+  download_command_present: false
+
+successful_predecessor_bindings:
+  q25:
+    result_status: BRCA_Q25_GPU_FEATURE_PILOT_SUCCESS
+    report_path: reports/brca_q25_gpu_pilot_result.md
+    report_sha256: 4adfe5673b2e69267738756173f6266d0c7895412950715667893f5e94fc8a46
+    provenance_path: multiscale_feature_pilot/provenance/brca_q25_gpu_pilot_result.yaml
+    provenance_sha256: 76df862c438f4d94e34342b54c80c0866a440af0574be9003444075d7073c6e4
+    feature_manifest_sha256: 88a3146d34cf907604cecf109ff3879b26afcf6458ce86a9e2e46a7e127dcc0f
+  q50:
+    result_status: BRCA_Q50_GPU_FEATURE_PILOT_SUCCESS
+    report_path: reports/brca_q50_gpu_pilot_result.md
+    report_sha256: ff21444147734234b3d4d6fbf9a6fd7fce1ee81ce58d7508a1d5dc848efe5ae3
+    provenance_path: multiscale_feature_pilot/provenance/brca_q50_gpu_pilot_result.yaml
+    provenance_sha256: 904ad3c7bef859f89fef6151014f9eb4b37b5af5d6668972feb19b0e656d263b
+    feature_manifest_sha256: 1111f4bfd4ad1183896321c0121d4c92b830c5e327a58c2408ae19267292dae0
+
+source_bindings:
+  alignment:
+    path: reports/brca_row_level_alignment.csv
+    sha256: 13b1e8e58b28d4669d8015f759e7d6df3f3296a16f77920b6a83a099999c19fe
+  official_filtered_gdc_manifest:
+    logical_path: data/tcga/gdc_manifests/filtered/brca_wsi_manifest_filtered.txt
+    local_path: /teamspace/studios/this_studio/healnet/data/tcga/gdc_manifests/filtered/brca_wsi_manifest_filtered.txt
+    size_bytes: 157900
+    sha256: ac1b4d591ce255a7d4e6bde3778a041b107576693657ee296fe6eb36c4e79a92
+  official_clean_omic_archive:
+    logical_path: data/tcga/omic/tcga_brca_all_clean.csv.zip
+    materialized_local_path: /teamspace/studios/this_studio/Author_Official_Repo_directery/healnet/data/tcga/omic/tcga_brca_all_clean.csv.zip
+    size_bytes: 4081277
+    sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+    pinned_checkout_counterpart_is_git_lfs_pointer_not_data_archive: true
+  official_healnet_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  frozen_blca_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+
+storage_readiness:
+  existing_pilot_tree_apparent_bytes: 1954756342
+  q75_declared_raw_bytes: 1360743825
+  estimated_coordinate_bytes_range: [280000, 370000]
+  estimated_feature_artifact_bytes_range: [247000000, 322000000]
+  estimated_retained_tree_after_q75_bytes_range: [3562780167, 3637870167]
+  conservative_temporary_peak_bytes_range: [4923523992, 4998613992]
+  estimates_verified_q75_outputs: false
+  logical_200gb_quota_recheck_required_before_transfer: true
+
+prohibited_actions:
+  - use_this_request_as_execution_authority
+  - create_authorized_manifest_without_new_user_authorization
+  - issue_or_embed_a_download_command_in_this_package
+  - download_any_uuid_other_than_the_single_q75_uuid_if_later_authorized
+  - q75_pixel_or_region_reads
+  - q75_mask_or_coordinate_generation
+  - q75_gpu_feature_extraction
+  - q75_healnet_execution
+  - q25_or_q50_rerun
+  - full_cohort_download_or_processing
+  - google_drive_mount_upload_copy_or_delete
+  - raw_wsi_deletion
+  - training_backward_or_optimizer_execution
+  - official_healnet_modification
+  - frozen_blca_modification
+
+next_decision_required: EXPLICIT_USER_ACCEPT_OR_DECLINE_Q75_ACQUISITION_AND_HEADER_ONLY_SCOPE

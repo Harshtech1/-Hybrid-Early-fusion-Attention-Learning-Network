@@ -1,0 +1,269 @@
+schema_version: 1
+status: BRCA_Q75_COORDINATES_VERIFIED
+cohort: TCGA-BRCA
+candidate: Q75
+recorded_at_utc: "2026-08-19T16:53:27Z"
+
+execution:
+  mode: CPU_ONLY_Q75_SINGLE_MASK_READ_AND_COORDINATE_PUBLICATION
+  started_at_utc: "2026-08-19T16:51:14.361609+00:00"
+  finished_at_utc: "2026-08-19T16:51:58.829602+00:00"
+  total_seconds: 44.46511643800113
+  source_commit: e22099eae2893fa3bb6123f1ff53872238f7c5e4
+  authorization:
+    path: multiscale_feature_pilot/config/brca_q75_coordinate_execution_authorization.yaml
+    sha256: 4510cf2849edf3b0478030453b77faa1e0348f245b7e6703232d661c062f4539
+  approval_record:
+    path: multiscale_feature_pilot/provenance/brca_q75_coordinate_execution_approval.yaml
+    sha256: 1207120da9b8c8555eba61da08a4568d496d32c2958ee52b6b2a84459ce471ff
+  timings_seconds:
+    omic_secure_open_hash_and_exact_row_match: 0.2667599220003467
+    wsi_identity_and_two_pass_prehash: 4.577552351000122
+    openslide_header_and_single_mask_read: 4.200526618000367
+    segmentation_and_coordinate_generation: 31.544678085998385
+    same_descriptor_final_hash: 3.085735882001245
+    omic_exact_row_and_same_descriptor_recheck: 0.31181360200025665
+    atomic_publication_and_validation: 0.056765004999761004
+
+identity:
+  patient_id: TCGA-E2-A154
+  slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  gdc_file_uuid: 25aec062-60d1-446e-a1c6-0c79cc74a770
+  filename: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  path: >-
+    /teamspace/studios/this_studio/brca_pilot_data/Q75.incoming/25aec062-60d1-446e-a1c6-0c79cc74a770/TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  size_bytes: 1360743825
+  md5: a8c4b68fb6e0ab3e862efe3ed1fe10d7
+  sha256: 844eb17d1bf66136b61f0c0e69ae1609e7dc9eca096e8c206e60ddd34332ab37
+  regular_non_symlink: true
+  held_o_nofollow_descriptor_used: true
+  openslide_stable_proc_fd_path_used: true
+  two_independent_sha256_passes_before_openslide: true
+  same_descriptor_final_md5_sha256_recheck: true
+
+header:
+  mpp_x: 0.2468
+  mpp_y: 0.2468
+  level_dimensions:
+    - [108528, 90471]
+    - [27132, 22617]
+    - [6783, 5654]
+    - [3391, 2827]
+  openslide_level_downsamples:
+    - 1.0
+    - 4.000066321793341
+    - 16.000619030774672
+    - 32.00359724763015
+
+omic:
+  archive_path: >-
+    /teamspace/studios/this_studio/Author_Official_Repo_directery/healnet/data/tcga/omic/tcga_brca_all_clean.csv.zip
+  archive_size_bytes: 4081277
+  archive_sha256: 4bc9de58ef6e8f8f7566fef6512c6c7db62cb827e4117b6f356d679e26e3e5f8
+  source_row_index: "771"
+  patient_id: TCGA-E2-A154
+  slide_id: TCGA-E2-A154-01Z-00-DX1.01FC9B1A-8ECD-4467-9EDD-0B02E4AEEF72.svs
+  exact_case_and_full_slide_match: true
+  held_o_nofollow_descriptor_used: true
+  exact_row_rematched_before_publication: true
+  modalities:
+    rna:
+      shape: [1, 1, 1558]
+      dtype: float32
+      device: cpu
+      contiguous: true
+      all_finite: true
+      content_sha256: 7c8ec0aa7c77227ad1ad5347b3612fe2c38d210295d6d1914862c7638960f916
+    mutation:
+      shape: [1, 1, 21]
+      dtype: float32
+      device: cpu
+      contiguous: true
+      all_finite: true
+      content_sha256: 81adcc3d1d6cfdde773ea46a27284afcf586598b5bd5cfecb675d98d70eabedf
+    cnv:
+      shape: [1, 1, 1333]
+      dtype: float32
+      device: cpu
+      contiguous: true
+      all_finite: true
+      content_sha256: 78bf5e3d18c12923687506d873800f5c01a83a5737e488296acde26814ed6803
+
+mask_read:
+  openslide_open_count: 1
+  header_read_count: 1
+  read_region_count: 1
+  level_0_location: [0, 0]
+  level: 2
+  size_at_level: [6783, 5654]
+  dtype: uint8
+  channel_order: RGBA
+  channels: 4
+  hash_serialization: contiguous_uint8_C_order_raw_bytes
+  sha256: 1dba486b3238f96dea5fdb430702986f1ee4d6e32254ef73d1ca9d92e0bbdde6
+  contour_count: 4
+  retained_hole_count: 17
+  coordinate_geometry_scale_xy: [16.0, 16.001238061549344]
+  retained_after_execution: false
+
+coordinate_artifacts:
+  schema: BRCA_COORDINATE_ARTIFACT_SET_V1
+  directory: /teamspace/studios/this_studio/brca_pilot_data/Q75.coordinates
+  total_file_bytes: 297092
+  exact_file_count: 4
+  directory_regular_non_symlink: true
+  every_file_regular_non_symlink: true
+  atomic_no_overwrite_publication: true
+  validated_after_publication: true
+  external_to_git_repository: true
+  git_tracked: false
+  transaction_cleanup:
+    runner_created_lock_present_after_return: false
+    runner_created_staging_present_after_return: false
+    final_directory_present: true
+    final_exact_files:
+      - coordinate_manifest.json
+      - coordinate_manifest.json.sha256
+      - scale_2x_coordinates.h5
+      - scale_4x_coordinates.h5
+  manifest:
+    path: /teamspace/studios/this_studio/brca_pilot_data/Q75.coordinates/coordinate_manifest.json
+    size_bytes: 6537
+    sha256: 438165ce6b3be9d26d66c65cd70793e29cc92208cfb6a78bf68043bc4b4a4e90
+  manifest_sidecar:
+    path: /teamspace/studios/this_studio/brca_pilot_data/Q75.coordinates/coordinate_manifest.json.sha256
+    size_bytes: 91
+    sha256: 28885db3c297b1604a4a76a2e61c1e84df413f94b1146c819a7ba2cc51fc2fbc
+    referenced_manifest_sha256: 438165ce6b3be9d26d66c65cd70793e29cc92208cfb6a78bf68043bc4b4a4e90
+  scale_2x:
+    path: /teamspace/studios/this_studio/brca_pilot_data/Q75.coordinates/scale_2x_coordinates.h5
+    size_bytes: 225464
+    sha256: d88c201d379a5954cdfa4d785760f6c8f9d4b8bec498f7f31d040b1fdf7440ec
+    coordinates_sha256: 88e1ac8e00d4f05da7f83e542bfe7c933e9849a29ae60deac68adabe79e748b0
+    shape: [13487, 2]
+    dtype: int64
+    unique_count: 13487
+    duplicate_count: 0
+    row_major_y_then_x: true
+    source_level: 0
+    target_mpp: 0.5
+    effective_mpp: [0.4936, 0.4936]
+    level_0_footprint: [512, 512]
+    level_0_step: [512, 512]
+    min_xy: [15360, 0]
+    max_xy: [100864, 88576]
+  scale_4x:
+    path: /teamspace/studios/this_studio/brca_pilot_data/Q75.coordinates/scale_4x_coordinates.h5
+    size_bytes: 65000
+    sha256: 0b0cfdaa26493dd24c3bbcba9f57c6b10d6060ba0f5f8b0a59bc0938ff655d94
+    coordinates_sha256: 63f58c687943509a55314ced55c7afe1610a26873a751d3e1d0f2d06cff3fb5d
+    shape: [3458, 2]
+    dtype: int64
+    unique_count: 3458
+    duplicate_count: 0
+    row_major_y_then_x: true
+    source_level: 1
+    target_mpp: 1.0
+    effective_mpp: [0.9872163682185965, 0.9872163682185965]
+    level_0_footprint: [1024, 1024]
+    level_0_step: [1024, 1024]
+    min_xy: [15360, 0]
+    max_xy: [100352, 88064]
+  total_coordinate_count: 16945
+
+implementation_identity:
+  source_commit: e22099eae2893fa3bb6123f1ff53872238f7c5e4
+  official_healnet_commit: 28ba5da6ab99fd8069972c22e986d83edb658dd4
+  frozen_blca_tag: blca-one-patient-pilot-v1
+  frozen_blca_commit: df7cf2bda783ab6cc09e95d6a1fa0914da05a433
+  critical_files:
+    scripts/run_brca_q75_coordinate_gate.py: 77a3e69f8454502e0a56e742b27cfda50e5046b961f5d5ad3636d19c1e7410af
+    multiscale_feature_pilot/config/brca_q75_coordinate_execution_authorization.yaml: 4510cf2849edf3b0478030453b77faa1e0348f245b7e6703232d661c062f4539
+    multiscale_feature_pilot/src/brca_q75_coordinate_authorization.py: 794b759df886eaefdad017b468f381081a1328111064034a996782d6361e458f
+    multiscale_feature_pilot/config/brca_q75_coordinate_policy.yaml: 58f15a9e39fcd3469ec656ef98c72ad6e42b8a3eab16fcbc24c4345cc4337d88
+    multiscale_feature_pilot/src/brca_q75_coordinate_policy.py: 6f58c3b5f23f91d16c60e041933418ddf176bad70defdc7428176ae7505c35d0
+    multiscale_feature_pilot/src/brca_q25_coordinates.py: da4c5e97b6685c4801b73704bfe239ce716eab7017efdb7c1b7db7b70905ca82
+    multiscale_feature_pilot/src/brca_coordinate_artifacts.py: a8abb62fae7ca429f57c8de403aa96ab6481a5f514e7229cf994778aa6574ebf
+    multiscale_feature_pilot/src/brca_omic.py: 5061039913cb0dd4e8e30958c8b4b76f088396f7841255dd94234c3b462d5a5d
+    multiscale_feature_pilot/provenance/brca_q75_header_metadata_result/result.yaml: 08a7ed3e67ddf17513ee2dbda2adfd2398333787aaa75fe9eacf911f3c1a3898
+
+runtime_versions:
+  python_executable: /home/zeus/miniconda3/envs/cloudspace/bin/python
+  python: 3.12.11
+  numpy: 1.26.4
+  opencv: 4.10.0
+  h5py: 3.16.0
+  openslide_python: 1.4.6
+  openslide_library: 3.4.1
+
+storage:
+  before:
+    total_bytes: 395184570368
+    used_bytes: 27831762944
+    available_bytes: 347203584000
+    percent_used: 8
+  after:
+    total_bytes: 395184570368
+    used_bytes: 27832201216
+    available_bytes: 347203145728
+    percent_used: 8
+  used_bytes_delta: 438272
+  available_bytes_delta: -438272
+  raw_wsi_retained: true
+
+validations:
+  exact_uuid_filename_size_md5_sha256: PASS
+  two_independent_wsi_prehashes: PASS
+  same_descriptor_final_wsi_hash_recheck: PASS
+  exact_omic_row_and_modality_hashes_rechecked: PASS
+  exact_one_mask_read: PASS
+  repositories_unchanged_before_publication: PASS
+  atomic_no_overwrite_publication: PASS
+  exact_output_file_set: PASS
+  manifest_and_sidecar_hashes_recomputed: PASS
+  hdf5_file_hashes_recomputed: PASS
+  coordinate_content_hashes_recomputed: PASS
+  hdf5_schema_dtype_counts_attributes: PASS
+  nonempty_unique_row_major_lattice_and_bounds: PASS
+  independent_read_only_artifact_validator: PASS
+
+operations:
+  authorized:
+    openslide_opens: 1
+    header_reads: 1
+    level_2_mask_read_region_calls: 1
+    tissue_masks_generated_in_memory: 1
+    scale_2x_coordinates_generated: 13487
+    scale_4x_coordinates_generated: 3458
+    atomic_coordinate_publications: 1
+  prohibited_and_not_performed:
+    level_0_or_level_1_patch_pixel_reads: 0
+    thumbnail_reads: 0
+    associated_image_reads: 0
+    patch_resampling: 0
+    patch_extraction: 0
+    resnet50_feature_extraction: 0
+    pt_generation: 0
+    healnet_execution: 0
+    gpu_or_cuda_operations: 0
+    training_runs: 0
+    q25_q50_reruns_or_modifications: 0
+    blca_modifications: 0
+    official_healnet_modifications: 0
+    full_cohort_operations: 0
+    google_drive_operations: 0
+    raw_wsi_deletions: 0
+    preexisting_raw_user_project_or_final_artifact_deletions: 0
+
+repository_postconditions:
+  official_healnet_clean: true
+  frozen_blca_tag_unchanged: true
+  protected_blca_report_touched_by_execution_or_recording: false
+  protected_existing_user_modification_preserved: true
+  protected_existing_user_modification: reports/blca_one_patient_multiscale_pilot.md
+  coordinate_artifacts_outside_git: true
+
+required_stop: Q75_COORDINATE_ARTIFACT_VALIDATION_AND_REPORT
+required_stop_reached: true
+scientific_interpretation: COORDINATE_ARTIFACTS_ONLY_NO_FEATURES_OR_MODEL_OUTPUT
+next_gate: SEPARATE_REVIEW_AND_AUTHORIZATION_REQUIRED_BEFORE_Q75_PATCH_READS_OR_GPU_FEATURE_EXTRACTION

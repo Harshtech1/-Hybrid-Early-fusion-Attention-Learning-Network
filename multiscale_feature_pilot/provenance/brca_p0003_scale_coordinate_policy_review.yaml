@@ -1,0 +1,21 @@
+schema_version: 1
+status: BRCA_PRODUCTION_P0003_SCALE_AND_COORDINATE_POLICY_REVIEWED_EXECUTION_LOCKED
+cohort: TCGA-BRCA
+production_block: BRCA_PRODUCTION_BLOCK_0001_0008
+cohort_index: 3
+patient_label: P0003
+recorded_at_utc: "2026-08-20T23:59:00Z"
+source_header_commit: 3354b3d988d472cf29a1031386d892ea16f3ee14
+authority: {exact_user_statement_sha256: 3ada92434dfc6f78bbf29e7d127fe2dd199e8fa11a7ea9356bbcea92e85f88fc}
+inputs: {header_result_sha256: b3944520e2dafee3c8dc0faf18c72b433e4e4e46e40c495c87aab186c98bc37a, header_report_sha256: 413cf40eb39e150396477832245398497fa5cd9452bdb65f6d8cf3c35ef28f58}
+outputs:
+  policy_path: multiscale_feature_pilot/config/brca_p0003_scale_coordinate_policy.yaml
+  policy_sha256: 84535d8e55120434ce475dd2c3c62dcb9034815c3b97bf29464deaa32e46441b
+  report_path: reports/brca_p0003_scale_coordinate_policy_review.md
+  report_sha256: 314736173886215dad18d7a6636397e84fd10370ae8e118915be89396966097d
+  test_path: multiscale_feature_pilot/tests/test_brca_p0002_p0004_scale_coordinate_policies.py
+  test_sha256: 4ef98c54b9573d9c2d21f7596897eb5358be8c1bf2d9fa8b38db96adf66a9017
+resolved_policy: {scale_2x_effective_mpp: [0.505, 0.505], scale_4x_effective_mpp: [1.01, 1.01], proposed_mask_read: [[0, 0], 2, [3859, 3740]], scale_2x_theoretical_sites: 13920, scale_4x_theoretical_sites: 3480, actual_tissue_selected_counts: UNKNOWN_UNTIL_SEPARATELY_AUTHORIZED_EXECUTION}
+review: {metadata_only: true, real_wsi_opened: false, pixels_read: 0, masks_generated: 0, coordinates_generated: 0, artifacts_published: 0, gpu_operations: 0, feature_extractions: 0, deletion_operations: 0, drive_operations: 0, training_runs: 0}
+required_stop_reached: true
+next_gate: COMBINED_EXPLICIT_P0002_P0008_SINGLE_MASK_READ_AUTHORIZATION_REQUIRED

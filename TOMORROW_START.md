@@ -1,5 +1,7 @@
 # GPU-machine restart checklist
 
+> Historical pre-extraction checklist. The one-patient pilot subsequently passed; use [reports/validated_pilot_baseline.md](reports/validated_pilot_baseline.md) for the frozen reference state.
+
 Start with [GPU_HANDOFF.md](GPU_HANDOFF.md). It is the canonical operational handoff.
 
 ## Current stopping point
