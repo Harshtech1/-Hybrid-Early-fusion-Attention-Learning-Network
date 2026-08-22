@@ -10,7 +10,7 @@ This was one real-patient interface and numerical smoke test. The HEALNet model 
 - WSI: `TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C9EB3970F.svs`
   - Size: `2,658,499,382` bytes
   - MD5: `824785fee9387dcf46a7058a0722739b`
-- Coordinate HDF5: `TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C9EB3970F.h5`
+- Coordinate HDF5: `TCGA-2F-A9KT-01Z-00-DX1.ADD6D87C-0CC2-4B1F-A75F-108C![![alt text](image.png)](image.png)9EB3970F.h5`
   - Size: `572,080` bytes
   - SHA256: `e22bc149a2b192bf917559fb69154143867e8e4e6eb3f28a7b5b5a87a07e0b51`
   - `coords`: `[8911,2]`, `int64`, `patch_level=1`, `patch_size=256`, 8,911 unique, zero duplicates
